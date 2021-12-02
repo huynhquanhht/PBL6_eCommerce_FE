@@ -1,7 +1,8 @@
 .DS_Store
 node_modules
+.prettierrc
 /dist
-
+.env
 
 # local env files
 .env.local
