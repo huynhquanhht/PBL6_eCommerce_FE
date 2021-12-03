@@ -60,8 +60,8 @@ export default {
       }
     } else {
       // Register shop
+        this.formType = 'register';
         this.title = {
-          this.formType = 'register';
           type: 'register',
           main: 'Đăng ký cửa hàng',
           extra: 'Hãy đăng ký cửa hàng để trở thành người bán'
