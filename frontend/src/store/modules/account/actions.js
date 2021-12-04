@@ -1,4 +1,4 @@
-import {login, signup} from '@/api/api_account';
+import {login, signup, checkUsername} from '@/api/api_account';
 import router from '@/router'
 const actions = {
   'SIGNUP': async (context, signupInfo) => {
@@ -10,6 +10,14 @@ const actions = {
         text: 'Đăng ký tài khoản thành công'
       })
       router.push({name: 'login'});
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  'CHECK_USERNAME': async (context, username) => {
+    try {
+      await checkUsername(username);
     } catch (error) {
       console.log(error);
     }

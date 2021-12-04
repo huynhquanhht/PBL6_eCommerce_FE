@@ -1,4 +1,4 @@
-import { getUser, getUserByEmail, confirmResetPass } from '@/api/api_user';
+import { getUser, forgotPassword, confirmResetPass } from '@/api/api_user';
 import router from '@/router'
 const actions = {
   'FETCH_USER_INFO': async (context) => {
@@ -19,9 +19,13 @@ const actions = {
   },
   'REQUIRE_RESET_PASSWORD': async (context, user) => {
     try {
-      await getUserByEmail(user.email);
+      await forgotPassword(user.email);
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 500) {
+        router.push({name: 'error500'}); 
+        return;
+      }
+      router.push({name: 'other-error'}); 
     }
   },
   'RESET_PASSWORD': async (context, user) => {

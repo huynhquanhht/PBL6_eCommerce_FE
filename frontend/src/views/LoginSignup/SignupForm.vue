@@ -105,7 +105,7 @@
 <script>
 import { required } from 'vee-validate/dist/rules';
 import { extend, ValidationProvider, setInteractionMode} from 'vee-validate';
-
+// import {mapActions} from 'vuex';
 setInteractionMode('eager');
 
 extend('required', {
@@ -180,6 +180,12 @@ export default {
       }
     },
   },
+  mounted() {
+    extend("unique", {
+      validate: this.isUsernameUnique,
+      message: 'Tên đăng nhập đã tồn tại'
+    })
+  }
 };
 </script>
 
