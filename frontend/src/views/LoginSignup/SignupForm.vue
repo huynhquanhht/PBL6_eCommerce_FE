@@ -231,7 +231,6 @@ export default {
     });
     extend('isExistedPhone', async (phone) => {
       await this.checkExistedPhone(phone);
-      console.log(phone);
       if (this.isExistedPhone) {
         return 'Số điện thoại đã tồn tại';
       }

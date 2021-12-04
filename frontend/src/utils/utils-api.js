@@ -1,6 +1,6 @@
 import axios from 'axios';
 import localStorageUtils from './utils-local-storage';
-import router from '@/router'
+import router from '@/router';
 const service = axios.create({
   baseURL: process.env.VUE_APP_SERVER,
   timeout: 5000,
@@ -48,7 +48,6 @@ service.interceptors.response.use(
 );
 
 const getRequest = (url) => {
-  console.log(url);
   return service.request({
     method: 'get',
     url: url,

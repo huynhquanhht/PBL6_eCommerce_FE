@@ -5,7 +5,6 @@ const getAllProducts = (pageIndex, pageSize) => {
 }
 
 const getProductDetail = (id) => {
-  console.log(id);
   return getRequest(`Products/${id}`);
 }
 

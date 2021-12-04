@@ -56,7 +56,6 @@ const actions = {
   CHECK_PHONE: async (context, phone) => {
     try {
       let res = await checkPhone(phone);
-      console.log(res);
       context.commit('SET_CHECK_PHONE', res.data.isExisted);
     } catch (error) {
       context.commit('SET_SNACKBAR', {

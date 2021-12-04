@@ -9,7 +9,6 @@ const signup = (signupInfo) => {
 }
 
 const checkUsername = (username) => {
-  console.log(username);
   return getRequest(`Authen/CheckUsername?username=${username}`);
 }
 
