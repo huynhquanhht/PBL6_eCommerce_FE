@@ -6,7 +6,6 @@ const actions = {
       let res = await getQuantity();
       context.commit('SET_CART_QUANTITY', res.data.resultObj);
     } catch(error) {
-      console.log(error);
       if (error.response.status === 401) {
         router.push({name: 'error401'}); 
         return;

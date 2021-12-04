@@ -4,14 +4,12 @@ const actions = {
   'ORDER_CART': async (context, order) => {
     try {
        let res =await  orderCart(order);
-       console.log(res);
       context.commit('SET_SNACKBAR', {
         type: 'success',
         visible: true,
         text: 'Đặt hàng thành công',
       });
     } catch (error) {
-      console.log(error);
       if (error.response.status === 400) {
         context.commit('SET_SNACKBAR', {
           type: 'error',
