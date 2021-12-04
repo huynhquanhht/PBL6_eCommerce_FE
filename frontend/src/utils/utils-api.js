@@ -1,12 +1,13 @@
 import axios from 'axios';
 import localStorageUtils from './utils-local-storage';
+import router from '@/router'
 const service = axios.create({
   baseURL: process.env.VUE_APP_SERVER,
-  timeout: 5000
+  timeout: 5000,
 });
 
 service.interceptors.request.use(
-  config => {
+  (config) => {
     const userToken = localStorageUtils.getInstance().getToken();
     if (userToken) {
       config.headers['Authorization'] = 'Bearer ' + userToken;
@@ -14,12 +15,40 @@ service.interceptors.request.use(
     config.headers['Content-type'] = 'application/json/multipart/form-data';
     return config;
   },
-  error => {
+  (error) => {
     Promise.reject(error);
   }
 );
 
-const getRequest = url => {
+service.interceptors.response.use(
+  (response) => {
+    return Promise.resolve(response);
+  },
+  function (error) {
+    if (error.response.status === 400) {
+      return Promise.reject(error);
+    }
+    if (error.response.status === 401) {
+      router.push({ name: 'error401' });
+      return;
+    } else if (error.response.status === 403) {
+      router.push({ name: 'error403' });
+      return;
+    } else if (error.response.status === 404) {
+      router.push({ name: 'error404' });
+      return;
+    } else if (error.response.status === 500) {
+      router.push({ name: 'error500' });
+      return;
+    } else {
+      router.push({ name: 'other-page' });
+      return;
+    }
+  }
+);
+
+const getRequest = (url) => {
+  console.log(url);
   return service.request({
     method: 'get',
     url: url,

@@ -4,20 +4,21 @@ const login = (account) => {
   return postRequest('Authen/login', account);
 }
 
+const signup = (signupInfo) => {
+  return postRequest('Authen/register', signupInfo);
+}
+
 const checkUsername = (username) => {
-  return getRequest('Authen/CheckUsername', username);
+  console.log(username);
+  return getRequest(`Authen/CheckUsername?username=${username}`);
 }
 
 const checkEmail = (email) => {
-  return getRequest('Authen/CheckEmail', email);
+  return getRequest(`Authen/CheckEmail?email=${email}`);
 }
 
 const checkPhone = (phone) => {
-  return getRequest('Authen/CheckPhone', phone);
-}
-
-const signup = (signupInfo) => {
-  return postRequest('Authen/register', signupInfo);
+  return getRequest(`Authen/CheckPhone?phone=${phone}`);
 }
 
 export {

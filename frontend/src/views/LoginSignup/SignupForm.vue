@@ -13,7 +13,7 @@
       </ValidationProvider>
       <ValidationProvider
         name="Email"
-        rules="required|email"
+        rules="required|email|isExistedEmail"
         v-slot="{ errors }"
       >
         <input
@@ -21,12 +21,13 @@
           class="input email-input"
           placeholder="Email"
           v-model="email"
+          @change="checkEmail"
         />
         <span class="error-text">{{ errors[0] }}</span>
       </ValidationProvider>
       <ValidationProvider
         name="Số điện thoại"
-        rules="required|phone"
+        rules="required|phone|isExistedPhone"
         v-slot="{ errors }"
       >
         <input
@@ -34,12 +35,13 @@
           class="input phone-input"
           placeholder="Số điện thoại"
           v-model="phoneNumber"
+          @change="checkPhone"
         />
         <span class="error-text">{{ errors[0] }}</span>
       </ValidationProvider>
       <ValidationProvider
         name="Tên đăng nhập"
-        rules="required"
+        rules="required|isExistedUsername"
         v-slot="{ errors }"
       >
         <input
@@ -47,6 +49,7 @@
           class="input username-input"
           placeholder="Tên đăng nhập"
           v-model="username"
+          @change="checkUsername"
         />
         <span class="error-text">{{ errors[0] }}</span>
       </ValidationProvider>
@@ -86,16 +89,15 @@
         width="100%"
         height="42px"
         color="#fea200"
-        depressed>
+        depressed
+      >
         <span class="font-size: 15px">Đăng ký</span>
       </v-btn>
-      <hr class="hr"/>
+      <hr class="hr" />
       <div class="login-sentence">
         <span class="question">Bạn đã có tài khoản VERSACE? </span>
-        <router-link class="login-link" to="/login"  tag="a">
-          <span >
-            Đăng nhập
-          </span>
+        <router-link class="login-link" to="/login" tag="a">
+          <span> Đăng nhập </span>
         </router-link>
       </div>
     </form>
@@ -104,8 +106,8 @@
 
 <script>
 import { required } from 'vee-validate/dist/rules';
-import { extend, ValidationProvider, setInteractionMode} from 'vee-validate';
-// import {mapActions} from 'vuex';
+import { extend, ValidationProvider, setInteractionMode } from 'vee-validate';
+import { mapGetters, mapMutations, mapActions } from 'vuex';
 setInteractionMode('eager');
 
 extend('required', {
@@ -113,32 +115,32 @@ extend('required', {
   message: '{_field_} không thể trống',
 });
 
-extend('email', email => {
+extend('email', (email) => {
   if (!email.match(/.+@.+\..+/)) {
-    return 'Email không đúng định dạng'
+    return 'Email không đúng định dạng';
   }
-  return ''
+  return true;
 });
 
-extend('phone', phone => {
+extend('phone', (phone) => {
   if (!phone.match(/^[0-9]{10,10}$/)) {
     return 'Số điện thoại phải đủ 10 chữ số';
   }
-  return '';
+  return true;
 });
 
-extend('password', password => {
+extend('password', (password) => {
   if (!password.match(/^(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/)) {
     return 'Mật khẩu chứa ít nhất 8 ký tự, 1 chữ cái, 1 chữ số';
   }
-  return '';
+  return true;
 });
 
 extend('confirmed', (confirmPassword, [password]) => {
   if (confirmPassword != password) {
     return 'Mật khẩu xác nhận không trùng khớp';
   }
-  return '';
+  return true;
 });
 
 export default {
@@ -155,20 +157,48 @@ export default {
       password: '',
       confirmPassword: '',
       valid: '',
-      show: false
+      show: false,
     };
   },
+  computed: {
+    ...mapGetters({
+      isExistedUsername: 'GET_CHECK_USERNAME',
+      isExistedEmail: 'GET_CHECK_EMAIL',
+      isExistedPhone: 'GET_CHECK_PHONE',
+    }),
+  },
   methods: {
+    ...mapMutations({
+      setSnackbar: 'SET_SNACKBAR',
+    }),
+    ...mapActions({
+      signup: 'SIGNUP',
+      checkExistedUsername: 'CHECK_USERNAME',
+      checkExistedEmail: 'CHECK_EMAIL',
+      checkExistedPhone: 'CHECK_PHONE',
+    }),
+    async checkUsername() {
+      await this.checkExistedUsername(this.username);
+    },
+    async checkPhone() {
+      await this.checkExistedPhone(this.phoneNumber);
+    },
+    async checkEmail() {
+      await this.checkExistedEmail(this.email);
+    },
     submit() {
       if (
         this.fullname !== '' &&
         this.email.match(/.+@.+\..+/) &&
         this.phoneNumber.match(/^[0-9]{10,10}$/) &&
         this.username !== '' &&
-        this.password.match(/^(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/) && 
-        this.password === this.confirmPassword
+        this.password.match(/^(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/) &&
+        this.password === this.confirmPassword &&
+        !this.isExistedUsername &&
+        !this.isExistedEmail &&
+        !this.isExistedPhone
       ) {
-        this.$store.dispatch('SIGNUP', {
+        this.signup({
           fullname: this.fullname,
           email: this.email,
           phoneNumber: this.phoneNumber,
@@ -176,16 +206,38 @@ export default {
           password: this.password,
         });
       } else {
-        console.log('đăng ký thất bại');
+        this.setSnackbar({
+          type: 'warning',
+          visible: true,
+          text: 'Không thể đăng ký! Vui lòng kiểm tra lại thông tin!',
+        });
       }
     },
   },
   mounted() {
-    extend("unique", {
-      validate: this.isUsernameUnique,
-      message: 'Tên đăng nhập đã tồn tại'
-    })
-  }
+    extend('isExistedUsername', async (username) => {
+      await this.checkExistedUsername(username);
+      if (this.isExistedUsername) {
+        return 'Tên đăng nhập đã tồn tại';
+      }
+      return '';
+    });
+    extend('isExistedEmail', async (email) => {
+      await this.checkExistedEmail(email);
+      if (this.isExistedEmail) {
+        return 'Email đã tồn tại';
+      }
+      return '';
+    });
+    extend('isExistedPhone', async (phone) => {
+      await this.checkExistedPhone(phone);
+      console.log(phone);
+      if (this.isExistedPhone) {
+        return 'Số điện thoại đã tồn tại';
+      }
+      return '';
+    });
+  },
 };
 </script>
 
@@ -221,7 +273,6 @@ form {
   letter-spacing: 0;
   margin: 0px !important;
 }
-
 
 .login-link {
   font: 500 15px Roboto;
