@@ -119,7 +119,7 @@ export default {
         return this.cartItems.reduce((cartItemList, item) => {
           cartItemList.push({
             id: item.id,
-            image: '/storage/' + item.image,
+            image: item.image,
             name: item.productName,
             quantity: item.quantity,
             price: item.price,
@@ -145,7 +145,6 @@ export default {
           this.productsPaymentId.push(item.id);
         }
       });
-      console.log('productsPayments', this.productsPayment);
       if (!this.productsPayment.length) {
        this.setSnackbar({
           type: 'warning',
