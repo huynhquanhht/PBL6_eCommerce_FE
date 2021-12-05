@@ -39,10 +39,10 @@ export default {
   async created() {
     await this.fetchShopInfo();
 
-    if (shopInfo) {
-      if (!shopInfo.disable) {
+    if (this.shopInfo) {
+      if (!this.shopInfo.disable) {
         this.shopInfoChecked = this.shopInfo;
-        this.formType = detail;
+        this.formType = this.detail;
         this.title = {
           type: 'detail',
           main: 'Thông tin chi tiết cửa hàng',

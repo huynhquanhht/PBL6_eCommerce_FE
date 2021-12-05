@@ -4,6 +4,7 @@ const actions = {
   'ORDER_CART': async (context, order) => {
     try {
        let res =await  orderCart(order);
+       console.log(res);
       context.commit('SET_SNACKBAR', {
         type: 'success',
         visible: true,

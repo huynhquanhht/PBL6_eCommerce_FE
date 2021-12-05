@@ -5,8 +5,21 @@ const actions = {
     try {
       const res = await getAllProducts(payload.pageIndex, payload.pageSize);
       context.commit('SET_ALL_PRODUCTS', res.data.resultObj.items);
+      if (res.status === 204) {
+        context.commit('SET_SNACKBAR', {
+          type: 'info',
+          visible: true,
+          text: 'Không có dữ liệu sản phẩm',
+        });
+      }
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 400) {
+        context.commit('SET_SNACKBAR', {
+          type: 'info',
+          visible: true,
+          text: error.response.data,
+        });
+      }
     }
   },
   'FETCH_PRODUCT_DETAIL': async(context, payload) => {
