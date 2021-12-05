@@ -24,9 +24,7 @@ export default {
     shopDetail: { type: Object },
   },
   data() {
-    return {
-    
-    };
+    return {};
   },
   methods: {
     filterColors(images) {
@@ -56,8 +54,7 @@ export default {
       }, []);
     },
   },
-  created() {
-  }
+  created() {},
 };
 </script>
 

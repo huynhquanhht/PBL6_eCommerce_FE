@@ -26,8 +26,21 @@ const actions = {
     try {
       const res = await getProductDetail(payload.id);
       context.commit('SET_PRODUCT_DETAIL', res.data);
+      if (res.status === 204) {
+        context.commit('SET_SNACKBAR', {
+          type: 'info',
+          visible: true,
+          text: 'Không có dữ liệu sản phẩm',
+        });
+      }
     } catch(error) {
-      console.log(error);
+      if (error.response.status === 400) {
+        context.commit('SET_SNACKBAR', {
+          type: 'info',
+          visible: true,
+          text: error.response.data,
+        });
+      }
     }
   }
 };
