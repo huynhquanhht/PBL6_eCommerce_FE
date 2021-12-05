@@ -5,7 +5,7 @@ const getQuantity = () => {
 }
 
 const getCartItems = () => {
-  return getRequest('Carts');
+  return getRequest('Carts/me');
 }
 
 const addCartItem = (cartItem) => {
