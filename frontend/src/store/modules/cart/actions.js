@@ -5,16 +5,21 @@ const actions = {
     try {
       let res = await getQuantity();
       context.commit('SET_CART_QUANTITY', res.data.resultObj);
+      if (res.status === 204) {
+        context.commit('SET_SNACKBAR', {
+          type: 'info',
+          visible: true,
+          text: 'Không có dữ liệu số lượng sản phẩm trong giỏ hàng',
+        });
+      }
     } catch(error) {
-      if (error.response.status === 401) {
-        router.push({name: 'error401'}); 
-        return;
+      if (error.response.status === 400) {
+        context.commit('SET_SNACKBAR', {
+          type: 'error',
+          visible: true,
+          text: error.response.data,
+        });
       }
-      if (error.response.status === 500) {
-        router.push({name: 'error500'}); 
-        return;
-      }
-      router.push({name: 'other-error'}); 
     }
   },
   'FETCH_CART_ITEMS': async (context) => {
@@ -50,19 +55,10 @@ const actions = {
         context.commit('SET_SNACKBAR', {
           type: 'error',
           visible: true,
-          text: 'Thêm vào giỏ hàng thất bại. Quá số lượng tồn kho.',
+          text: error.response.data,
         });
         context.commit('SET_ADD_RESULT', false);
       }
-      if (error.response.status === 401) {
-        router.push({name: 'error401'}); 
-        return;
-      }
-      if (error.response.status === 500) {
-        router.push({name: 'error500'}); 
-        return;
-      }
-      router.push({name: 'other-error'}); 
     }
   },
   'UPDATE_CART_QUANTITY': async (context, cart) => {

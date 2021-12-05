@@ -13,14 +13,14 @@
 export default {
   name: 'ProductDescription',
   props: {
-    productDescription: {type: String}
-  }
-}
+    productDescription: { type: String },
+  },
+};
 </script>
 
 <style scoped>
 .v-application p {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 .production-description-wrapper {
   width: 1200px;
@@ -45,7 +45,7 @@ export default {
   padding: 8px 10px 10px 10px;
 }
 
-.product-description p{
+.product-description p {
   font: 300 14px Roboto;
   color: #000000;
   line-height: 18px;
