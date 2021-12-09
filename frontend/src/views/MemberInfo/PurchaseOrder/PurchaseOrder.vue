@@ -32,7 +32,7 @@ export default {
     return {
       title: 'Đơn mua',
       tab: null,
-      items: ['Tất cả', 'Chờ xác nhận', 'Đã giao', 'Đã hủy'],
+      items: ['Tất cả', 'Chờ xác nhận', 'Xác nhận', 'Đã hủy'],
       text:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
     };
