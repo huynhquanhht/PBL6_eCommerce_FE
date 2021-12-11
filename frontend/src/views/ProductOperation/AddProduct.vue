@@ -4,24 +4,29 @@
       <p class="main-title">Thêm sản phẩm</p>
     </div>
     <hr class="add-product-hr">
-    <add-product-form></add-product-form>
+    <product-form :actionType="actionType"></product-form>
   </div>
 </template>
 
 <script>
-import AddProductForm from './AddProductForm.vue'
+import ProductForm from './ProductForm.vue'
 export default {
-  components: { AddProductForm },
-  name: 'AddProduct'
+  components: { ProductForm },
+  name: 'AddProduct',
+  data() {
+    return {
+      actionType: 'Create'
+    }
+  }
 }
 </script>
 
-<style>
+<style scoped>
 .v-application p {
-    margin-bottom: 0px !important;
+  margin-bottom: 0px !important;
 }
 .add-product-wrapper {
-  margin-top: 10px;
+  /* margin-top: 10px; */
   padding: 10px 20px 10px 20px;
 }
 .main-title {

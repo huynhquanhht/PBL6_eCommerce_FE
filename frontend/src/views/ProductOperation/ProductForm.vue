@@ -1,7 +1,7 @@
 <template>
-  <div class="add-product-form">
+  <div class="product-form">
     <div class="product-name">
-      <div class="label-input">
+      <div class="product-name-block">
         <div class="label-block">
           <label class="label">Tên sản phẩm: </label>
         </div>
@@ -173,8 +173,8 @@
           </div>
         </div>
         <div class="button-block">
-            <v-btn class="btn btn-save">Lưu sản phẩm</v-btn>
-            <v-btn class="btn btn-reset">Làm mới</v-btn>
+            <v-btn class="btn btn-save" v-if="actionType === 'Create'">Tạo mới</v-btn>
+            <v-btn class="btn btn-reset" v-if="actionType === 'Update'">Lưu sản phẩm</v-btn>
             <v-btn class="btn btn-cancel">Hủy</v-btn>
         </div>
       </div>
@@ -187,11 +187,17 @@ import ConfirmDialog from '@/components/ConfirmDialog.vue';
 export default {
   name: 'AddProductForm',
   components: { ConfirmDialog },
+  props: {
+    actionType: {
+      type: String
+    }
+  },
   data() {
     return {
       productName: '',
       question: 'Bạn chắc chắn muốn xóa phân loại này?',
       dialog: false,
+      isVisbleButton: null,
       rowNum: 1,
       originPrice: null,
       sellPrice: null,
@@ -251,11 +257,29 @@ export default {
     readURL(url, index) {
       this.colorImage[index].image = url;
     },
+    created() {
+    }
   },
 };
 </script>
 
 <style scoped>
+.product-form {
+  background-color: #ffffff;
+}
+.product-name-block {
+  display: grid;
+  grid-template-columns: 120px 400px;
+  column-gap: 10px;
+  justify-items: left;
+}
+
+.product-name-block .text-block>input {
+  width: 300px;
+}
+/* .product-name-block .label-block {
+  justify-self: left;
+} */
 .label-input {
   display: grid;
   grid-template-columns: 120px 280px;
@@ -453,7 +477,7 @@ input[type='file'] {
   margin-left: 140px;
 }
 
-.btn-reset, .btn-cancel {
+.btn-cancel {
   background-color: #b4b1b1 !important;
 }
 </style>
