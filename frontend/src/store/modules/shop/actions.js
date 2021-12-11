@@ -3,7 +3,6 @@ import router from '@/router'
 const actions = {
   'REGISTER_SHOP': async (context, shopInfo) => {
     try {
-      console.log('action', shopInfo);
       await registerShop(shopInfo);
       context.commit('SET_SNACKBAR', {
         type: 'success',
@@ -19,15 +18,6 @@ const actions = {
         });
         return;
       }
-      if (error.response.status === 401) {
-        router.push({name: 'error401'}); 
-        return;
-      }
-      if (error.response.status === 500) {
-        router.push({name: 'error500'}); 
-        return;
-      }
-      router.push({name: 'other-error'}); 
     }
   },
   'FETCH_SHOP_INFO': async (context) => {

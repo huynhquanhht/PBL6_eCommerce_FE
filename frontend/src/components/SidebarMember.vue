@@ -3,21 +3,24 @@
     <div class="personal-account">
       <img src="@/assets/images/avatar-user.png" alt="avatar-user" />
       <div class="personal-identity">
-        <span>Đặng Quốc Tuấn</span>
-        <span>tuandang</span>
+        <span> {{ userInfo.fullname }}</span>
+        <span class="email"> {{ userInfo.email }}</span>
       </div>
     </div>
     <hr class="hr" />
     <div class="item-group">
-      <div class="item" v-for="(item, index) in menuItems" :key="index">
-        <i :class="item.icon"></i>
-        <span> {{ item.title }} </span>
+      <div  v-for="(item, index) in menuItems" :key="index">
+        <router-link :to="item.url" class="item">
+          <i :class="item.icon"></i>
+          <span> {{ item.title }} </span>
+        </router-link>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'SidebarPersonal',
   data() {
@@ -25,24 +28,39 @@ export default {
       menuItems: [
         {
           icon: 'fas fa-user',
-          title: 'Thông tin cá nhân'
+          title: 'Thông tin cá nhân',
+          url: '/member-info/personal-identity'
         },
         {
           icon: 'fas fa-clipboard-list',
-          title: 'Đơn mua'
-        }
+          title: 'Đơn mua',
+          url: '/member-info/purchase-order'
+        },
       ],
-      active: false
+      active: false,
     };
   },
   methods: {
-  }
+    ...mapActions({
+      fetchUserInfo: 'FETCH_USER_INFO',
+    }),
+  },
+  computed: {
+    ...mapGetters({
+      userInfo: 'GET_USER_INFO',
+    }),
+  },
+  async created() {
+    await this.fetchUserInfo();
+    console.log(this.userInfo);
+  },
 };
 </script>
 
 <style scoped>
 .personal-account-wrapper {
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
   width: 250px;
   padding: 20px 20px;
   background-color: #ffffff;
@@ -75,6 +93,10 @@ export default {
   font: 400 15px Roboto;
 }
 
+.email {
+  font: 300 12px Roboto !important;
+}
+
 .hr {
   margin: 10px 0px;
   border-width: 0;
@@ -87,6 +109,7 @@ export default {
   grid-template-columns: 20px 120px;
   column-gap: 5px;
   color: #616161;
+  text-decoration: none;
 }
 
 .item-group {
@@ -107,8 +130,7 @@ export default {
   line-height: 24px;
 }
 
-.item:hover
-{
+.item:hover {
   color: #fea200;
   cursor: pointer;
 }

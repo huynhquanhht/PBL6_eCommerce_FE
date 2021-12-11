@@ -1,5 +1,6 @@
 const state =  {
-  productsPayment: []
+  productsPayment: [],
+  orders: []
 };
 
 export default state;
