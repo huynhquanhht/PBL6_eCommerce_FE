@@ -44,6 +44,18 @@ const localStorageUtils = (
       localStorage.removeItem('current_user');
     }
 
+    function _getShopInfo() {
+      return localStorage.getItem('shop_info');
+    }
+
+    function _setShopInfo(shopInfo) {
+      localStorage.setItem('shop_info', shopInfo);
+    }
+
+    function _clearShopInfo() {
+      localStorage.removeItem('shop_info');
+    }
+
     return {
       getInstance: _getInstance,
       setToken: _setToken,
@@ -54,7 +66,10 @@ const localStorageUtils = (
       clearProductsPayment: _clearProductsPayment,
       setCurrentUser: _setCurrentUser,
       getCurrentUser: _getCurrentUser,
-      clearCurrentUser: _clearCurrentUser
+      clearCurrentUser: _clearCurrentUser,
+      getShopInfo: _getShopInfo,
+      setShopInfo: _setShopInfo,
+      clearShopInfo: _clearShopInfo
     }
   })();
 

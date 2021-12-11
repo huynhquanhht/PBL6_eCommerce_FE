@@ -77,19 +77,6 @@
             >
               <span class="font-size: 15px">Cập nhật</span>
             </v-btn>
-
-                        <v-btn
-              class="btn-regis-shop white--text"
-              height="36px"
-              width="120px"
-              color="#fea200"
-              depressed
-              v-bind="attrs"
-              v-on="on"
-              @click="registerShop"
-            >
-              <span class="font-size: 15px">Kích hoạt</span>
-            </v-btn>
           </template>
           <confirm-dialog
             :question="question"
@@ -216,7 +203,7 @@ export default {
   border: solid 1px #616161;
   background-color: #ffffff;
   height: 32px;
-  width: 260px;
+  width: 360px;
   outline: #616161;
   padding: 8px;
   box-shadow: 0px 2px 2px 0px rgb(0 0 0 / 14%);
