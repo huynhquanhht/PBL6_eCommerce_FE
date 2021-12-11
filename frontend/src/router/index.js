@@ -109,6 +109,12 @@ const routes = [
             meta: { title: 'Đăng ký của hàng | Versace Việt Nam' }
           },
           {
+            path: 'product-list',
+            name: 'product-list',
+            component: () => import('@/views/ProductList/ProductList.vue'),
+            meta: { title: 'Quản lý sản phẩm | Kênh người bán | Versace Việt Nam'}
+          },
+          {
             path: 'add-product',
             name: 'add-product',
             component: () => import('@/views/AddProduct/AddProduct.vue'),
