@@ -1,30 +1,23 @@
 <template>
   <div class="purchase-order-wrapper">
     <top-title :title="title"></top-title>
-
     <div class="options">
-          <hr class="hr-purcharse-order" />
+      <hr class="hr-purcharse-order" />
       <v-tabs v-model="tab" height="32px">
         <v-tabs-slider color="#fea200"></v-tabs-slider>
-        <v-tab v-for="item in items" :key="item">
+        <v-tab v-for="item in items" :key="item" @click=getOrder(item)>
           {{ item }}
         </v-tab>
       </v-tabs>
-      <v-tabs-items v-model="tab">
-        <v-tab-item v-for="item in items" :key="item">
-          <v-card>
-            <v-card-text v-text="text"></v-card-text>
-          </v-card>
-        </v-tab-item>
-      </v-tabs-items>      
     </div>
-          <order></order>
+    <order v-for="(order) in orders" :key="order.id" :order="order"></order>
   </div>
 </template>
 
 <script>
 import TopTitle from '@/components/TopTitle.vue';
 import Order from './Order.vue';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   components: { TopTitle, Order },
@@ -32,11 +25,26 @@ export default {
     return {
       title: 'Đơn mua',
       tab: null,
-      items: ['Tất cả', 'Chờ xác nhận', 'Xác nhận', 'Đã hủy'],
-      text:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
+      items: ['Tất cả', 'Chờ xác nhận', 'Đã xác nhận', 'Đã hủy'],
+      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
     };
-  }
+  },
+  methods: {
+    ...mapActions({
+      fetchOrders: 'FETCH_ORDERS',
+    }),
+    async getOrder(state) {
+      await this.fetchOrders(state);
+    }
+  },
+  computed: {
+    ...mapGetters({
+      orders: 'GET_ORDERS',
+    }),
+  },
+  async created() {
+    await this.fetchOrders('Tất cả');
+  },
 };
 </script>
 
@@ -45,8 +53,6 @@ export default {
   margin-left: 0px;
 }
 .purchase-order-wrapper {
-  /* background-color: #ffffff; */
-  /* padding: 0 20px; */
   width: 940px;
 }
 
@@ -69,7 +75,6 @@ export default {
   border-width: 0;
   padding-top: 1px;
   background-color: #616161;
-
 }
 
 .options {
@@ -88,6 +93,4 @@ export default {
   font: 500 16px Roboto !important;
   color: #616161 !important;
 }
-
-
 </style>

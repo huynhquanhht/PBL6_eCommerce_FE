@@ -94,7 +94,6 @@ export default {
       }
     },
     async chooseQuantity(value) {
-      console.log(value);
       let result = await this.updateCartQuantity({cartId: this.product.id, quantity: value});
       if (result) {
         this.fetchCartItems();

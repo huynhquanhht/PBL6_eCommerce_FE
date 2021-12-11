@@ -3,22 +3,22 @@
     <div class="product-cart">
       <div class="product-img-name">
         <div class="product-img">
-          <img :src="require(`@/assets/images/${product.img}`)" alt="" />
+          <img :src="'http://localhost:55000/apigateway/Products' + product.img" alt="" />
         </div>
         <div class="product-name">
           <p>{{ product.name }}</p>
           <p>(Màu: Đỏ - Kích thước: XXL)</p>
-          <p>Tuấn's Shop</p>
+          <!-- <p>Tuấn's Shop</p> -->
         </div>
       </div>
       <div class="product-price">
-        <p>{{ product.price }}</p>
+        <p>{{ product.price.toLocaleString('it-IT') }}</p>
       </div>
       <div class="product-quantity">
         <p> {{ product.quantity }}</p>
       </div>
       <div class="product-to-money">
-        <p>{{ product.price }}</p>
+        <p>{{ (product.price * product.quantity).toLocaleString('it-IT') }}</p>
       </div>
     </div>
   </div>

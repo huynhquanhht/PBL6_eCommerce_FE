@@ -1,8 +1,11 @@
 <template>
-  <div class="order-wrapper">
+  <div class="order-wrapper" v-if="order">
     <div class="order-info">
-      <span class="order-code">Đơn hàng: 2013</span>
-      <span class="order-status">Chờ xác nhận</span>
+      <div>
+        <span class="order-code">Mã đơn hàng: {{ order.id }} </span>
+        <span class="shop-name"> - {{ order.shopName }} </span>
+      </div>
+      <span class="order-status"> {{ order.state }}</span>
     </div>
     <hr class="hr" />
     <div class="title-head">
@@ -10,7 +13,6 @@
       <p class="title-price">Đơn giá</p>
       <p class="title-quantity">Số lượng</p>
       <p class="title-to-money">Thành tiền</p>
-      <p class="title-to-money">Thao tác</p>
     </div>
 
     <order-card
@@ -22,7 +24,7 @@
       <hr class="hr" />
       <div class="product-total">
         <span>Tổng tiền hàng: </span>
-        <span>259.000 đ</span>
+        <span> {{ order.totalPrice.toLocaleString('it-IT') }} đ</span>
       </div>
       <div class="ship-fee">
         <span>Phí vận chuyển: </span>
@@ -30,7 +32,7 @@
       </div>
       <div class="total-payment">
         <span>Tổng thanh toán: </span>
-        <span> 309000 đ</span>
+        <span> {{ (order.totalPrice + 10000).toLocaleString('it-IT') }} đ</span>
       </div>
     </div>
   </div>
@@ -39,31 +41,29 @@
 <script>
 import OrderCard from './OrderCard.vue';
 export default {
-  components: { OrderCard },
   name: 'Order',
+  components: { OrderCard },
+  props: {
+    order: {
+      type: Object,
+      default: null,
+    },
+  },
   data() {
     return {
-      products: [
-        {
-          img: 'SP1/1.jpg',
-          name: 'Siêu phẩm áo khoác nam lông cừu',
-          quantity: 2,
-          price: 259000,
-        },
-        {
-          img: 'SP1/1.jpg',
-          name: 'Siêu phẩm áo khoác nam lông cừu',
-          quantity: 2,
-          price: 259000,
-        },
-        {
-          img: 'SP1/1.jpg',
-          name: 'Siêu phẩm áo khoác nam lông cừu',
-          quantity: 2,
-          price: 259000,
-        },
-      ],
+      products: [],
     };
+  },
+  created() {
+    this.products = this.order.orderDetails.reduce((products, order) => {
+      products.push({
+        img: order.image,
+        name: order.productName,
+        quantity: order.quantity,
+        price: order.price,
+      });
+      return products;
+    }, []);
   },
 };
 </script>
@@ -114,10 +114,15 @@ export default {
 .order-info span {
   line-height: 10px;
   font: 500 16px Roboto;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
 }
 
 .order-code {
+  color: #616161;
+}
+
+.shop-name {
+  text-transform: none !important;
   color: #616161;
 }
 
@@ -159,7 +164,7 @@ export default {
 .ship-fee,
 .total-payment {
   display: grid;
-  grid-template-columns: 780px 80px;
+  grid-template-columns: 750px 110px;
   column-gap: 30px;
   margin-top: 10px;
 }

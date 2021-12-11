@@ -1,4 +1,4 @@
-import {orderCart} from '@/api/api_order';
+import {orderCart, getOrders} from '@/api/api_order';
 const actions = {
   'ORDER_CART': async (context, order) => {
     try {
@@ -18,6 +18,19 @@ const actions = {
         });
         return false;
       }
+    }
+  },
+  'FETCH_ORDERS': async (context, state) => {
+    try {
+      console.log(state);
+      let res = await getOrders(state);
+      context.commit('SET_ORDERS', res.data.resultObj);
+    } catch (error) {
+      context.commit('SET_SNACKBAR', {
+        type: 'error',
+        visible: true,
+        text: error.response.data,
+      });
     }
   }
 };
