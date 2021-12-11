@@ -1,10 +1,17 @@
 <template>
   <div class="gallery-wrapper">
     <div class="main-image">
-      <img :src="'http://localhost:55000/apigateway/Products' + activePic" alt="" />
+      <img
+        :src="'http://localhost:55000/apigateway/Products' + activePic"
+        alt=""
+      />
     </div>
     <div class="slide-wrapper">
-      <div class="arrow arrow-left" @click="scrollLeft" v-if="imgUrls.length > 4">
+      <div
+        class="arrow arrow-left"
+        @click="scrollLeft"
+        v-if="imgUrls.length > 4"
+      >
         <v-icon>fa-chevron-left</v-icon>
       </div>
       <div class="slider-img-block">
@@ -21,7 +28,11 @@
           />
         </div>
       </div>
-      <div class="arrow arrow-right" @click="scrollRight"  v-if="imgUrls.length > 4">
+      <div
+        class="arrow arrow-right"
+        @click="scrollRight"
+        v-if="imgUrls.length > 4"
+      >
         <v-icon>fa-chevron-right</v-icon>
       </div>
     </div>
@@ -33,13 +44,13 @@ export default {
   name: 'GallerySlider',
   props: {
     imgUrls: {
-      type: Array
-    }
+      type: Array,
+    },
   },
   data() {
     return {
       indexOfActive: null,
-      activePic: null
+      activePic: null,
     };
   },
   methods: {
@@ -54,11 +65,11 @@ export default {
     changeActivePic(index) {
       this.activePic = this.imgUrls[index];
       this.indexOfActive = index;
-    }
+    },
   },
   created() {
     this.changeActivePic(0);
-  }
+  },
 };
 </script>
 

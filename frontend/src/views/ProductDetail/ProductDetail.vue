@@ -84,7 +84,7 @@ export default {
       return images.reduce((colors, image) => {
         if (
           image.colorName &&
-          !colors.some(color => color.name === image.colorName)
+          !colors.some((color) => color.name === image.colorName)
         ) {
           colors.push({ name: image.colorName, active: false });
         }
@@ -94,7 +94,7 @@ export default {
 
     filterSizes(details) {
       return details.reduce((sizes, item) => {
-        if (item.size && !sizes.some(size => size.name === item.size)) {
+        if (item.size && !sizes.some((size) => size.name === item.size)) {
           sizes.push({ name: item.size, active: false });
         }
         return sizes;
@@ -158,7 +158,7 @@ export default {
       this.checkBuy();
       if (this.sizes.length) {
         let detailItem = this.productDetail.resultObj.details.find(
-          item =>
+          (item) =>
             this.choosedColor === item.color && this.choosedSize === item.size
         );
         let product = {
@@ -169,7 +169,7 @@ export default {
         await this.fetchCartQuantity();
       } else {
         let index = this.productDetail.resultObj.details.filter(
-          item => this.choosedColor === item.color
+          (item) => this.choosedColor === item.color
         );
         let product = {
           productDetail_Id: this.productDetail.resultObj.details[index].id,
@@ -183,7 +183,7 @@ export default {
       this.checkBuy();
       if (this.sizes.length) {
         let detailItem = this.productDetail.resultObj.details.find(
-          item =>
+          (item) =>
             this.choosedColor === item.color && this.choosedSize === item.size
         );
         let product = {
@@ -197,7 +197,7 @@ export default {
         }
       } else {
         let index = this.productDetail.resultObj.details.filter(
-          item => this.choosedColor === item.color
+          (item) => this.choosedColor === item.color
         );
         let product = {
           productDetail_Id: this.productDetail.resultObj.details[index].id,

@@ -1,43 +1,85 @@
-import {login, signup} from '@/api/api_account';
-import router from '@/router'
+import {
+  login,
+  signup,
+  checkUsername,
+  checkPhone,
+  checkEmail,
+} from '@/api/api_account';
+import router from '@/router';
 const actions = {
-  'SIGNUP': async (context, signupInfo) => {
+  SIGNUP: async (context, signupInfo) => {
     try {
       await signup(signupInfo);
       context.commit('SET_SNACKBAR', {
         type: 'success',
         visible: true,
-        text: 'Đăng ký tài khoản thành công'
-      })
-      router.push({name: 'login'});
+        text: 'Đăng ký tài khoản thành công',
+      });
+      router.push({ name: 'login' });
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 400) {
+        context.commit('SET_SNACKBAR', {
+          type: 'error',
+          visible: true,
+          text: error.response.data.message,
+        });
+      }
     }
   },
 
-  'LOGIN': async (context, account) => {
+  CHECK_USERNAME: async (context, username) => {
+    try {
+      let res = await checkUsername(username);
+      context.commit('SET_CHECK_USERNAME', res.data.isExisted);
+    } catch (error) {
+      context.commit('SET_SNACKBAR', {
+        type: 'error',
+        visible: true,
+        text: error.response.data.message,
+      });
+    }
+  },
+
+  CHECK_EMAIL: async (context, email) => {
+    try {
+      let res = await checkEmail(email);
+      context.commit('SET_CHECK_EMAIL', res.data.isExisted);
+    } catch (error) {
+      context.commit('SET_SNACKBAR', {
+        type: 'error',
+        visible: true,
+        text: error.response.data.message,
+      });
+    }
+  },
+
+  CHECK_PHONE: async (context, phone) => {
+    try {
+      let res = await checkPhone(phone);
+      context.commit('SET_CHECK_PHONE', res.data.isExisted);
+    } catch (error) {
+      context.commit('SET_SNACKBAR', {
+        type: 'error',
+        visible: true,
+        text: error.response.data.message,
+      });
+    }
+  },
+
+  LOGIN: async (context, account) => {
     try {
       let res = await login(account);
       context.commit('SET_CURRENT_USER', res.data);
     } catch (error) {
-      console.log(error);
-      if(error.response.status === 401) {
-        context.commit('SET_SNACKBAR', {
-          type: 'info',
-          visible: true,
-          text: 'Đăng nhập thất bại! Vui lòng kiểm tra lại'
-        });
-      }
-      if (error.response.status === 500) {
+      if (error.response.status === 400) {
         context.commit('SET_SNACKBAR', {
           type: 'error',
           visible: true,
-          text: 'Lỗi hệ thống! Đăng nhập thất bại'
+          text: error.response.data,
         });
-        router.push({name: 'error500'}); 
       }
     }
-  }
+  },
 };
 
 export default actions;

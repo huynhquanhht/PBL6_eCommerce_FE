@@ -2,11 +2,11 @@
   <div class="product-info-wrapper">
     <div class="product-name-block">
       <p class="product-name">
-        {{productInfo.name}}
+        {{ productInfo.name }}
       </p>
     </div>
     <div class="product-price-block">
-      <p class="product-price">{{productInfo.price}} đ</p>
+      <p class="product-price">{{ productInfo.price }} đ</p>
     </div>
     <div class="color-block" v-if="productInfo.colors.length">
       <div class="color-title">
@@ -16,7 +16,7 @@
         <button
           v-for="(color, index) in productInfo.colors"
           :key="index"
-          :class="{'active-color': productInfo.colors[index].active}"
+          :class="{ 'active-color': productInfo.colors[index].active }"
           @click="chooseColor(index)"
         >
           {{ color.name }}
@@ -31,7 +31,7 @@
         <button
           v-for="(size, index) in productInfo.sizes"
           :key="index"
-          :class="{'active-color': productInfo.sizes[index].active}"
+          :class="{ 'active-color': productInfo.sizes[index].active }"
           @click="chooseSize(index)"
         >
           {{ size.name }}
@@ -42,7 +42,6 @@
       <p>Số lượng</p>
       <counter @chooseQuantity="chooseQuantity"></counter>
     </div>
-   
   </div>
 </template>
 
@@ -54,7 +53,7 @@ export default {
     Counter,
   },
   props: {
-    productInfo: { type: Object},
+    productInfo: { type: Object },
   },
   data() {
     return {
@@ -68,38 +67,41 @@ export default {
   },
   methods: {
     chooseColor(colorIndex) {
-      this.productInfo.colors.forEach(item => {item.active = false});
+      this.productInfo.colors.forEach((item) => {
+        item.active = false;
+      });
       this.productInfo.colors[colorIndex].active = true;
       this.colorIndex = colorIndex;
       this.choosedColor = this.productInfo.colors[colorIndex].name;
       this.$emit('chooseOptions', {
         color: this.choosedColor,
         size: this.choosedSize,
-        quantity: this.quantityResult
-      })
+        quantity: this.quantityResult,
+      });
     },
     chooseSize(sizeIndex) {
-      this.productInfo.sizes.forEach(item => {item.active = false});
+      this.productInfo.sizes.forEach((item) => {
+        item.active = false;
+      });
       this.productInfo.sizes[sizeIndex].active = true;
       this.sizeIndex = sizeIndex;
       this.choosedSize = this.productInfo.sizes[sizeIndex].name;
       this.$emit('chooseOptions', {
         color: this.choosedColor,
         size: this.choosedSize,
-        quantity: this.quantityResult
-      })
+        quantity: this.quantityResult,
+      });
     },
     chooseQuantity(result) {
       this.quantityResult = result;
       this.$emit('chooseOptions', {
         color: this.choosedColor,
         size: this.choosedSize,
-        quantity: this.quantityResult
-      })
+        quantity: this.quantityResult,
+      });
     },
   },
-  created() {
-  },
+  created() {},
 };
 </script>
 

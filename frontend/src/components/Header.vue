@@ -19,8 +19,21 @@
           <div class="header__top-cart-store">
             <v-tooltip bottom>
               <template v-slot:activator="{ on, attrs }">
-                <v-btn color="primary" dark v-bind="attrs" v-on="on" icon @click="selectCart">
-                  <v-badge right color="red" size="16" :value="cartQuantity" :content="cartQuantity">
+                <v-btn
+                  color="primary"
+                  dark
+                  v-bind="attrs"
+                  v-on="on"
+                  icon
+                  @click="selectCart"
+                >
+                  <v-badge
+                    right
+                    color="red"
+                    size="16"
+                    :value="cartQuantity"
+                    :content="cartQuantity"
+                  >
                     <v-icon size="28">mdi-cart</v-icon>
                   </v-badge>
                 </v-btn>
@@ -30,7 +43,14 @@
             <div class="header__top-cart-quantity"></div>
             <v-tooltip bottom>
               <template v-slot:activator="{ on, attrs }">
-                <v-btn color="primary" dark v-bind="attrs" v-on="on" icon @click="selectShop">
+                <v-btn
+                  color="primary"
+                  dark
+                  v-bind="attrs"
+                  v-on="on"
+                  icon
+                  @click="selectShop"
+                >
                   <v-icon size="24">fas fa-store</v-icon>
                 </v-btn>
               </template>
@@ -41,14 +61,10 @@
             <v-icon size="28">fas fa-user</v-icon>
             <div>
               <router-link to="/login" class="login-link">
-                <span>
-                  Đăng nhập
-                </span>
+                <span> Đăng nhập </span>
               </router-link>
               <router-link to="/signup" class="signup-link">
-                <span>
-                  Đăng ký
-                </span>
+                <span> Đăng ký </span>
               </router-link>
             </div>
           </div>
@@ -73,7 +89,9 @@
                     class="menu"
                     @click="selectPersonalOption(item)"
                   >
-                    <v-list-item-title>{{ item }}</v-list-item-title>
+                    <v-list-item-title>
+                      {{ item }}
+                    </v-list-item-title>
                   </v-list-item>
                 </v-list>
               </div>
@@ -85,9 +103,7 @@
         <div class="header__menu-main">
           <ul>
             <li>
-              <v-btn>
-                Trang chủ
-              </v-btn>
+              <v-btn> Trang chủ </v-btn>
             </li>
             <li class="male">
               <v-menu offset-y open-on-hover :close-on-content-click="false">
@@ -136,14 +152,10 @@
               </v-menu>
             </li>
             <li>
-              <v-btn>
-                Hỗ trợ
-              </v-btn>
+              <v-btn> Hỗ trợ </v-btn>
             </li>
             <li>
-              <v-btn>
-                Giới thiệu
-              </v-btn>
+              <v-btn> Giới thiệu </v-btn>
             </li>
           </ul>
         </div>
@@ -153,8 +165,8 @@
 </template>
 
 <script>
-import localStorageUtils from '@/utils/utils-local-storage.js'
-import {mapGetters, mapActions, mapMutations} from 'vuex'
+import localStorageUtils from '@/utils/utils-local-storage.js';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 export default {
   name: 'Header',
   props: {
@@ -202,8 +214,8 @@ export default {
   computed: {
     ...mapGetters({
       cartQuantity: 'GET_CART_QUANTITY',
-      userInfo: 'GET_USER_INFO'
-    })
+      userInfo: 'GET_USER_INFO',
+    }),
   },
   methods: {
     ...mapMutations({
@@ -212,13 +224,13 @@ export default {
     }),
     ...mapActions({
       fetchCartQuantity: 'FETCH_CART_QUANTITY',
-      fetchUserInfo: 'FETCH_USER_INFO'
+      fetchUserInfo: 'FETCH_USER_INFO',
     }),
     selectCart() {
       if (this.loginStatus) {
         this.$router.push(`/cart`);
       } else {
-       this.setSnackbar({
+        this.setSnackbar({
           type: 'warning',
           text: 'Vui lòng đăng nhập để thực hiện chức năng này',
           visible: true,
@@ -226,10 +238,10 @@ export default {
       }
     },
     selectShop() {
-        if (this.loginStatus) {
-        this.$router.push({name: 'shop-info'});
+      if (this.loginStatus) {
+        this.$router.push({ name: 'shop-info' });
       } else {
-       this.setSnackbar({
+        this.setSnackbar({
           type: 'warning',
           text: 'Vui lòng đăng nhập để thực hiện chức năng này',
           visible: true,
@@ -238,16 +250,19 @@ export default {
     },
     selectPersonalOption(option) {
       if (option === 'Thông tin cá nhân') {
-        // this.$router.push(`/`);
+        this.$router.push({name: 'personal-identity'}).catch(() => {});
+        return;
       }
       if (option === 'Đơn mua') {
-        // this.$router.push(`/`);
+        this.$router.push({name: "purchase-order"}).catch(() => {});
+        return;
       }
       if (option === 'Đăng xuất') {
         localStorageUtils.clearToken();
-        this.$router.go('/');
+        this.$router.push('/');
+        return;
       }
-    }
+    },
   },
   async created() {
     if (localStorageUtils.getToken()) {
@@ -255,7 +270,7 @@ export default {
       await this.fetchCartQuantity();
       await this.fetchUserInfo();
     }
-  }
+  },
 };
 </script>
 

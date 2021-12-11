@@ -120,11 +120,6 @@ const routes = [
             component: () => import('@/views/AddProduct/AddProduct.vue'),
             meta: { title: 'Thêm sản phẩm | Versace Việt Nam' }
           },
-          {
-            path: 'bill-management',
-            name: 'bill-management',
-            component: () => import('@/views/AllBill/AllBill.vue'),
-          }
         ]
       },
     ],

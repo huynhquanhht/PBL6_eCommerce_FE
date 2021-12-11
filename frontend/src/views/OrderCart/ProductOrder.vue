@@ -52,7 +52,7 @@
 
 <script>
 import Counter from '@/components/Counter.vue';
-import {mapGetters, mapActions} from 'vuex'
+import {mapActions} from 'vuex'
 export default {
   name: 'ProductOrder',
   components: {
@@ -69,11 +69,6 @@ export default {
       quantity: 1,
       toMoney: 0,
     };
-  },
-  computed: {
-    ...mapGetters({
-      isChangeQuantitySuccess: 'GET_CHANGE_QUANTITY_RESULT'
-    })
   },
   methods: {
     ...mapActions({
@@ -99,12 +94,14 @@ export default {
       }
     },
     async chooseQuantity(value) {
-      this.toMoney = value * this.product.price;
-      await this.updateCartQuantity({cartId: this.product.id, quantity: value});
-      this.$emit('changeCartQuantity');
+      let result = await this.updateCartQuantity({cartId: this.product.id, quantity: value});
+      if (result) {
+        this.fetchCartItems();
+        this.toMoney = value * this.product.price;
+      } else {
+        this.$emit('changeCartQuantity');
+      }
     },
-  },
-  watch: {
   },
   created() {
     this.setAvailable();

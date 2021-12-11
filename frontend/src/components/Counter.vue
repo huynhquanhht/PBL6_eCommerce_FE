@@ -34,16 +34,16 @@ export default {
     }
   },
   watch: {
-    result() {
-      this.$emit('chooseQuantity', this.result);
+    result(value) {
+      this.$emit('chooseQuantity', value);
       if (this.result < 1) {
         this.result = 1;
       }
     },
-    quantity() {
-      this.result = this.quantity;
-    }
   },
+  created() {
+    this.result = this.quantity;
+  }
 };
 </script>
 

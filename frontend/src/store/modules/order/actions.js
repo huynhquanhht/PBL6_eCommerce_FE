@@ -1,34 +1,36 @@
-import {orderCart} from '@/api/api_order';
-import router from '@/router'
+import {orderCart, getOrders} from '@/api/api_order';
 const actions = {
   'ORDER_CART': async (context, order) => {
     try {
-       let res =await  orderCart(order);
-       console.log(res);
+      await orderCart(order);
       context.commit('SET_SNACKBAR', {
         type: 'success',
         visible: true,
         text: 'Đặt hàng thành công',
       });
+      return true;
     } catch (error) {
-      console.log(error);
       if (error.response.status === 400) {
         context.commit('SET_SNACKBAR', {
           type: 'error',
           visible: true,
-          text: 'Đặt hàng thất bại. Vui lòng thử lại',
+          text: error.response.data,
         });
-        return;
+        return false;
       }
-      if (error.response.status === 401) {
-        router.push({name: 'error401'}); 
-        return;
-      }
-      if (error.response.status === 500) {
-        router.push({name: 'error500'}); 
-        return;
-      }
-      router.push({name: 'other-error'}); 
+    }
+  },
+  'FETCH_ORDERS': async (context, state) => {
+    try {
+      console.log(state);
+      let res = await getOrders(state);
+      context.commit('SET_ORDERS', res.data.resultObj);
+    } catch (error) {
+      context.commit('SET_SNACKBAR', {
+        type: 'error',
+        visible: true,
+        text: error.response.data,
+      });
     }
   }
 };

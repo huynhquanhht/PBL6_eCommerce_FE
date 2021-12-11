@@ -50,7 +50,7 @@
         <hr class="hr" />
         <div class="product-total">
           <span>Tổng tiền hàng: </span>
-          <span>259.000 đ</span>
+          <span> {{ totalMoney.toLocaleString('it-IT') }} đ</span>
         </div>
         <div class="ship-fee">
           <span>Phí vận chuyển: </span>
@@ -58,7 +58,7 @@
         </div>
         <div class="total-payment">
           <span>Tổng thanh toán: </span>
-          <span> 309000 đ</span>
+          <span> {{ (totalMoney + 10000).toLocaleString('it-IT') }} đ</span>
         </div>
         <hr class="hr" />
         <div class="order">
@@ -79,6 +79,7 @@ import PaymentCard from './PaymentCard.vue';
 import AddressForm from './AddressForm.vue';
 import localStorageUtils from '@/utils/utils-local-storage.js';
 import { mapState, mapGetters, mapActions } from 'vuex';
+import router from '@/router';
 export default {
   name: 'Payment',
   components: { PaymentCard, TopTitle, AddressForm },
@@ -98,7 +99,7 @@ export default {
   },
   computed: {
     ...mapState({
-      productsPayment: state => state.productsPayment,
+      productsPayment: (state) => state.productsPayment,
     }),
     ...mapGetters({
       productsPayment: 'GET_PRODUCTS_PAYMENT',
@@ -109,7 +110,7 @@ export default {
     ...mapActions({
       fetchUserInfo: 'FETCH_USER_INFO',
       orderCart: 'ORDER_CART',
-      fetchCartQuantity: 'FETCH_CART_QUANTITY'
+      fetchCartQuantity: 'FETCH_CART_QUANTITY',
     }),
     changeAddress() {
       this.addressFormStatus = true;
@@ -148,9 +149,10 @@ export default {
         shipAddress: this.addressInfo.address,
         shipPhone: this.addressInfo.phone,
       };
-      await this.orderCart(order);
-      await this.fetchCartQuantity();
-
+      let result = await this.orderCart(order);
+      if (result) {
+        router.push('/member-info/purchase-order');
+      }
     },
   },
   watch: {
@@ -165,6 +167,9 @@ export default {
   async created() {
     await this.fetchUserInfo();
     this.products = this.filterProductsPayment(this.productsPayment);
+    this.totalMoney = this.products.reduce((sum, item) => {
+      return sum + item.price * item.quantity;
+    }, 0);
   },
 };
 </script>
@@ -312,7 +317,7 @@ export default {
 .ship-fee,
 .total-payment {
   display: grid;
-  grid-template-columns: 1050px 80px;
+  grid-template-columns: 1020px 110px;
   column-gap: 30px;
   margin-top: 10px;
 }

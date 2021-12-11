@@ -1,7 +1,13 @@
-import {postRequest} from '@/utils/utils-api';
+import {getRequest, postRequest} from '@/utils/utils-api';
 
 const orderCart = (order) => {
   return postRequest(`Orders`, order);
 }
 
-export {orderCart}
+const getOrders = (state) => {
+  if (state === 'Tất cả') {
+    return getRequest(`Orders/me`);
+  } 
+  return getRequest(`Orders/me?state=${state}`);
+}
+export {orderCart, getOrders}
