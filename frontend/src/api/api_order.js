@@ -1,4 +1,4 @@
-import {getRequest, postRequest} from '@/utils/utils-api';
+import {getRequest, postRequest, deleteRequest} from '@/utils/utils-api';
 
 const orderCart = (order) => {
   return postRequest(`Orders`, order);
@@ -10,4 +10,19 @@ const getOrders = (state) => {
   } 
   return getRequest(`Orders/me?state=${state}`);
 }
-export {orderCart, getOrders}
+
+const getOrderById = (orderId) => {
+  return getRequest(`Orders/${orderId}`);
+}
+
+const getShopOrders = (state) => {
+  if (state === 'Tất cả') {
+    return getRequest(`Orders/shop`);
+  } 
+  return getRequest(`Orders/shop?state=${state}`);
+}
+
+const cancelShopOrder = (order) => {
+  return deleteRequest(`Orders/shop`, order);
+}
+export {orderCart, getOrders, getShopOrders, cancelShopOrder, getOrderById}

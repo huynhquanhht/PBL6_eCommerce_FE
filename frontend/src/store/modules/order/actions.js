@@ -1,4 +1,4 @@
-import {orderCart, getOrders} from '@/api/api_order';
+import {orderCart, getOrders, getShopOrders, cancelShopOrder, getOrderById} from '@/api/api_order';
 const actions = {
   'ORDER_CART': async (context, order) => {
     try {
@@ -22,7 +22,6 @@ const actions = {
   },
   'FETCH_ORDERS': async (context, state) => {
     try {
-      console.log(state);
       let res = await getOrders(state);
       context.commit('SET_ORDERS', res.data.resultObj);
     } catch (error) {
@@ -31,6 +30,60 @@ const actions = {
         visible: true,
         text: error.response.data,
       });
+    }
+  },
+  'FETCH_ORDER_BY_ID': async(context, order) => {
+    try {
+      let res = await getOrderById(order.id);
+      if (res.status === 204) {
+        context.commit('SET_SNACKBAR', {
+          type: 'info',
+          visible: true,
+          text: 'Không có dữ liệu chi tiết đơn hàng',
+        });
+        return;
+      }
+      context.commit('SET_ORDER', res.data.resultObj);
+    } catch (error) {
+      if (error.response.status === 400) {
+        context.commit('SET_SNACKBAR', {
+          type: 'error',
+          visible: true,
+          text: error.response.data,
+        });
+      }
+    }
+  },
+  'FETCH_SHOP_ORDERS': async (context, state) => {
+    try {
+      let res = await getShopOrders(state);
+      context.commit('SET_ORDERS', res.data.resultObj);
+    } catch (error) {
+      context.commit('SET_SNACKBAR', {
+        type: 'error',
+        visible: true,
+        text: error.response.data,
+      });
+    }
+  },
+  'CANCEL_SHOP_ORDER': async (context, order) => {
+    try {
+      await cancelShopOrder(order);
+      context.commit('SET_SNACKBAR', {
+        type: 'success',
+        visible: true,
+        text: 'Hủy đơn hàng thành công',
+      });
+      return true;
+    } catch (error) {
+      if (error.response.status === 400) {
+        context.commit('SET_SNACKBAR', {
+          type: 'error',
+          visible: true,
+          text: error.response.data,
+        });
+      }
+      return false;
     }
   }
 };

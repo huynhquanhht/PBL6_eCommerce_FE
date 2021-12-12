@@ -58,19 +58,19 @@ export default {
           title: 'Quản lý đơn hàng',
           childTitle: [
             {
-              url: '',
+              url: '/shop-chanel/all-order',
               name: 'Tất cả',
             },
             {
-              url: '',
+              url: '/shop-chanel/pending-confirm-order',
               name: 'Chưa xác nhận',
             },
             {
-              url: '',
+              url: '/shop-chanel/confirm-order',
               name: 'Đã xác nhận',
             },
             {
-              url: '',
+              url: '/shop-chanel/cancel-order',
               name: 'Đã hủy',
             },
           ],
