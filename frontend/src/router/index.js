@@ -121,10 +121,53 @@ const routes = [
             meta: { title: 'Đăng ký của hàng | Versace Việt Nam' }
           },
           {
+            path: 'product-list',
+            name: 'product-list',
+            component: () => import('@/views/ProductList/ProductList.vue'),
+            meta: { title: 'Quản lý sản phẩm | Kênh người bán | Versace Việt Nam'}
+          },
+          {
             path: 'add-product',
             name: 'add-product',
-            component: () => import('@/views/AddProduct/AddProduct.vue'),
+            component: () => import('@/views/ProductOperation/AddProduct.vue'),
             meta: { title: 'Thêm sản phẩm | Versace Việt Nam' }
+          },
+          {
+            path: 'update-product',
+            name: 'update-product',
+            component: () => import('@/views/ProductOperation/UpdateProduct.vue'),
+            meta: { title: 'Cập nhật sản phẩm | Versace Việt Nam' }
+          },
+          {
+            path: 'all-order',
+            name: 'all-order',
+            component: () => import('@/views/OrderManagement/AllOrder.vue'),
+            meta: { title: 'Tất cả đơn hàng | Versace Việt Nam' }
+          },
+          {
+            path: 'pending-confirm-order',
+            name: 'pending-confirm-order',
+            component: () => import('@/views/OrderManagement/PendingConfirmOrder.vue'),
+            meta: { title: 'Đơn hàng chờ xác nhận | Versace Việt Nam' }
+          },
+          {
+            path: 'confirm-order',
+            name: 'confirm-order',
+            component: () => import('@/views/OrderManagement/ConfirmOrder.vue'),
+            meta: { title: 'Đơn hàng đã xác nhận | Versace Việt Nam' }
+          },
+          {
+            path: 'cancel-order',
+            name: 'cancel-order',
+            component: () => import('@/views/OrderManagement/CancelOrder.vue'),
+            meta: { title: 'Đơn hàng đã hủy | Versace Việt Nam' }
+          },
+          {
+            path: 'order-detail/:id',
+            name: 'order-detail',
+            component: () => import('@/views/OrderManagement/OrderDetail.vue'),
+            meta: { title: 'Chi tiết đơn hàng | Versace Việt Nam' },
+            props: route => ({id: parseInt(route.params.id)})
           },
         ]
       },

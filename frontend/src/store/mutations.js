@@ -46,6 +46,9 @@ const mutations =  {
         };
         break;
     }
+  },
+  'SET_DELETE_RESULT': (state, result) => {
+    state.deleteResult = result;
   }
 };
 

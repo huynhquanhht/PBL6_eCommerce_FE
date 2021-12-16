@@ -7,7 +7,8 @@ const state =  {
     icon: '',
     mode: 'multi-line',
     timeout: 100,
-  }
+  },
+  deleteResult: false
 };
 
 export default state;

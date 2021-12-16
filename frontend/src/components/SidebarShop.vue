@@ -7,13 +7,16 @@
             <i :class="item.icon"></i>
             <span> {{ item.title }} </span>
           </div>
-          <p
-            class="item-child"
+          <router-link
             v-for="(itemChild, index) in item.childTitle"
             :key="index"
+            :to="itemChild.url"
+            class="anchor"
           >
-            {{ itemChild }}
-          </p>
+            <p class="item-child">
+              {{ itemChild.name }}
+            </p>
+          </router-link>
         </div>
       </div>
     </div>
@@ -29,21 +32,47 @@ export default {
         {
           icon: 'fas fa-store',
           title: 'Quản lý shop',
-          childTitle: ['Hồ sơ shop'],
+          childTitle: [
+            {
+              url: '/shop-chanel/shop-info',
+              name: 'Hồ sơ shop',
+            },
+          ],
         },
         {
           icon: 'fas fa-shopping-bag',
           title: 'Quản lý sản phẩm',
-          childTitle: ['Tất cả sản phẩm', 'Thêm sản phẩm'],
+          childTitle: [
+            {
+              url: '/shop-chanel/product-list',
+              name: 'Tất cả sản phẩm',
+            },
+            {
+              url: '/shop-chanel/add-product',
+              name: 'Thêm sản phẩm',
+            },
+          ],
         },
         {
           icon: 'fas fa-clipboard-list',
           title: 'Quản lý đơn hàng',
           childTitle: [
-            'Tất cả',
-            'Đơn chưa xác nhận',
-            'Đơn đã xác nhận',
-            'Đơn đã hủy',
+            {
+              url: '/shop-chanel/all-order',
+              name: 'Tất cả',
+            },
+            {
+              url: '/shop-chanel/pending-confirm-order',
+              name: 'Chưa xác nhận',
+            },
+            {
+              url: '/shop-chanel/confirm-order',
+              name: 'Đã xác nhận',
+            },
+            {
+              url: '/shop-chanel/cancel-order',
+              name: 'Đã hủy',
+            },
           ],
         },
       ],
@@ -107,6 +136,7 @@ export default {
 
 .item {
   color: #616161;
+  text-decoration: none;
 }
 
 .item-group {
@@ -138,11 +168,17 @@ export default {
   margin-left: 26px;
   font: 400 15px Roboto;
   line-height: 24px;
+  text-decoration: none;
+  color: #616161;
 }
 
 .item-child:hover {
   color: #fea200;
   cursor: pointer;
+}
+
+.anchor {
+  text-decoration: none;
 }
 
 /* .item:hover

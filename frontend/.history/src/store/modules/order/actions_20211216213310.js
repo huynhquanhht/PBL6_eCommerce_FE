@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import {
   orderCart,
   getOrders,
@@ -6,6 +7,9 @@ import {
   getOrderById,
   getAllOrders,
 } from '@/api/api_order';
+=======
+import {orderCart, getOrders, getShopOrders, cancelShopOrder, getOrderById} from '@/api/api_order';
+>>>>>>> a607ff66f13d62cdd72e3b4f8f10cebd50d58198
 const actions = {
   'ORDER_CART': async (context, order) => {
     try {
