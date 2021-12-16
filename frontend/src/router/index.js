@@ -17,6 +17,18 @@ const routes = [
         }
       },
       {
+        path: 'search-page',
+        name: 'search-page',
+        component: () => import('@/views/SearchPage/SearchPage.vue'),
+        meta: {
+          title: 'Versace - Mua bán sMua bán sản phẩm thời trang chính hãng, chất lượng',
+        },
+        props: route => ({
+          searchString: route.query.searchString,
+          gender: route.query.gender,
+        }),
+      },
+      {
         path: 'product/:id',
         name: 'product',
         component: () => import('@/views/ProductDetail/ProductDetail'),
@@ -115,6 +127,36 @@ const routes = [
             meta: { title: 'Thêm sản phẩm | Versace Việt Nam' }
           },
         ]
+      },
+      {
+        path: 'admin',
+        name: 'admin/',
+        component: ()=> import('@/views/AdminPage/AdminPage.vue'),
+        meta: {
+          title: 'Quản lý - Versace Việt Nam'
+        },
+        children: [
+          {
+            path: 'shop-management',
+            name: 'shop-management',
+            component: () => import('@/views/AdminPage/ShopManagement/ShopManagement.vue')
+          },
+          {
+            path: 'account-management',
+            name: 'account-management',
+            component: () => import('@/views/AdminPage/AccountsManagement/AccountsManagement.vue')
+          },
+          {
+            path: 'product-management',
+            name: 'product-management',
+            component: () => import('@/views/AdminPage/ShopManagement/ProductManagement.vue')
+          },
+          {
+            path: 'order-management',
+            name: 'order-management',
+            component: () => import('@/views/AdminPage/ShopManagement/OrderManagement.vue')
+          },
+        ],
       },
     ],
     redirect: '/login'

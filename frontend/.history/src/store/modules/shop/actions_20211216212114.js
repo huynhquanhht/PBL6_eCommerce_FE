@@ -1,4 +1,7 @@
+<<<<<<< Updated upstream
+import {registerShop, getShopInfo} from '@/api/api_shop';
 import router from '@/router'
+=======
 import {
   registerShop, 
   getShopInfo,
@@ -8,6 +11,7 @@ import {
   enableShop,
   updateShop,
 } from '@/api/api_shop';
+>>>>>>> Stashed changes
 const actions = {
   'REGISTER_SHOP': async (context, shopInfo) => {
     try {

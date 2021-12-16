@@ -4,7 +4,10 @@ const mutations = {
   },
   'SET_PRODUCT_DETAIL': (state, productDetail) => {
     state.productDetail = productDetail;
-  }
+  },
+  'SET_TOTAL_PRODUCTS':(state, totalProducts) => {
+    state.totalProducts = totalProducts;
+  },
 };
 
 export default mutations;

@@ -1,3 +1,6 @@
+<<<<<<< Updated upstream
+import {orderCart, getOrders} from '@/api/api_order';
+=======
 import {
   orderCart,
   getOrders,
@@ -6,6 +9,7 @@ import {
   getOrderById,
   getAllOrders,
 } from '@/api/api_order';
+>>>>>>> Stashed changes
 const actions = {
   'ORDER_CART': async (context, order) => {
     try {
@@ -39,6 +43,8 @@ const actions = {
         text: error.response.data,
       });
     }
+<<<<<<< Updated upstream
+=======
   },
   'FETCH_ORDER_BY_ID': async(context, order) => {
     try {
@@ -116,6 +122,7 @@ const actions = {
       }
       return false;
     }
+>>>>>>> Stashed changes
   }
 };
 
