@@ -17,7 +17,7 @@
             placeholder="Tìm kiếm sản phẩm mong muốn..."
             v-model="searchString"
             />
-            <v-btn @click="search()">Tìm kiếm</v-btn>
+            <v-btn id="search" @click="search()">Tìm kiếm</v-btn>
           </div>
           <div class="header__top-cart-store">
             <v-tooltip bottom>
@@ -288,6 +288,13 @@ export default {
     },
     search() {
       console.log(this.searchString);
+      // var input = document.getElementById("search");
+      // input.addEventListener("keyup" , function(event) {
+      //   if(event.keyCode === 13) {
+      //     event.preventDefault();
+      //     this.$router.replace(`search-page?searchString=${this.searchString}&gender=0`);
+      //   }
+      // });
       this.$router.replace(`search-page?searchString=${this.searchString}&gender=0`);
     }
   },

@@ -100,7 +100,7 @@
             <td>{{ order.shipName }}</td>
             <td>{{ order.shopName }}</td>
             <td>{{ order.state }}</td>
-            <td>{{ order.orderDate }}</td>
+            <td>{{ order.orderDate.slice(0,10) }}</td>
             <td>{{ order.totalPrice }}</td>
             <td>
               <v-btn 
@@ -118,7 +118,9 @@
         ></order-detail>
       </v-dialog>
     </div>
-    <div v-else>
+    <div v-else
+    class="d-flex justify-center align-center"
+      style="width: 100wm; height: 100vh">
       <no-content-form
         :showOrder="true"
         Notification="Không có dữ liệu hóa đơn"
@@ -130,7 +132,7 @@
 <script>
 import TopTitle from '@/components/TopTitle.vue';
 import OrderDetail from './OrderDetail.vue';
-import NoContentForm from '../../../components/NoContentForm.vue';
+import NoContentForm from '@/components/NoContentForm.vue';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
@@ -165,6 +167,10 @@ export default {
     ...mapActions({
       getAllOrders: 'ACT_GET_ALL_ORDERS',
     }),
+    search(fromDate, toDate) {
+      console.log(fromDate, toDate);
+      this.getAllOrders({fromDate: fromDate, toDate: toDate});
+    },
     orderDetailForm(order) {
       this.oneOrder = order;
       //this.OrderDetails = order.OrderDetails;

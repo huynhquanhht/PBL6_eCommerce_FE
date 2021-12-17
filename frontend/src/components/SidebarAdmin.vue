@@ -62,6 +62,7 @@ export default {
   grid-template-columns: 20px 120px;
   column-gap: 5px;
   color: #616161;
+  text-decoration: none;
 }
 
 .item-group {

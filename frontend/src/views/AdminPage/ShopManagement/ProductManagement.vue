@@ -66,7 +66,9 @@
         <!-- <function-undevelop-form></function-undevelop-form> -->
       </v-dialog>
     </div>
-    <div v-else>
+    <div v-else
+      class="d-flex justify-center align-center"
+      style="width: 100wm; height: 100vh">
       <no-content-form
         :showProduct="true"
         Notification="Không có sản phẩm nào cả"
@@ -79,12 +81,13 @@
 import TopTitle from '@/components/TopTitle.vue';
 import { mapActions, mapGetters } from 'vuex';
 import ProductDetail from '@/views/AdminPage/ShopManagement/ProductDetail.vue';
-
+import NoContentForm from '@/components/NoContentForm.vue'
 export default {
   // name: 'shop-management',
   components: {
     TopTitle,
     ProductDetail,
+    NoContentForm,
     //ConfirmDialog,
   },
   data() {

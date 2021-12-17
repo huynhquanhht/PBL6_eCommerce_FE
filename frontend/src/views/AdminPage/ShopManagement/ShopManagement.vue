@@ -28,7 +28,7 @@
             <td>{{ shop.nameOfUser }}</td>
             <td v-if="shop.disable">Đã bị vô hiệu hóa</td>
             <td v-else>Đang hoạt động</td>
-            <td>{{ shop.dateCreated }}</td>
+            <td>{{ shop.dateCreated.slice(0,10) }}</td>
             <td>
 
               <v-btn icon @click="shopDetail(shop.shopId)">
@@ -70,7 +70,9 @@
         ></confirm-dialog>
       </v-dialog>
     </div>
-    <div v-else>
+    <div v-else
+    class="d-flex justify-center align-center"
+      style="width: 100wm; height: 100vh">
        <no-content-form
         :showShop="true"
         Notification= "Không có cửa hàng nào cả"
@@ -84,9 +86,15 @@ import TopTitle from '@/components/TopTitle.vue';
 import ShopDetail from './ShopDetail.vue';
 import ConfirmDialog from '../../../components/ConfirmDialog.vue';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
+import NoContentForm from '@/components/NoContentForm.vue'
 export default {
   // name: 'shop-management',
-  components: { TopTitle, ShopDetail, ConfirmDialog },
+  components: { 
+    TopTitle,
+    ShopDetail,
+    ConfirmDialog,
+    NoContentForm,
+  },
   data() {
     return {
       title: 'danh sách các cửa hàng',
@@ -128,22 +136,25 @@ export default {
       await this.getEachShop(shopId);
       this.amnestyDialog = true;
     },
-    amnestyAgree(eachShop) {
+    async amnestyAgree(eachShop) {
     console.log(eachShop);
-      // if (eachShop.disable == false) {
-      //   this.setSnackbar({
-      //     type: 'info',
-      //     visible: true,
-      //     text: 'Cửa hàng này hiện đang được hoạt động',
-      //   });
-      //   this.amnestyDialog = false;
-      //   return;
-      // } else {
-        console.log(eachShop.shopId);
-        this.enableShop({shopId: eachShop.shopId});
+      if (eachShop.disable == false) {
+        this.setSnackbar({
+          type: 'info',
+          visible: true,
+          text: 'Cửa hàng này hiện đang được hoạt động',
+        });
         this.amnestyDialog = false;
         return;
-      //}
+      } else {
+        console.log(eachShop.shopId);
+        this.enableShop({shopId: eachShop.shopId});
+        await setTimeout( async () => {
+           await this.getAllShops({name: ' '});
+        }, 100);
+        this.amnestyDialog = false;
+        return;
+      }
     },
     amnestyCancel() {
       this.amnestyDialog = false;
@@ -153,7 +164,7 @@ export default {
       await this.getEachShop(shopId);
       this.disableDialog = true;
     },
-    disableAgree(eachShop) {
+    async disableAgree(eachShop) {
       console.log(eachShop);
       if (eachShop.disable == true) {
         this.setSnackbar({
@@ -168,7 +179,10 @@ export default {
         this.disableShop({
           shopId: eachShop.shopId,
           disableReason: '',
-          });
+        });
+        await setTimeout( async () => {
+           await this.getAllShops({name: ' '});
+        }, 100);
         this.disableDialog = false;
         return;
       }

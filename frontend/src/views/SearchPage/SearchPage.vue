@@ -17,7 +17,7 @@
     >
      <no-content-form 
       :showProduct="true"
-      Notification="Không có sản phẩm phù hợp">
+      Notification='Không tìm thấy sản phẩm phù hợp'>
      </no-content-form>
     </div>
   </v-app>
@@ -35,7 +35,7 @@ export default {
   },
   props: {
     searchString: { type: String },
-    gender: { type: Number },
+    gender: { type: String },
   },
   data() {
     return {
@@ -66,19 +66,19 @@ export default {
     }),
   },
   watch: {
-    async searchString(value, gender) {
+    async searchString(value) {
       await this.getAllProducts({
         pageIndex: this.page,
         pageSize: 30,
         keyword: value,
-        gender: parseInt(gender),
+        gender: 0,
       });
     },
   },
   async created() {
     await this.getAllProducts({
       pageIndex: this.page,
-      pageSize: 30,
+      pageSize: 30, 
       keyword: this.searchString,
       gender: parseInt(this.gender),
     }); 

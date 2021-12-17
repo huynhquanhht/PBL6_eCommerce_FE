@@ -143,7 +143,7 @@ export default {
           text: 'Vui lòng chọn màu trước khi đặt sản phẩm',
           visible: true,
         });
-        return;
+        return false;
       }
       if (this.sizes.length && this.choosedSize === '') {
         this.setSnackbar({
@@ -151,11 +151,14 @@ export default {
           text: 'Vui lòng chọn kích thước trước khi đặt sản phẩm',
           visible: true,
         });
-        return;
+        return false;
       }
+      return true;
     },
     async addCart() {
-      this.checkBuy();
+      if (!this.checkBuy()) {
+        return;
+      }
       if (this.sizes.length) {
         let detailItem = this.productDetail.resultObj.details.find(
           (item) =>
@@ -180,7 +183,9 @@ export default {
       }
     },
     async buyNow() {
-      this.checkBuy();
+      if (!this.checkBuy()) {
+        return;
+      }
       if (this.sizes.length) {
         let detailItem = this.productDetail.resultObj.details.find(
           (item) =>

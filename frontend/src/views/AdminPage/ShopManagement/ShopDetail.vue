@@ -62,7 +62,7 @@
           </ValidationProvider>
         </div> -->
 
-        <div class="grid-container">
+        <!-- <div class="grid-container">
           <label>Số lượng sản phẩm: </label>
           <ValidationProvider name="Số lượng sản phẩm: ">
             <input
@@ -96,9 +96,9 @@
               v-model="OrderAmount"
             />
           </ValidationProvider>
-        </div>
+        </div> -->
 
-        <v-btn
+        <!-- <v-btn
           @click="submit"
           class="btn-signup white--text mt-4 mb-4"
           width="100%"
@@ -107,7 +107,7 @@
           depressed
         >
           <span class="font-size: 15px">Cập nhật</span>
-        </v-btn>
+        </v-btn> -->
       </form>
 
       <form class="rigth-content">
@@ -115,11 +115,11 @@
         <v-img
           v-model="avatar"
           :src="avatar"
-          max-width="100px"
-          max-height="100px"
+          max-width="200px"
+          max-height="200px"
         ></v-img>
-        <input type="file" id="fileUpload" hidden />
-        <v-btn @click="chooseFiles()"> Chọn ảnh </v-btn>
+        <!-- <input type="file" id="fileUpload"  hidden />
+        <v-btn @click="chooseFiles()"> Chọn ảnh </v-btn> -->
       </form>
     </div>
   </div>
@@ -191,24 +191,24 @@ export default {
     };
   },
   methods: {
-    chooseFiles() {
-      document.getElementById('fileUpload').click();
-    },
-    submit() {
-      if (this.eachShop.shopId != null) {
-        this.$store.dispatch('ACT_UPDATE_SHOP', {
-          shopId: this.id,
-          shopInfo: {
-            nameOfShop: this.name,
-            address: this.address,
-            phoneNumber: this.phoneNumber,
-            description: this.description,
-            dateCreated: this.dateCreated,
-            avatar: 'http://localhost:55000/apigateway/Shops' + this.avatar,
-          },
-        });
-      }
-    },
+    // chooseFiles() {
+    //   document.getElementById('fileUpload').click();
+    // },
+    // submit() {
+    //   if (this.eachShop.shopId != null) {
+    //     this.$store.dispatch('ACT_UPDATE_SHOP', {
+    //       shopId: this.id,
+    //       shopInfo: {
+    //         nameOfShop: this.name,
+    //         address: this.address,
+    //         phoneNumber: this.phoneNumber,
+    //         description: this.description,
+    //         dateCreated: this.dateCreated.slice(0,10),
+    //         avatar: 'http://localhost:55000/apigateway/Shops' + this.avatar,
+    //       },
+    //     });
+    //   }
+    // },
   },
   watch: {
     eachShop() {
@@ -219,7 +219,7 @@ export default {
         this.address = this.eachShop.address;
         this.phoneNumber = this.eachShop.phoneNumber;
         this.description = this.eachShop.description;
-        this.dateCreated = this.eachShop.dateCreated;
+        this.dateCreated = this.eachShop.dateCreated.slice(0,10);
         this.avatar =
           'http://localhost:55000/apigateway/Shops' + this.eachShop.avatar;
       }

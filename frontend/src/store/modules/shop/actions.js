@@ -103,12 +103,13 @@ const actions = {
     try {
       console.log('Shop Enable', payload.shopId);
       await enableShop(payload.shopId);
+      const res = await getShopById(payload.shopId);
       context.commit('SET_SNACKBAR' , {
         type: 'success',
         visible: true,
         text: 'Cửa hàng này đã được Ân xá thành công'
       });
-    
+      await context.commit('SET_EACH_SHOP', res.data.resultObj);
     } catch (error) {
       if (error.response.status === 400) {
         context.commit('SET_SNACKBAR', {

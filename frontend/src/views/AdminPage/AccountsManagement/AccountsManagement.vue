@@ -90,7 +90,9 @@
         </confirm-dialog>
       </v-dialog>
     </div>
-    <div v-else>
+    <div v-else 
+      class="d-flex justify-center align-center"
+      style="width: 100wm; height: 100vh">
       <no-content-form
         :showUser="true"
         Notification= "Không có dữ liệu người dùng"
@@ -101,13 +103,12 @@
 
 <script>
 import TopTitle from '@/components/TopTitle.vue';
-
 // import DeleteAlertForm from '@/components/DeleteAlertForm.vue';
 import AccountDetail from './AccountDetail.vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
 //import FunctionUndevelopForm from '@/components/FunctionUndevelopForm.vue';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
-import NoContentForm from '../../../components/NoContentForm.vue';
+import NoContentForm from '@/components/NoContentForm.vue';
 
 export default {
 
@@ -183,7 +184,9 @@ export default {
       } else {
       console.log(eachUser.id);
       this.enableUser({ userId: eachUser.id });
-      await this.getAllUsers({name: ''});
+       await setTimeout( async () => {
+           await this.getAllUsers({name: ' '});
+        }, 100);
       this.amnestyDialog = false;
       }
     },
@@ -210,6 +213,9 @@ export default {
       } else {
         console.log(eachUser.id);
         this.disableUser({ userId: eachUser.id });
+         await setTimeout( async () => {
+           await this.getAllUsers({name: ' '});
+        }, 100);
         this.disableDialog = false;
       }
     },
