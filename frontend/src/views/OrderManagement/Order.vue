@@ -72,7 +72,6 @@ export default {
   },
   watch: {
     order() {
-      console.log(this.order);
       this.product = {
         img: this.order.orderDetails[0].image,
         name: this.order.orderDetails[0].productName,

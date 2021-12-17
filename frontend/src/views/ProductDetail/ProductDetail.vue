@@ -80,13 +80,13 @@ export default {
       fetchProductDetail: 'FETCH_PRODUCT_DETAIL',
       addCartItem: 'ADD_CART_ITEM',
     }),
-    filterColors(images) {
-      return images.reduce((colors, image) => {
+    filterColors(details) {
+      return details.reduce((colors, detail) => {
         if (
-          image.colorName &&
-          !colors.some((color) => color.name === image.colorName)
+          detail.color &&
+          !colors.some((color) => color.name === detail.color)
         ) {
-          colors.push({ name: image.colorName, active: false });
+          colors.push({ name: detail.color, active: false });
         }
         return colors;
       }, []);
@@ -213,7 +213,7 @@ export default {
   },
   async created() {
     await this.fetchProductDetail({ id: this.id });
-    this.colors = this.filterColors(this.productDetail.resultObj.images);
+    this.colors = this.filterColors(this.productDetail.resultObj.details);
     this.sizes = this.filterSizes(this.productDetail.resultObj.details);
     this.imagePaths = this.filterImagePath(this.productDetail.resultObj.images);
     this.productInfo = this.filterProductInfo(

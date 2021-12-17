@@ -141,11 +141,14 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({}),
+    ...mapGetters({
+      shopInfo: 'GET_SHOP_INFO'
+    }),
   },
   methods: {
     ...mapActions({
       fetchRegisterShop: 'REGISTER_SHOP',
+      getShopInfo: 'FETCH_SHOP_INFO'
     }),
     async agree() {
       let shopInfo = new FormData();

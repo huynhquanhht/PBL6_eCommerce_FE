@@ -6,7 +6,7 @@
           <label class="label">Tên sản phẩm: </label>
         </div>
         <div class="text-block">
-          <input type="text" class="input" v-model="productName" />
+          <input type="text" class="input" v-model="name" />
         </div>
       </div>
     </div>
@@ -15,11 +15,26 @@
       <div class="gender-block">
         <label class="label">Giới tính: </label>
         <div class="gender-male">
-          <input type="radio" value="Nam" id="male" name="gender" />
+          <input
+            type="radio"
+            :value="male"
+            id="male"
+            name="gender"
+            v-model="gender"
+            checked
+            @click="handleCheckbox"
+          />
           <label class="label" for="male"> Nam</label>
         </div>
         <div class="gender-female">
-          <input type="radio" value="Nữ" id="female" name="gender" />
+          <input
+            type="radio"
+            :value="female"
+            id="female"
+            name="gender"
+            v-model="gender"
+            @click="handleCheckbox"
+          />
           <label class="label" for="female"> Nữ</label>
         </div>
       </div>
@@ -29,9 +44,13 @@
             <label class="label">Phân loại: </label>
           </div>
           <div class="category-select-block">
-            <select name="cars" id="cars" class="select-box">
-              <option value="volvo">Volvo</option>
-              <option value="saab">Saab</option>
+            <select class="select-box" @change="handleCategoryOption" v-model="categoryName">
+              <option
+                v-for="(item, index) in type"
+                :key="index"
+              >
+                {{ item }}
+              </option>
             </select>
           </div>
         </div>
@@ -40,9 +59,14 @@
             <label class="label">Chi tiết: </label>
           </div>
           <div class="category-select-block">
-            <select name="cars" id="cars" class="select-box">
-              <option value="volvo">Volvo</option>
-              <option value="saab">Saab</option>
+            <select class="select-box" v-model="categoryDetail" @change="handleCategoryDetail">
+              <option
+                v-for="(item, index) in detail"
+                :key="index"
+                :value="item"
+              >
+                {{ item.name }}
+              </option>
             </select>
           </div>
         </div>
@@ -51,7 +75,7 @@
             <label class="label">Mô tả sản phẩm: </label>
           </div>
           <div class="product-description-block">
-            <textarea class="textarea input"></textarea>
+            <textarea class="textarea input" v-model="description"></textarea>
           </div>
         </div>
         <div class="color-size">
@@ -66,7 +90,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item, index) in colorSize" :key="index">
+              <tr v-for="(item, index) in details" :key="index">
                 <td style="width: 108px">
                   <input
                     type="text"
@@ -122,26 +146,31 @@
             <thead>
               <tr>
                 <th>Màu</th>
-                <th>Hình ảnh</th>
+                <th style="width: 130px">Hình ảnh</th>
                 <th>Loại hình</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item, index) in colorImage" :key="index">
+              <tr v-for="(item, index) in newImages" :key="index">
                 <td style="width: 108px">
-                  <span> {{ item.color }}</span>
+                  <span> {{ item.colorName }}</span>
                 </td>
-                <td style="width: 108px">
+                <td class="img-product-block">
                   <input
                     class="file-input"
-                    id="file"
+                    :id="'file' + index"
                     type="file"
                     accept="image/gif,image/jpg,image/png,image/svg,image/jpeg"
                     placeholder="Nhập..."
-                    @change="readURL(index)"
+                    @change="readURL($event, index)"
                   />
-                  <img v-if="item.image" :src="item.image" alt="" />
-                  <label class="choose-image" for="file">
+                  <img
+                    class="img-product"
+                    v-if="newImages[index].imageData"
+                    :src="newImages[index].imageData"
+                    alt=""
+                  />
+                  <label class="choose-image" :for="'file' + index">
                     <v-icon>mdi-image-plus</v-icon>
                   </label>
                 </td>
@@ -158,7 +187,7 @@
               <label class="label">Giá gốc: </label>
             </div>
             <div class="text-block">
-              <input type="text" class="input" v-model="originPrice" />
+              <input type="text" class="input" v-model="originalPrice" />
             </div>
           </div>
         </div>
@@ -168,14 +197,21 @@
               <label class="label">Giá bán: </label>
             </div>
             <div class="text-block">
-              <input type="text" class="input" v-model="sellPrice" />
+              <input type="text" class="input" v-model="price" />
             </div>
           </div>
         </div>
         <div class="button-block">
-            <v-btn class="btn btn-save" v-if="actionType === 'Create'">Tạo mới</v-btn>
-            <v-btn class="btn btn-reset" v-if="actionType === 'Update'">Lưu sản phẩm</v-btn>
-            <v-btn class="btn btn-cancel">Hủy</v-btn>
+          <v-btn
+            class="btn btn-save"
+            v-if="actionType === 'Create'"
+            @click="create"
+            >Tạo mới</v-btn
+          >
+          <v-btn class="btn btn-reset" v-if="actionType === 'Update'"
+            >Lưu sản phẩm</v-btn
+          >
+          <v-btn class="btn btn-cancel">Hủy</v-btn>
         </div>
       </div>
     </div>
@@ -189,57 +225,186 @@ export default {
   components: { ConfirmDialog },
   props: {
     actionType: {
-      type: String
-    }
+      type: String,
+    },
   },
   data() {
     return {
-      productName: '',
-      question: 'Bạn chắc chắn muốn xóa phân loại này?',
+      productInfo: null,
+      name: '',
+      description: '',
+      gender: null,
+      male: 1,
+      female: 2,
+      originalPrice: null,
+      price: null,
+      categoryId: null,
+      categoryName: '',
+      categoryDetail: '',
+      imageInfos: null,
+      question: 'Bạn chắc chắn muốn xóa?',
       dialog: false,
       isVisbleButton: null,
+      type: [],
+      detail: [],
       rowNum: 1,
-      originPrice: null,
-      sellPrice: null,
-      colorSize: [
-        {
-          color: '',
-          size: '',
-          stock: null,
-        },
+      maleSelection: {
+        gender: 'Nam',
+        category: [
+          {
+            type: 'Áo',
+            detail: [{id: 1, name: 'Áo thun'}, {id: 2, name: 'Áo sơ mi'}, {id: 3, name: 'Áo Hoodie'}, {id: 12, name: 'Áo khoác'}],
+          },
+          {
+            type: 'Quần',
+            detail: [{id: 4, name: 'Quần Jean'}, {id: 8, name: 'Quần tây'}, {id: 9, name: 'Quần đùi'}],
+          },
+          {
+            type: 'Phụ kiện',
+            detail: [{id: 5, name: 'Đồ lót'}, {id: 10, name: 'Thắt lưng'}, {id: 11, name: 'Mũ/Nón'}],
+          },
+        ],
+      },
+      femaleSelection: {
+        gender: 'Nữ',
+        category: [
+          {
+            type: 'Áo',
+            detail: [{id: 1, name: 'Áo thun'}, {id: 2, name: 'Áo sơ mi'}, {id: 3, name: 'Áo Hoodie'}, {id: 12, name: 'Áo khoác'}],
+          },
+          {
+            type: 'Quần',
+            detail: [{id: 4, name: 'Quần Jean'}, {id: 8, name: 'Quần tây'}, {id: 9, name: 'Quần đùi'}],
+          },
+          {
+            type: 'Váy',
+            detail: [{id: 6, name: 'Váy'}, {id: 7, name: 'Đầm'}],
+          },
+          {
+            type: 'Phụ kiện',
+          detail: [{id: 5, name: 'Đồ lót'}, {id: 10, name: 'Thắt lưng'}, {id: 11, name: 'Mũ/Nón'}],
+          },
+        ],
+      },
+      details: [
+        // {
+        //   color: '',
+        //   size: '',
+        //   stock: null,
+        // },
       ],
-      colorImage: [
+      newImages: [
         {
-          color: 'Không',
-          image: '',
+          colorName: null,
+          imageFile: '',
           imageType: 'Ảnh bìa',
+          imageData: null,
+          isDefault: true,
+          sortOrder: 0,
+          isSizeDetail: false,
         },
         {
-          color: '',
-          image: '',
+          colorName: '',
+          imageFile: '',
           imageType: 'Ảnh màu',
+          imageData: null,
+          isDefault: false,
+          sortOrder: 1,
+          isSizeDetail: false,
         },
       ],
     };
   },
   methods: {
     addCategory() {
-      this.colorSize.push({
+      this.details.push({
         color: null,
         size: null,
         stock: null,
       });
-      this.colorImage.push({
-        color: '',
-        image: '',
+      this.newImages.push({
+        colorName: '',
+        imageFile: '',
         imageType: 'Ảnh màu',
+        isDefault: false,
+        sortOrder: 2,
+        isSizeDetail: false,
       });
     },
+    handleCheckbox() {
+      if (this.gender === 2) {
+        this.type = [];
+        this.categoryName = '';
+        this.categoryDetail = '';
+        this.maleSelection.category.forEach((item) => {
+          this.type.push(item.type);
+        });
+      }
+      if (this.gender === 1) {
+        this.type = [];
+        this.categoryName = '';
+        this.categoryDetail = '';
+        this.femaleSelection.category.forEach((item) => {
+          this.type.push(item.type);
+        });
+      }
+    },
+    handleCategoryOption() {
+      if (this.gender === 2) {
+        this.maleSelection.category.forEach((item) => {
+          if (item.type === this.categoryName) {
+            console.log(item.detail);
+            this.detail = item.detail;
+            // this.categoryId = item.detail.id;
+          }
+        });
+      }
+
+      if (this.gender === 1) {
+        this.femaleSelection.category.forEach((item) => {
+          if (item.type === this.categoryName) {
+            console.log(item.detail);
+            this.detail = item.detail;
+            // this.categoryId = item.detail.id;
+          }
+        });
+      }
+    },
+    handleCategoryDetail() {
+      this.categoryId = this.categoryDetail.id;
+    },
     agree() {
+      // this.$emit('create-product', productInfo);
       this.dialog = false;
     },
     cancel() {
       this.dialog = false;
+    },
+    create() {
+      let productInfo = new FormData();
+      productInfo.append('name', this.name);
+      productInfo.append('description', this.description);
+      productInfo.append('gender', this.gender);
+      productInfo.append('price', this.price);
+      productInfo.append('originalPrice', this.originalPrice);
+      productInfo.append('categoryId', this.categoryId);
+
+      this.details.forEach((item, index) => {
+        productInfo.append(`details[${index}].color`, item.color);
+        productInfo.append(`details[${index}].size`, item.size);
+        productInfo.append(`details[${index}].stock`, item.stock);
+      });
+      this.newImages.forEach((item, index) => {
+        productInfo.append(`newImages[${index}].isDefault`, item.isDefault);
+        productInfo.append(`newImages[${index}].sortOrder`, item.sortOrder);
+        productInfo.append(`newImages[${index}].colorName`, item.colorName);
+        productInfo.append(
+          `newImages[${index}].isSizeDetail`,
+          item.isSizeDetail
+        );
+        productInfo.append(`newImages[${index}].imageFile`, item.imageFile);
+      });
+      this.$emit('create-product', productInfo);
     },
     deleteColorSize(item, index) {
       if (index > 0) {
@@ -247,18 +412,22 @@ export default {
           this.dialog = true;
         } else {
           this.colorSize.pop(index);
-          this.colorImage.pop(index);
+          this.newImages.pop(index);
         }
       }
     },
     setColor(item, index) {
-      this.colorImage[index + 1].color = item.color;
+      this.newImages[index + 1].colorName = item.color;
     },
-    readURL(url, index) {
-      this.colorImage[index].image = url;
+    readURL(e, index) {
+      let reader = new FileReader();
+      this.newImages[index].imageFile = e.target.files[0];
+      reader.onload = (e) => {
+        this.newImages[index].imageData = e.target.result;
+      };
+      reader.readAsDataURL(this.newImages[index].imageFile);
     },
-    created() {
-    }
+    created() {},
   },
 };
 </script>
@@ -274,7 +443,7 @@ export default {
   justify-items: left;
 }
 
-.product-name-block .text-block>input {
+.product-name-block .text-block > input {
   width: 300px;
 }
 /* .product-name-block .label-block {
@@ -464,6 +633,21 @@ input[type='file'] {
 
 .origin-price {
   margin-top: 20px;
+}
+
+.img-product-block {
+  display: inline-grid;
+  grid-template-columns: 90px 40px;
+  height: 100px;
+  justify-self: center;
+  align-items: center;
+  position: sticky;
+}
+
+.img-product {
+  max-width: 80px;
+  max-height: 80px;
+  place-self: center;
 }
 
 .sell-price {
