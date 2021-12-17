@@ -52,7 +52,6 @@ export default {
   },
   async created() {
     await this.fetchUserInfo();
-    console.log(this.userInfo);
   },
 };
 </script>

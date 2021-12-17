@@ -4,18 +4,29 @@
       <p class="main-title">Thêm sản phẩm</p>
     </div>
     <hr class="add-product-hr">
-    <product-form :actionType="actionType"></product-form>
+    <product-form :actionType="actionType"
+      @create-product="create"
+    ></product-form>
   </div>
 </template>
 
 <script>
 import ProductForm from './ProductForm.vue'
+import {mapActions} from 'vuex';
 export default {
   components: { ProductForm },
   name: 'AddProduct',
   data() {
     return {
       actionType: 'Create'
+    }
+  },
+  methods: {
+    ...mapActions({
+      createProduct: 'CREATE_PRODUCT'
+    }),
+    async create(productInfo) {
+      await this.createProduct(productInfo);
     }
   }
 }
