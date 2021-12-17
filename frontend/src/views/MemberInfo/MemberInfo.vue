@@ -22,7 +22,7 @@ export default {
 }
 
 .member-info {
-  width: 1200px;
+  width: 940px;
   display: grid;
   grid-template-columns: 250px 1940px;
   column-gap: 10px;

@@ -1,11 +1,24 @@
 <template>
   <v-app>
-    <banner class="banner-block"></banner>
-    <Services class="services-block"></Services>
-    <top-title :title="titles[0]" class="top-title"></top-title>
-    <product-card-list :productList="allProducts"></product-card-list>
-    <div class="view-more-block">
-      <v-btn class="view-more">Xem thêm</v-btn>
+    <div v-if="allProducts">
+      <banner class="banner-block"></banner>
+      <Services class="services-block"></Services>
+      <top-title :title="titles[0]" class="top-title"></top-title>
+      <product-card-list :productList="allProducts"></product-card-list>
+      <div class="view-more-block">
+        <v-btn class="view-more">Xem thêm</v-btn>
+      </div>
+    </div>
+    <div
+      v-else
+      class="d-flex justify-center align-center"
+      style="width: 100wm; height: 100vh"
+    >
+      <v-progress-circular
+        :size="50"
+        color="primary"
+        indeterminate
+      ></v-progress-circular>
     </div>
   </v-app>
 </template>
@@ -39,9 +52,11 @@ export default {
       allProducts: 'GET_ALL_PRODUCTS'
     })
   },
-  created() {
-    this.getAllProducts({pageIndex: 1, pageSize: 24});
-  }
+  async created() {
+    await setTimeout( async () => {
+          await this.getAllProducts({ pageIndex: 1, pageSize: 24 });
+    }, 3000);
+  },
 };
 </script>
 

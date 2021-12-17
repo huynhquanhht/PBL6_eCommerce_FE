@@ -25,4 +25,16 @@ const getShopOrders = (state) => {
 const cancelShopOrder = (order) => {
   return deleteRequest(`Orders/shop`, order);
 }
-export {orderCart, getOrders, getShopOrders, cancelShopOrder, getOrderById}
+
+const getAllOrders = (fromDate, toDate) => {
+  return getRequest(`Orders/all?formDate=${fromDate}&toDate=${toDate}`);
+}
+
+export {
+  orderCart, 
+  getOrders, 
+  getShopOrders, 
+  cancelShopOrder, 
+  getOrderById,
+  getAllOrders,
+}
