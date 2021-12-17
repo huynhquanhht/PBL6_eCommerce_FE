@@ -110,7 +110,6 @@ export default {
       this.orderId = orderId;
     },
     viewDetail(orderId) {
-      console.log('hello: ', orderId)
       this.$router.push(`/shop-chanel/order-detail/${orderId}`);
     }
   },

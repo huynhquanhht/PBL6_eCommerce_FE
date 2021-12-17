@@ -22,39 +22,39 @@
           <th style="width: 100px">Tồn kho</th>
           <th style="width: 120px">Giá gốc</th>
           <th style="width: 120px">Giá bán</th>
-          <th style="width: 130px">Ngày cập nhật</th>
+          <th style="width: 130px">Ngày tạo</th>
           <th style="width: 100px">Thao tác</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>01</td>
-          <td>01</td>
-          <td>Áo khoác nam</td>
-          <td>20</td>
-          <td>1.200.000</td>
-          <td>220.000</td>
-          <td>28/12/2021</td>
+        <tr v-for="(product, index) in allProducts" :key="index">
+          <td>{{ index + 1 }}</td>
+          <td>{{ product.id }}</td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.totalStock }}</td>
+          <td>{{ product.originalPrice.toLocaleString('it-IT') }} đ</td>
+          <td>{{ product.price.toLocaleString('it-IT') }} đ</td>
+          <td>
+            {{ new Date().toLocaleDateString('en-GB', product.dateCreated) }}
+          </td>
           <td>
             <v-btn icon width="26px" height="26px" @click="updateProduct">
               <v-icon size="16px">fas fa-edit</v-icon>
             </v-btn>
-            <v-dialog v-model="dialog" width="400px">
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn icon width="26px" height="26px" v-bind="attrs" v-on="on">
-                  <v-icon size="16px">fas fa-trash</v-icon>
-                </v-btn>
-              </template>
-              <confirm-dialog
-                :question="question"
-                @agree-confirm-dialog="agree"
-                @cancel-confirm-dialog="cancel"
-              ></confirm-dialog>
-            </v-dialog>
+            <v-btn icon width="26px" height="26px" @click="deleteProduct">
+              <v-icon size="16px">fas fa-trash</v-icon>
+            </v-btn>
           </td>
         </tr>
       </tbody>
     </table>
+    <v-dialog v-model="dialog" width="400px">
+      <confirm-dialog
+        :question="question"
+        @agree-confirm-dialog="agree"
+        @cancel-confirm-dialog="cancel"
+      ></confirm-dialog>
+    </v-dialog>
   </div>
 </template>
 
@@ -68,12 +68,12 @@ export default {
   data() {
     return {
       dialog: false,
-      question: 'Bạn chắc chắn muốn xóa sản phẩm này?'
-    }
+      question: 'Bạn chắc chắn muốn xóa sản phẩm này?',
+    };
   },
   methods: {
     ...mapActions({
-      getAllProducts: 'ACT_GET_ALL_PRODUCTS',
+      getAllProducts: 'ACT_GET_ALL_PRODUCTS_SHOP',
     }),
     agree() {
       this.dialog = false;
@@ -82,7 +82,10 @@ export default {
       this.dialog = false;
     },
     updateProduct() {
-      this.$router.push({name: 'update-product'});
+      this.$router.push({ name: 'update-product' });
+    },
+    deleteProduct() {
+      this.dialog = true;
     }
   },
   computed: {
@@ -91,7 +94,6 @@ export default {
     }),
   },
   async created() {
-    console.log(localStorageUtils.getShopInfo());
     let shopInfo = JSON.parse(localStorageUtils.getShopInfo());
     await this.getAllProducts({
       pageIndex: 1,
