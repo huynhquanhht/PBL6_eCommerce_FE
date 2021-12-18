@@ -1,60 +1,78 @@
 <template>
   <div class="all-bill-wrapper">
-    <div class="all-bill-title">
-      <p class="main-title">Tất cả sản phẩm</p>
+    <div v-if="allProducts">
+      <div class="all-bill-title">
+        <p class="main-title">Tất cả sản phẩm</p>
+      </div>
+      <hr class="all-bill-hr" />
+      <div class="search-block">
+        <label class="search-label" for="">Tìm kiếm theo: </label>
+        <select class="search-select" name="" id="">
+          <option value="1">1</option>
+          <option value="2">2</option>
+        </select>
+        <input class="search-input" type="text" name="" id="" />
+        <v-btn class="search-button">Tìm kiếm</v-btn>
+      </div>
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th style="width: 50px">Stt</th>
+            <th style="width: 80px">Mã SP</th>
+            <th style="width: 360px">Tên sản phẩm</th>
+            <th style="width: 100px">Tồn kho</th>
+            <th style="width: 120px">Giá gốc</th>
+            <th style="width: 120px">Giá bán</th>
+            <th style="width: 130px">Ngày tạo</th>
+            <th style="width: 100px">Thao tác</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(product, index) in allProducts" :key="index">
+            <td>{{ index + 1 }}</td>
+            <td>{{ product.id }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.totalStock }}</td>
+            <td>{{ product.originalPrice.toLocaleString('it-IT') }} đ</td>
+            <td>{{ product.price.toLocaleString('it-IT') }} đ</td>
+            <td>
+              {{ new Date().toLocaleDateString('en-GB', product.dateCreated) }}
+            </td>
+            <td>
+              <v-btn
+                icon
+                width="26px"
+                height="26px"
+                @click="updateProduct(product.id)"
+              >
+                <v-icon size="16px">fas fa-edit</v-icon>
+              </v-btn>
+              <v-btn icon width="26px" height="26px" @click="deleteProduct">
+                <v-icon size="16px">fas fa-trash</v-icon>
+              </v-btn>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <v-dialog v-model="dialog" width="400px">
+        <confirm-dialog
+          :question="question"
+          @agree-confirm-dialog="agree"
+          @cancel-confirm-dialog="cancel"
+        ></confirm-dialog>
+      </v-dialog>
     </div>
-    <hr class="all-bill-hr" />
-    <div class="search-block">
-      <label class="search-label" for="">Tìm kiếm theo: </label>
-      <select class="search-select" name="" id="">
-        <option value="1">1</option>
-        <option value="2">2</option>
-      </select>
-      <input class="search-input" type="text" name="" id="" />
-      <v-btn class="search-button">Tìm kiếm</v-btn>
+    <div
+      v-else
+      class="d-flex justify-center align-center"
+      style="width: 100wm; height: 100vh"
+    >
+      <v-progress-circular
+        :size="50"
+        color="primary"
+        indeterminate
+      ></v-progress-circular>
     </div>
-    <table class="styled-table">
-      <thead>
-        <tr>
-          <th style="width: 50px">Stt</th>
-          <th style="width: 80px">Mã SP</th>
-          <th style="width: 360px">Tên sản phẩm</th>
-          <th style="width: 100px">Tồn kho</th>
-          <th style="width: 120px">Giá gốc</th>
-          <th style="width: 120px">Giá bán</th>
-          <th style="width: 130px">Ngày tạo</th>
-          <th style="width: 100px">Thao tác</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(product, index) in allProducts" :key="index">
-          <td>{{ index + 1 }}</td>
-          <td>{{ product.id }}</td>
-          <td>{{ product.name }}</td>
-          <td>{{ product.totalStock }}</td>
-          <td>{{ product.originalPrice.toLocaleString('it-IT') }} đ</td>
-          <td>{{ product.price.toLocaleString('it-IT') }} đ</td>
-          <td>
-            {{ new Date().toLocaleDateString('en-GB', product.dateCreated) }}
-          </td>
-          <td>
-            <v-btn icon width="26px" height="26px" @click="updateProduct(product.id)">
-              <v-icon size="16px">fas fa-edit</v-icon>
-            </v-btn>
-            <v-btn icon width="26px" height="26px" @click="deleteProduct">
-              <v-icon size="16px">fas fa-trash</v-icon>
-            </v-btn>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <v-dialog v-model="dialog" width="400px">
-      <confirm-dialog
-        :question="question"
-        @agree-confirm-dialog="agree"
-        @cancel-confirm-dialog="cancel"
-      ></confirm-dialog>
-    </v-dialog>
   </div>
 </template>
 
@@ -86,7 +104,7 @@ export default {
     },
     deleteProduct() {
       this.dialog = true;
-    }
+    },
   },
   computed: {
     ...mapGetters({
@@ -100,7 +118,6 @@ export default {
       pageSize: 99,
       shopId: shopInfo.id,
     });
-    console.log(this.allProducts);
   },
 };
 </script>
