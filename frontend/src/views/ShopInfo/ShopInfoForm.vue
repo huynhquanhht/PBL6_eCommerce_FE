@@ -50,40 +50,31 @@
             </div>
           </div>
         </ValidationProvider>
-        <v-dialog v-model="dialog" width="400px">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              class="btn-regis-shop white--text"
-              height="36px"
-              width="120px"
-              color="#fea200"
-              depressed
-              v-bind="attrs"
-              v-on="on"
-              @click="registerShop"
-            >
-              <span class="font-size: 15px">Đăng ký</span>
-            </v-btn>
+        <div class="btn-block text-block">
+          <v-btn
+            class="btn-regis-shop white--text"
+            height="36px"
+            width="120px"
+            color="#fea200"
+            depressed
+            @click="registerShop"
+            v-if="!shopInfo"
+          >
+            <span class="font-size: 15px">Đăng ký</span>
+          </v-btn>
 
-            <v-btn
-              class="btn-regis-shop white--text"
-              height="36px"
-              width="120px"
-              color="#fea200"
-              depressed
-              v-bind="attrs"
-              v-on="on"
-              @click="registerShop"
-            >
-              <span class="font-size: 15px">Cập nhật</span>
-            </v-btn>
-          </template>
-          <confirm-dialog
-            :question="question"
-            @agree-confirm-dialog="agree"
-            @cancel-confirm-dialog="cancel"
-          ></confirm-dialog>
-        </v-dialog>
+          <v-btn
+            class="btn-regis-shop white--text"
+            height="36px"
+            width="120px"
+            color="#fea200"
+            depressed
+            @click="updateShop"
+            v-if="shopInfo"
+          >
+            <span class="font-size: 15px">Cập nhật</span>
+          </v-btn>
+        </div>
       </div>
       <div class="register-ava">
         <img class="shop-avatar" :src="shopAvatarData" alt="shop-avatar" />
@@ -94,11 +85,16 @@
           accept="image/gif,image/jpg,image/png,image/svg,image/jpeg"
           @change="chooseImage($event)"
         />
-        <label class="choose-image" for="file">
-          Chọn ảnh nền
-        </label>
+        <label class="choose-image" for="file"> Chọn ảnh nền </label>
       </div>
     </form>
+    <v-dialog v-model="dialog" width="400px">
+      <confirm-dialog
+        :question="question"
+        @agree-confirm-dialog="agree"
+        @cancel-confirm-dialog="cancel"
+      ></confirm-dialog>
+    </v-dialog>
   </div>
 </template>
 
@@ -112,7 +108,7 @@ extend('required', {
   ...required,
   message: '{_field_} không thể trống',
 });
-extend('phone', phone => {
+extend('phone', (phone) => {
   if (!phone.match(/^[0-9]{10,10}$/)) {
     return 'Số điện thoại phải đủ 10 chữ số';
   }
@@ -142,13 +138,13 @@ export default {
   },
   computed: {
     ...mapGetters({
-      shopInfo: 'GET_SHOP_INFO'
+      // shopInfo: 'GET_SHOP_INFO'
     }),
   },
   methods: {
     ...mapActions({
       fetchRegisterShop: 'REGISTER_SHOP',
-      getShopInfo: 'FETCH_SHOP_INFO'
+      getShopInfo: 'FETCH_SHOP_INFO',
     }),
     async agree() {
       let shopInfo = new FormData();
@@ -166,7 +162,7 @@ export default {
     chooseImage(e) {
       let reader = new FileReader();
       this.shopAvatar = e.target.files[0];
-      reader.onload = e => {
+      reader.onload = (e) => {
         this.shopAvatarData = e.target.result;
       };
       reader.readAsDataURL(this.shopAvatar);
@@ -174,20 +170,29 @@ export default {
     registerShop() {
       this.dialog = true;
     },
+    updateShop() {
+      this.dialog = true;
+    },
   },
-  created() {
-    this.fullname = this.shopInfo.nameOfShop;
-    this.address = this.shopInfo.address;
-    this.phone = this.shopInfo.phoneNumber;
-    this.description = this.shopInfo.description;
-    this.shopAvatar = process.env.VUE_APP_BASE_URL + this.shopInfo.avatar;
+  watch: {
+    shopInfo() {
+      if (this.shopInfo) {
+        this.fullname = this.shopInfo.nameOfShop;
+        this.address = this.shopInfo.address;
+        this.phone = this.shopInfo.phoneNumber;
+        this.description = this.shopInfo.description;
+        this.shopAvatar = process.env.VUE_APP_BASE_URL + this.shopInfo.avatar;
+      }
+    },
   },
 };
 </script>
 
 <style scoped>
 .info-form-block {
-  display: flex;
+  display: grid;
+  grid-template-columns: 500px 200px;
+  justify-self: center;
 }
 .label-input {
   display: grid;
@@ -252,6 +257,7 @@ export default {
   display: flex;
   flex-direction: column;
   margin-left: 80px;
+  align-items: center;
 }
 
 .custom-file-input {
@@ -282,5 +288,9 @@ input[type='file'] {
 }
 .choose-image:focus {
   background-color: #f7a20f;
+}
+
+.btn-block {
+  padding: 0px 44px;
 }
 </style>

@@ -133,10 +133,11 @@ const routes = [
             meta: { title: 'Thêm sản phẩm | Versace Việt Nam' }
           },
           {
-            path: 'update-product',
+            path: 'update-product/:id',
             name: 'update-product',
             component: () => import('@/views/ProductOperation/UpdateProduct.vue'),
-            meta: { title: 'Cập nhật sản phẩm | Versace Việt Nam' }
+            meta: { title: 'Cập nhật sản phẩm | Versace Việt Nam' },
+            props: route => ({id: parseInt(route.params.id)})
           },
           {
             path: 'all-order',

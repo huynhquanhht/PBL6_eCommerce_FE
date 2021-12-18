@@ -4,7 +4,8 @@ import {
    getAllProductsAdmin,
    getTotalProducts,
    getAllProductsShop,
-   create
+   create,
+   update
    } from "@/api/api_product";
 
 const actions = {
@@ -79,6 +80,24 @@ const actions = {
         type: 'success',
         visible: true,
         text: 'Tạo sản phẩm thành công',
+      });
+    } catch (error) {
+      if (error.response.status === 400) {
+        context.commit('SET_SNACKBAR', {
+          type: 'info',
+          visible: true,
+          text: error.response.data,
+        });
+      }
+    }
+  },
+  'UPDATE_PRODUCT': async(context, productInfo) => {
+    try {
+      await update(productInfo);
+      context.commit('SET_SNACKBAR', {
+        type: 'success',
+        visible: true,
+        text: 'Cập nhất sản phẩm thành công',
       });
     } catch (error) {
       if (error.response.status === 400) {

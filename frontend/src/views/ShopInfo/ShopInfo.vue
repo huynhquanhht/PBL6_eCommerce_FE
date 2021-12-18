@@ -1,6 +1,6 @@
 <template>
-  <div class="shop-info-wrapper">
-    <div class="shop-info-title">
+  <div class="shop-info-wrapper" v-if="shopInfo">
+    <div class="shop-info-title" v-if="title">
       <p class="main-title">{{ title.main }}</p>
       <p class="extra-title"> {{ title.extra }}</p>
     </div>
@@ -13,12 +13,12 @@
 import ShopInfoForm from './ShopInfoForm.vue'
 import {mapGetters, mapMutations, mapActions} from 'vuex'
 export default {
-  name: 'ShopInfo',
+  name: 'ShopInfo', 
   components: { ShopInfoForm },
   computed: {
     ...mapGetters({
       shopInfo: 'GET_SHOP_INFO',
-      title: null,
+      // title: null,
     })
   },
   data() {
@@ -38,7 +38,6 @@ export default {
   },
   async created() {
     await this.fetchShopInfo();
-
     if (this.shopInfo) {
       if (!this.shopInfo.disable) {
         this.shopInfoChecked = this.shopInfo;
