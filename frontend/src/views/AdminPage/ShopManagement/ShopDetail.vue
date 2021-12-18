@@ -233,7 +233,7 @@ export default {
       this.address = this.eachShop.address;
       this.phoneNumber = this.eachShop.phoneNumber;
       this.description = this.eachShop.description;
-      this.dateCreated = this.eachShop.dateCreated;
+      this.dateCreated = this.eachShop.dateCreated.slice(0,10);
       this.avatar =
         'http://localhost:55000/apigateway/Shops' + this.eachShop.avatar;
     }

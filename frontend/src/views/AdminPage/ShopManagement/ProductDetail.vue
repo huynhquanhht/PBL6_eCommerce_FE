@@ -7,7 +7,7 @@
           <label class="label">Mã cửa Hàng: </label>
         </div>
         <div class="text-block">
-          <input type="text" class="input" v-model="shopId" />
+          <input readonly type="text" class="input" v-model="shopId" />
         </div>
       </div>
     </div>
@@ -17,7 +17,7 @@
           <label class="label">Tên cửa hàng: </label>
         </div>
         <div class="text-block">
-          <input type="text" class="input" v-model="shopName" />
+          <input readonly type="text" class="input" v-model="shopName" />
         </div>
       </div>
     </div>
@@ -27,7 +27,7 @@
           <label class="label">Tên sản phẩm: </label>
         </div>
         <div class="text-block">
-          <input type="text" class="input" v-model="productName" />
+          <input readonly type="text" class="input" v-model="productName" />
         </div>
       </div>
     </div>
@@ -36,11 +36,11 @@
       <div class="gender-block">
         <label class="label">Giới tính: </label>
         <div class="gender-male">
-          <input type="radio" value="Nam" id="male" name="gender" />
+          <input readonly type="radio" value="Nam" id="male" name="gender" />
           <label class="label" for="male"> Nam</label>
         </div>
         <div class="gender-female">
-          <input type="radio" value="Nữ" id="female" name="gender" />
+          <input readonly type="radio" value="Nữ" id="female" name="gender" />
           <label class="label" for="female"> Nữ</label>
         </div>
       </div>
@@ -51,7 +51,7 @@
               <label class="label">Phân loại: </label>
             </div>
             <div class="text-block">
-              <input type="text" class="input" v-model="productCategory" />
+              <input readonly type="text" class="input" v-model="productCategory" />
             </div>
           </div>
         </div>
@@ -60,7 +60,7 @@
             <label class="label">Mô tả sản phẩm: </label>
           </div>
           <div class="product-description-block">
-            <textarea v-model="description" class="textarea input"></textarea>
+            <textarea readonly v-model="description" class="textarea input"></textarea>
           </div>
         </div>
         <div class="color-size">
@@ -85,6 +85,7 @@
                 </td>
                 <td style="width: 108px">
                   <input
+                    readonly
                     type="text"
                     v-model="productDetail.size"
                     placeholder="Nhập..."
@@ -92,6 +93,7 @@
                 </td>
                 <td style="width: 108px">
                   <input
+                   readonly
                     type="text"
                     v-model="productDetail.stock"
                     placeholder="Nhập..."
@@ -327,11 +329,11 @@ export default {
   justify-self: end;
 }
 .input {
-  border: solid 1px #616161;
+  border: solid 2px #fea200;
   background-color: #ffffff;
   height: 32px;
   width: 100%;
-  outline: #616161;
+  outline: #fea200;
   padding: 8px;
   box-shadow: 0px 2px 2px 0px rgb(0 0 0 / 14%);
   font: 400 15px Roboto;

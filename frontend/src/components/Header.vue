@@ -276,14 +276,17 @@ export default {
     },
     selectPersonalOption(option) {
       if (option === 'Thông tin cá nhân') {
-        // this.$router.push(`/`);
+        this.$router.push({name: 'personal-identity'}).catch(() => {});
+        return;
       }
       if (option === 'Đơn mua') {
-        // this.$router.push(`/`);
+        this.$router.push({name: "purchase-order"}).catch(() => {});
+        return;
       }
       if (option === 'Đăng xuất') {
         localStorageUtils.clearToken();
-        this.$router.go('/');
+        this.$router.push('/');
+        return;
       }
     },
     search() {

@@ -21,7 +21,7 @@ export default {
       menuItems: [
         {
           icon: 'fas fa-store',
-          title: 'Quản Lý Shop',
+          title: 'Quản Lý cửa hàng',
           url: '/admin/shop-management',   
         },
         {

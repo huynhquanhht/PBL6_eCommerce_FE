@@ -14,9 +14,9 @@
         <thead>
           <tr>
             <th>Thứ tự</th>
-            <th>Tên shop</th>
-            <th>Tên chủ shop</th>
-            <th>Trạng thái shop</th>
+            <th>Tên cửa hàng</th>
+            <th>Tên chủ cửa hàng</th>
+            <th>Trạng thái cửa hàng</th>
             <th>Ngày tạo</th>
             <th>Thao tác</th>
           </tr>
