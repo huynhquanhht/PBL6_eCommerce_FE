@@ -1,220 +1,245 @@
 <template>
-  <div class="product-form">
-    <div class="product-name">
-      <div class="product-name-block">
-        <div class="label-block">
-          <label class="label">Tên sản phẩm: </label>
-        </div>
-        <div class="text-block">
-          <input type="text" class="input" v-model="name" />
+  <div class="product-form-block">
+    <div class="product-form" v-if="productDetail">
+      <div class="product-name">
+        <div class="product-name-block">
+          <div class="label-block">
+            <label class="label">Tên sản phẩm: </label>
+          </div>
+          <div class="text-block">
+            <input type="text" class="input" v-model="name" />
+          </div>
         </div>
       </div>
-    </div>
-    <div class="product-category">
-      <p class="label product-category-title">Danh mục sản phẩm</p>
-      <div class="gender-block">
-        <label class="label">Giới tính: </label>
-        <div class="gender-male">
-          <input
-            type="radio"
-            :value="male"
-            id="male"
-            name="gender"
-            v-model="gender"
-            checked
-            @click="handleCheckbox"
-          />
-          <label class="label" for="male"> Nam</label>
-        </div>
-        <div class="gender-female">
-          <input
-            type="radio"
-            :value="female"
-            id="female"
-            name="gender"
-            v-model="gender"
-            @click="handleCheckbox"
-          />
-          <label class="label" for="female"> Nữ</label>
-        </div>
-      </div>
-      <div class="category">
-        <div class="label-input">
-          <div class="label-block">
-            <label class="label">Phân loại: </label>
+      <div class="product-category">
+        <p class="label product-category-title">Danh mục sản phẩm</p>
+        <div class="gender-block">
+          <label class="label">Giới tính: </label>
+          <div class="gender-male">
+            <input
+              type="radio"
+              :value="male"
+              id="male"
+              name="gender"
+              v-model="gender"
+              checked
+            />
+            <label class="label" for="male"> Nam</label>
           </div>
-          <div class="category-select-block">
-            <select class="select-box" @change="handleCategoryOption" v-model="categoryName">
-              <option
-                v-for="(item, index) in type"
-                :key="index"
-              >
-                {{ item }}
-              </option>
-            </select>
+          <div class="gender-female">
+            <input
+              type="radio"
+              :value="female"
+              id="female"
+              name="gender"
+              v-model="gender"
+            />
+            <label class="label" for="female"> Nữ</label>
           </div>
         </div>
-        <div class="detail label-input">
-          <div class="label-block">
-            <label class="label">Chi tiết: </label>
+        <div class="category">
+          <div class="label-input">
+            <div class="label-block">
+              <label class="label">Phân loại: </label>
+            </div>
+            <div class="category-select-block">
+              <select class="select-box" v-model="categoryName">
+                <option v-for="(item, index) in type" :key="index">
+                  {{ item }}
+                </option>
+              </select>
+            </div>
           </div>
-          <div class="category-select-block">
-            <select class="select-box" v-model="categoryDetail" @change="handleCategoryDetail">
-              <option
-                v-for="(item, index) in detail"
-                :key="index"
-                :value="item"
-              >
-                {{ item.name }}
-              </option>
-            </select>
+          <div class="detail label-input">
+            <div class="label-block">
+              <label class="label">Chi tiết: </label>
+            </div>
+            <div class="category-select-block">
+              <select class="select-box" v-model="categoryDetail">
+                <option v-for="(item, index) in detail" :key="index">
+                  {{ item.name + ' - ' + categoryDetail }}
+                </option>
+              </select>
+            </div>
           </div>
-        </div>
-        <div class="description label-input">
-          <div class="label-block">
-            <label class="label">Mô tả sản phẩm: </label>
+          <div class="description label-input">
+            <div class="label-block">
+              <label class="label">Mô tả sản phẩm: </label>
+            </div>
+            <div class="product-description-block">
+              <textarea class="textarea input" v-model="description"></textarea>
+            </div>
           </div>
-          <div class="product-description-block">
-            <textarea class="textarea input" v-model="description"></textarea>
-          </div>
-        </div>
-        <div class="color-size">
-          <p class="label">Màu và kích thước</p>
-          <table class="styled-table">
-            <thead>
-              <tr>
-                <th>Màu</th>
-                <th>Kích thước</th>
-                <th>Tồn kho</th>
-                <th>Thao tác</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in details" :key="index">
-                <td style="width: 108px">
-                  <input
-                    type="text"
-                    v-model="item.color"
-                    placeholder="Nhập..."
-                    @change="setColor(item, index)"
-                  />
-                </td>
-                <td style="width: 108px">
-                  <input
-                    type="text"
-                    v-model="item.size"
-                    placeholder="Nhập..."
-                  />
-                </td>
-                <td style="width: 108px">
-                  <input
-                    type="text"
-                    v-model="item.stock"
-                    placeholder="Nhập..."
-                  />
-                </td>
-                <td style="width: 108px">
-                  <v-dialog v-model="dialog" width="400px">
-                    <template v-slot:activator="{ on, attrs }">
+          <div class="color-size">
+            <p class="label">Màu và kích thước</p>
+            <table class="styled-table">
+              <thead>
+                <tr>
+                  <th>Màu</th>
+                  <th>Kích thước</th>
+                  <th>Tồn kho</th>
+                  <th>Thao tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in details" :key="index">
+                  <td style="width: 108px">
+                    <input
+                      type="text"
+                      v-model="item.color"
+                      placeholder="Nhập..."
+                      @change="setColor(item, index)"
+                    />
+                  </td>
+                  <td style="width: 108px">
+                    <input
+                      type="text"
+                      v-model="item.size"
+                      placeholder="Nhập..."
+                    />
+                  </td>
+                  <td style="width: 108px">
+                    <input
+                      type="text"
+                      v-model="item.stock"
+                      placeholder="Nhập..."
+                    />
+                  </td>
+                  <td style="width: 108px">
+                    <v-btn icon @click="deleteColor">
                       <i
                         class="icon-delete fas fa-trash"
                         @click="deleteColorSize(item, index)"
-                        v-bind="attrs"
-                        v-on="on"
                       ></i>
-                    </template>
-                    <confirm-dialog
-                      :question="question"
-                      @agree-confirm-dialog="agree"
-                      @cancel-confirm-dialog="cancel"
-                    ></confirm-dialog>
-                  </v-dialog>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <div>
-            <button class="btn-add-color-size" @click="addCategory">
-              <i class="fas fa-plus-circle"></i>
-              <span>Thêm phân loại mới</span>
-            </button>
-          </div>
-        </div>
-        <div class="color-image">
-          <p class="label">Màu và hình ảnh</p>
-          <table class="styled-table">
-            <thead>
-              <tr>
-                <th>Màu</th>
-                <th style="width: 130px">Hình ảnh</th>
-                <th>Loại hình</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in newImages" :key="index">
-                <td style="width: 108px">
-                  <span> {{ item.colorName }}</span>
-                </td>
-                <td class="img-product-block">
-                  <input
-                    class="file-input"
-                    :id="'file' + index"
-                    type="file"
-                    accept="image/gif,image/jpg,image/png,image/svg,image/jpeg"
-                    placeholder="Nhập..."
-                    @change="readURL($event, index)"
-                  />
-                  <img
-                    class="img-product"
-                    v-if="newImages[index].imageData"
-                    :src="newImages[index].imageData"
-                    alt=""
-                  />
-                  <label class="choose-image" :for="'file' + index">
-                    <v-icon>mdi-image-plus</v-icon>
-                  </label>
-                </td>
-                <td style="width: 108px">
-                  <span>{{ item.imageType }}</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="origin-price">
-          <div class="label-input">
-            <div class="label-block">
-              <label class="label">Giá gốc: </label>
-            </div>
-            <div class="text-block">
-              <input type="text" class="input" v-model="originalPrice" />
+                    </v-btn>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div>
+              <button class="btn-add-color-size" @click="addCategory">
+                <i class="fas fa-plus-circle"></i>
+                <span>Thêm phân loại mới</span>
+              </button>
             </div>
           </div>
-        </div>
-        <div class="sell-price">
-          <div class="label-input">
-            <div class="label-block">
-              <label class="label">Giá bán: </label>
-            </div>
-            <div class="text-block">
-              <input type="text" class="input" v-model="price" />
+          <div class="color-image">
+            <p class="label">Màu và hình ảnh</p>
+            <table class="styled-table">
+              <thead>
+                <tr>
+                  <th>Màu</th>
+                  <th style="width: 130px">Hình ảnh</th>
+                  <th>Loại hình</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in newImages" :key="index">
+                  <td style="width: 108px">
+                    <span>
+                      {{
+                        item.colorName === 'null' ? 'Trống' : item.colorName
+                      }}</span
+                    >
+                  </td>
+                  <td class="img-product-block">
+                    <input
+                      class="file-input"
+                      :id="'file' + index"
+                      type="file"
+                      accept="image/gif,image/jpg,image/png,image/svg,image/jpeg"
+                      placeholder="Nhập..."
+                      @change="readURL($event, index)"
+                    />
+                    <img
+                      v-if="!productDetail"
+                      class="img-product"
+                      v-show="newImages[index].imageData"
+                      :src="newImages[index].imageData"
+                      alt=""
+                    />
+                    <img
+                      v-if="productDetail"
+                      class="img-product"
+                      v-show="
+                        !(
+                          newImages[index].imagePath &&
+                          newImages[index].imageData
+                        )
+                      "
+                      :src="
+                        'http://30da-2402-800-6205-3e19-302d-c6f5-cab2-c66f.ngrok.io/apigateway/Products' +
+                        newImages[index].imageData
+                      "
+                      alt=""
+                    />
+                    <label class="choose-image" :for="'file' + index">
+                      <v-icon>mdi-image-plus</v-icon>
+                    </label>
+                  </td>
+                  <td style="width: 108px">
+                    <span>{{ item.imageType }}</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="origin-price">
+            <div class="label-input">
+              <div class="label-block">
+                <label class="label">Giá gốc: </label>
+              </div>
+              <div class="text-block">
+                <input type="text" class="input" v-model="originalPrice" />
+              </div>
             </div>
           </div>
-        </div>
-        <div class="button-block">
-          <v-btn
-            class="btn btn-save"
-            v-if="actionType === 'Create'"
-            @click="create"
-            >Tạo mới</v-btn
-          >
-          <v-btn class="btn btn-reset" v-if="actionType === 'Update'"
-            >Lưu sản phẩm</v-btn
-          >
-          <v-btn class="btn btn-cancel">Hủy</v-btn>
+          <div class="sell-price">
+            <div class="label-input">
+              <div class="label-block">
+                <label class="label">Giá bán: </label>
+              </div>
+              <div class="text-block">
+                <input type="text" class="input" v-model="price" />
+              </div>
+            </div>
+          </div>
+          <div class="button-block">
+            <v-btn
+              class="btn btn-save"
+              v-if="actionType === 'Create'"
+              @click="create"
+              >Tạo mới</v-btn
+            >
+            <v-btn
+              class="btn btn-reset"
+              v-if="actionType === 'Update'"
+              @click="update"
+              >Lưu sản phẩm</v-btn
+            >
+            <v-btn class="btn btn-cancel">Hủy</v-btn>
+          </div>
         </div>
       </div>
     </div>
+    <div
+      v-else
+      class="d-flex justify-center align-center"
+      style="width: 100wm; height: 100vh"
+    >
+      <v-progress-circular
+        :size="50"
+        color="primary"
+        indeterminate
+      ></v-progress-circular>
+    </div>
+    <v-dialog v-model="dialog" width="400px">
+      <confirm-dialog
+        :question="question"
+        @agree-confirm-dialog="agree"
+        @cancel-confirm-dialog="cancel"
+      ></confirm-dialog>
+    </v-dialog>
   </div>
 </template>
 
@@ -227,9 +252,13 @@ export default {
     actionType: {
       type: String,
     },
+    productDetail: {
+      type: Object,
+    },
   },
   data() {
     return {
+      id: null,
       productInfo: null,
       name: '',
       description: '',
@@ -253,15 +282,28 @@ export default {
         category: [
           {
             type: 'Áo',
-            detail: [{id: 1, name: 'Áo thun'}, {id: 2, name: 'Áo sơ mi'}, {id: 3, name: 'Áo Hoodie'}, {id: 12, name: 'Áo khoác'}],
+            detail: [
+              { id: 1, name: 'Áo thun' },
+              { id: 2, name: 'Áo sơ mi' },
+              { id: 3, name: 'Áo Hoodie' },
+              { id: 12, name: 'Áo khoác' },
+            ],
           },
           {
             type: 'Quần',
-            detail: [{id: 4, name: 'Quần Jean'}, {id: 8, name: 'Quần tây'}, {id: 9, name: 'Quần đùi'}],
+            detail: [
+              { id: 4, name: 'Quần Jean' },
+              { id: 8, name: 'Quần tây' },
+              { id: 9, name: 'Quần đùi' },
+            ],
           },
           {
             type: 'Phụ kiện',
-            detail: [{id: 5, name: 'Đồ lót'}, {id: 10, name: 'Thắt lưng'}, {id: 11, name: 'Mũ/Nón'}],
+            detail: [
+              { id: 5, name: 'Đồ lót' },
+              { id: 10, name: 'Thắt lưng' },
+              { id: 11, name: 'Mũ/Nón' },
+            ],
           },
         ],
       },
@@ -270,28 +312,44 @@ export default {
         category: [
           {
             type: 'Áo',
-            detail: [{id: 1, name: 'Áo thun'}, {id: 2, name: 'Áo sơ mi'}, {id: 3, name: 'Áo Hoodie'}, {id: 12, name: 'Áo khoác'}],
+            detail: [
+              { id: 1, name: 'Áo thun' },
+              { id: 2, name: 'Áo sơ mi' },
+              { id: 3, name: 'Áo Hoodie' },
+              { id: 12, name: 'Áo khoác' },
+            ],
           },
           {
             type: 'Quần',
-            detail: [{id: 4, name: 'Quần Jean'}, {id: 8, name: 'Quần tây'}, {id: 9, name: 'Quần đùi'}],
+            detail: [
+              { id: 4, name: 'Quần Jean' },
+              { id: 8, name: 'Quần tây' },
+              { id: 9, name: 'Quần đùi' },
+            ],
           },
           {
             type: 'Váy',
-            detail: [{id: 6, name: 'Váy'}, {id: 7, name: 'Đầm'}],
+            detail: [
+              { id: 6, name: 'Váy' },
+              { id: 7, name: 'Đầm' },
+            ],
           },
           {
             type: 'Phụ kiện',
-          detail: [{id: 5, name: 'Đồ lót'}, {id: 10, name: 'Thắt lưng'}, {id: 11, name: 'Mũ/Nón'}],
+            detail: [
+              { id: 5, name: 'Đồ lót' },
+              { id: 10, name: 'Thắt lưng' },
+              { id: 11, name: 'Mũ/Nón' },
+            ],
           },
         ],
       },
       details: [
-        // {
-        //   color: '',
-        //   size: '',
-        //   stock: null,
-        // },
+        {
+          color: '',
+          size: '',
+          stock: null,
+        },
       ],
       newImages: [
         {
@@ -313,6 +371,7 @@ export default {
           isSizeDetail: false,
         },
       ],
+      updateImages: [],
     };
   },
   methods: {
@@ -331,54 +390,15 @@ export default {
         isSizeDetail: false,
       });
     },
-    handleCheckbox() {
-      if (this.gender === 2) {
-        this.type = [];
-        this.categoryName = '';
-        this.categoryDetail = '';
-        this.maleSelection.category.forEach((item) => {
-          this.type.push(item.type);
-        });
-      }
-      if (this.gender === 1) {
-        this.type = [];
-        this.categoryName = '';
-        this.categoryDetail = '';
-        this.femaleSelection.category.forEach((item) => {
-          this.type.push(item.type);
-        });
-      }
-    },
-    handleCategoryOption() {
-      if (this.gender === 2) {
-        this.maleSelection.category.forEach((item) => {
-          if (item.type === this.categoryName) {
-            console.log(item.detail);
-            this.detail = item.detail;
-            // this.categoryId = item.detail.id;
-          }
-        });
-      }
-
-      if (this.gender === 1) {
-        this.femaleSelection.category.forEach((item) => {
-          if (item.type === this.categoryName) {
-            console.log(item.detail);
-            this.detail = item.detail;
-            // this.categoryId = item.detail.id;
-          }
-        });
-      }
-    },
-    handleCategoryDetail() {
-      this.categoryId = this.categoryDetail.id;
-    },
     agree() {
       // this.$emit('create-product', productInfo);
       this.dialog = false;
     },
     cancel() {
       this.dialog = false;
+    },
+    deleteColor() {
+      this.dialog = true;
     },
     create() {
       let productInfo = new FormData();
@@ -406,6 +426,35 @@ export default {
       });
       this.$emit('create-product', productInfo);
     },
+    update() {
+      let productInfo = new FormData();
+      productInfo.append('id', this.id);
+      productInfo.append('name', this.name);
+      productInfo.append('description', this.description);
+      productInfo.append('gender', this.gender);
+      productInfo.append('price', this.price);
+      productInfo.append('originalPrice', this.originalPrice);
+      productInfo.append('categoryId', this.categoryId);
+      this.details.forEach((item, index) => {
+        productInfo.append(`details[${index}].color`, item.color);
+        productInfo.append(`details[${index}].size`, item.size);
+        productInfo.append(`details[${index}].stock`, item.stock);
+      });
+      this.newImages.forEach((item, index) => {
+        if (item.imageFile) {
+          productInfo.append(`updateImages[${index}].isDefault`, item.isDefault);
+          productInfo.append(`updateImages[${index}].sortOrder`, item.sortOrder);
+          productInfo.append(`updateImages[${index}].colorName`, item.colorName);
+          productInfo.append(
+            `updateImages[${index}].isSizeDetail`,
+            item.isSizeDetail
+          );
+          productInfo.append(`updateImages[${index}].imageFile`, item.imageFile);
+          productInfo.append(`updateImages[${index}].id`, 0);
+        }
+      });
+      this.$emit('update-product', productInfo);
+    },
     deleteColorSize(item, index) {
       if (index > 0) {
         if (item.color && item.size && item.stock) {
@@ -427,13 +476,71 @@ export default {
       };
       reader.readAsDataURL(this.newImages[index].imageFile);
     },
-    created() {},
+  },
+  watch: {
+    productDetail() {
+      if (this.productDetail != null) {
+        console.log(this.productDetail);
+        this.productDetail.resultObj.images.forEach((item) => {
+          if (item.isDefault === true) {
+            item.imageType = 'Ảnh bìa';
+          } else {
+            item.imageType = 'Ảnh màu';
+          }
+          item.imageData = item.imagePath;
+        });
+        this.id = this.productDetail.resultObj.id;
+        this.name = this.productDetail.resultObj.name;
+        this.description = this.productDetail.resultObj.description;
+        this.gender = this.productDetail.resultObj.gender;
+        this.price = this.productDetail.resultObj.price;
+        this.originalPrice = this.productDetail.resultObj.originalPrice;
+        this.categoryName =
+          this.productDetail.resultObj.categoryName.split(' ')[0];
+        console.log(
+          'categoryNAme - ',
+          this.productDetail.resultObj.categoryName
+        );
+        this.categoryDetail = this.productDetail.resultObj.categoryName;
+        this.categoryId = this.productDetail.resultObj.categoryId;
+        this.details = this.productDetail.resultObj.details;
+        this.newImages = this.productDetail.resultObj.images;
+        console.log('productDetail - ', this.productDetail);
+      }
+    },
+    gender(value) {
+      if (value === 1) {
+        this.type = [];
+        this.maleSelection.category.forEach((item) => {
+          this.type.push(item.type);
+        });
+
+        this.maleSelection.category.forEach((item) => {
+          if (item.type === this.categoryName) {
+            this.detail = item.detail;
+          }
+        });
+      }
+      if (value === 2) {
+        this.type = [];
+        this.femaleSelection.category.forEach((item) => {
+          this.type.push(item.type);
+        });
+
+        this.femaleSelection.category.forEach((item) => {
+          if (item.type === this.categoryName) {
+            this.detail = item.detail;
+          }
+        });
+      }
+      this.categoryDetail = this.productDetail.resultObj.categoryName;
+    },
   },
 };
 </script>
 
 <style scoped>
-.product-form {
+.product-form-block {
   background-color: #ffffff;
 }
 .product-name-block {

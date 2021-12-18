@@ -66,12 +66,12 @@ export default {
     }),
   },
   watch: {
-    async searchString(value, gender) {
+    async searchString(value) {
       await this.getAllProducts({
         pageIndex: this.page,
         pageSize: 30,
         keyword: value,
-        gender: parseInt(gender),
+        gender: 0,
       });
     },
   },

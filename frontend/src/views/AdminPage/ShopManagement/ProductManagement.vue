@@ -28,7 +28,7 @@
             <td class="product-name-img">
               <img
                 :src="
-                  'http://localhost:55000/apigateway/Products' +
+                  'http://30da-2402-800-6205-3e19-302d-c6f5-cab2-c66f.ngrok.io/apigateway/Products' +
                   product.thumbnailImage
                 "
                 alt=""

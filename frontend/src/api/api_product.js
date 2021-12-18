@@ -1,4 +1,4 @@
-import { getRequest, postRequest } from '@/utils/utils-api';
+import { getRequest, postRequest, putRequest } from '@/utils/utils-api';
 
 const getAllProducts = (pageIndex, pageSize) => {
   return getRequest(
@@ -23,6 +23,13 @@ const create = (productInfo) => {
   return postRequest(`Products`, productInfo);
 };
 
+const update = (productInfo) => {
+  for (var pair of productInfo.entries()) {
+    console.log(pair);
+  }
+  return putRequest(`Products`, productInfo);
+};
+
 const getAllProductsAdmin = (pageIndex, pageSize, keyWord) => {
   return getRequest(`Products/paging?PageIndex=${pageIndex}
   &PageSize=${pageSize}&Keyword=${keyWord}`);
@@ -40,4 +47,5 @@ export {
   getAllProductsShop,
   getTotalProducts,
   create,
+  update
 };

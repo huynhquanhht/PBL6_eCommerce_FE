@@ -221,7 +221,7 @@ form {
 
 .button-group {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .label {

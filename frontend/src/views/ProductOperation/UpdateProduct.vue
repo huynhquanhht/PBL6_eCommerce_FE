@@ -5,7 +5,9 @@
     </div>
     <hr class="update-product-hr" />
     <div class="product-form">
-    <product-form :actionType="actionType"></product-form>
+    <product-form :actionType="actionType" :productDetail="productDetail"
+      @update-product="update"
+    ></product-form>
     </div>
 
   </div>
@@ -13,14 +15,35 @@
 
 <script>
 import ProductForm from './ProductForm.vue';
+import {mapGetters, mapActions} from 'vuex';
 export default {
   components: { ProductForm },
   name: 'UpdateProduct',
+  props: {
+    id: {type: Number}
+  },
   data() {
     return {
       actionType: 'Update',
     };
   },
+  methods: {
+    ...mapActions({
+     fetchProductDetail: 'FETCH_PRODUCT_DETAIL',
+     updateProduct: 'UPDATE_PRODUCT'
+    }),
+    update(productInfo) {
+      this.updateProduct(productInfo);
+    }
+  },
+  computed: {
+    ...mapGetters({
+      productDetail: 'GET_PRODUCT_DETAIL',
+    })
+  },
+  async created() {
+    await this.fetchProductDetail({ id: this.id });
+  }
 };
 </script>
 

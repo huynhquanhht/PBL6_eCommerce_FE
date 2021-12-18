@@ -38,7 +38,7 @@
             {{ new Date().toLocaleDateString('en-GB', product.dateCreated) }}
           </td>
           <td>
-            <v-btn icon width="26px" height="26px" @click="updateProduct">
+            <v-btn icon width="26px" height="26px" @click="updateProduct(product.id)">
               <v-icon size="16px">fas fa-edit</v-icon>
             </v-btn>
             <v-btn icon width="26px" height="26px" @click="deleteProduct">
@@ -81,8 +81,8 @@ export default {
     cancel() {
       this.dialog = false;
     },
-    updateProduct() {
-      this.$router.push({ name: 'update-product' });
+    updateProduct(id) {
+      this.$router.push(`/shop-chanel/update-product/${id}`);
     },
     deleteProduct() {
       this.dialog = true;
