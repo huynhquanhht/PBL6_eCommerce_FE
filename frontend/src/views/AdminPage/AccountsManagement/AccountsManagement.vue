@@ -186,7 +186,7 @@ export default {
       this.enableUser({ userId: eachUser.id });
        await setTimeout( async () => {
            await this.getAllUsers({name: ' '});
-        }, 100);
+        }, 800);
       this.amnestyDialog = false;
       }
     },
@@ -215,7 +215,7 @@ export default {
         this.disableUser({ userId: eachUser.id });
          await setTimeout( async () => {
            await this.getAllUsers({name: ' '});
-        }, 100);
+        }, 800);
         this.disableDialog = false;
       }
     },

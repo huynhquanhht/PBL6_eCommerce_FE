@@ -27,7 +27,7 @@ const cancelShopOrder = (order) => {
 }
 
 const getAllOrders = (fromDate, toDate) => {
-  return getRequest(`Orders/all?formDate=${fromDate}&toDate=${toDate}`);
+  return getRequest(`Orders/all?fromDate=${fromDate}&toDate=${toDate}`);
 }
 
 export {

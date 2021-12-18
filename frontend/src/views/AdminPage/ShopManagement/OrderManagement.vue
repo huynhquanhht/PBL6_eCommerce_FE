@@ -155,6 +155,8 @@ export default {
       menu1: false,
       menu2: false,
       oneOrder: null,
+      searchFromDay: '',
+      searchToDay: '',
       //orderDetails: null,
     };
   },
@@ -167,9 +169,23 @@ export default {
     ...mapActions({
       getAllOrders: 'ACT_GET_ALL_ORDERS',
     }),
-    search(fromDate, toDate) {
-      console.log(fromDate, toDate);
-      this.getAllOrders({fromDate: fromDate, toDate: toDate});
+    async search(fromDate, toDate) {
+      var fromDay = fromDate.slice(8,10);
+      var fromMonth = fromDate.slice(5,7);
+      var fromYear = fromDate.slice(0,4);
+
+      var toDay = toDate.slice(8,10);
+      var toMonth = toDate.slice(5,7);
+      var toYear = toDate.slice(0,4);
+      
+      // this.searchFromDay = fromMonth + "/" + fromDay + "/" + fromYear;
+      // this.searchToDay = toMonth + "/" + toDay + "/" + toYear;
+      
+      await this.getAllOrders({
+          fromDate: fromMonth + "/" + fromDay + "/" + fromYear, 
+          toDate: toMonth + "/" + toDay + "/" + toYear,
+      });
+      
     },
     orderDetailForm(order) {
       this.oneOrder = order;
@@ -179,7 +195,8 @@ export default {
     },
   },
   async created() {
-    await this.getAllOrders({fromDate: '01/01/2000', toDate: '12/31/2099'});
+    await this.getAllOrders({
+    fromDate: '01/01/2021', toDate: '10/10/2030'}); 
   }
 };
 </script>

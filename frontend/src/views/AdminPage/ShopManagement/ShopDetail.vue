@@ -4,7 +4,7 @@
     <div class="form-block">
       <form>
         <div class="grid-container">
-          <label>Id cửa hàng: </label>
+          <label>Mã cửa hàng: </label>
           <ValidationProvider name="Tên Shop:">
             <input type="text" 
             class="input name-input" readonly v-model="id" />
@@ -111,7 +111,7 @@
       </form>
 
       <form class="rigth-content">
-        <label>Ảnh shop</label>
+        <label>Ảnh cửa hàng</label>
         <v-img
           v-model="avatar"
           :src="avatar"
@@ -204,7 +204,7 @@ export default {
     //         phoneNumber: this.phoneNumber,
     //         description: this.description,
     //         dateCreated: this.dateCreated.slice(0,10),
-    //         avatar: 'http://localhost:55000/apigateway/Shops' + this.avatar,
+    //         avatar: 'http://81b1-2402-800-6205-3e19-302d-c6f5-cab2-c66f.ngrok.io/apigateway/Shops' + this.avatar,
     //       },
     //     });
     //   }
@@ -221,7 +221,7 @@ export default {
         this.description = this.eachShop.description;
         this.dateCreated = this.eachShop.dateCreated.slice(0,10);
         this.avatar =
-          'http://9c58-2402-800-6205-3e19-302d-c6f5-cab2-c66f.ngrok.io/apigateway/Shops' + this.eachShop.avatar;
+          'http://81b1-2402-800-6205-3e19-302d-c6f5-cab2-c66f.ngrok.io/apigateway/Shops' + this.eachShop.avatar;
       }
     },
   },
@@ -235,7 +235,7 @@ export default {
       this.description = this.eachShop.description;
       this.dateCreated = this.eachShop.dateCreated.slice(0,10);
       this.avatar =
-        'http://9c58-2402-800-6205-3e19-302d-c6f5-cab2-c66f.ngrok.io/apigateway/Shops' + this.eachShop.avatar;
+        'http://81b1-2402-800-6205-3e19-302d-c6f5-cab2-c66f.ngrok.io/apigateway/Shops' + this.eachShop.avatar;
     }
   },
 };

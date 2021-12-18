@@ -1,7 +1,7 @@
 <template>
   <div class="reason-dialog">
     <div class="content">
-      <p>Nhập lý do hủy đơn hàng:</p>
+      <p>Nhập lý do hủy đơn:</p>
       <textarea class="textarea input" v-model="reason"></textarea>
     </div>
     <div class="btn-reason-dialog">

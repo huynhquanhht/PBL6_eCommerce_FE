@@ -87,6 +87,7 @@ import ShopDetail from './ShopDetail.vue';
 import ConfirmDialog from '../../../components/ConfirmDialog.vue';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import NoContentForm from '@/components/NoContentForm.vue'
+//import ReasonDialog from '../../../components/ReasonDialog.vue';
 export default {
   // name: 'shop-management',
   components: { 
@@ -94,6 +95,7 @@ export default {
     ShopDetail,
     ConfirmDialog,
     NoContentForm,
+    //ReasonDialog,
   },
   data() {
     return {
@@ -151,7 +153,7 @@ export default {
         this.enableShop({shopId: eachShop.shopId});
         await setTimeout( async () => {
            await this.getAllShops({name: ' '});
-        }, 100);
+        }, 800);
         this.amnestyDialog = false;
         return;
       }
@@ -182,7 +184,7 @@ export default {
         });
         await setTimeout( async () => {
            await this.getAllShops({name: ' '});
-        }, 100);
+        }, 800);
         this.disableDialog = false;
         return;
       }
