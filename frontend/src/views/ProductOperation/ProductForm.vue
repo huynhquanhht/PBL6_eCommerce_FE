@@ -162,10 +162,7 @@
                       v-if="productDetail"
                       class="img-product"
                       v-show="
-                        !(
-                          newImages[index].imagePath &&
                           newImages[index].imageData
-                        )
                       "
                       :src="
                         'http://30da-2402-800-6205-3e19-302d-c6f5-cab2-c66f.ngrok.io/apigateway/Products' +
@@ -441,9 +438,11 @@ export default {
         productInfo.append(`details[${index}].stock`, item.stock);
       });
       this.newImages.forEach((item, index) => {
+        console.log('image - file', item.imageFile);
         if (item.imageFile) {
+          console.log('Hello - ', item.imageFile)
           productInfo.append(`updateImages[${index}].isDefault`, item.isDefault);
-          productInfo.append(`updateImages[${index}].sortOrder`, item.sortOrder);
+          productInfo.append(`updateImages[${index}].sortOrder`, 2);
           productInfo.append(`updateImages[${index}].colorName`, item.colorName);
           productInfo.append(
             `updateImages[${index}].isSizeDetail`,
@@ -502,7 +501,7 @@ export default {
           this.productDetail.resultObj.categoryName
         );
         this.categoryDetail = this.productDetail.resultObj.categoryName;
-        this.categoryId = this.productDetail.resultObj.categoryId;
+        // this.categoryId = this.productDetail.resultObj.categoryId;
         this.details = this.productDetail.resultObj.details;
         this.newImages = this.productDetail.resultObj.images;
         console.log('productDetail - ', this.productDetail);
