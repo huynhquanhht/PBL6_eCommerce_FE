@@ -35,6 +35,11 @@
         <span> {{ (order.totalPrice + 10000).toLocaleString('it-IT') }} đ</span>
       </div>
     </div>
+    <div>
+      <v-btn @click="cancelOrder" class="btn">
+        Hủy đơn
+      </v-btn>
+    </div>
   </div>
 </template>
 
@@ -68,7 +73,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .v-application p {
   margin-bottom: 0px;
 }
@@ -188,5 +193,16 @@ export default {
 
 .total-payment {
   margin-bottom: 10px;
+}
+
+.btn {
+  background-color: #fea200 !important;
+  color: #ffffff !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  width: 80px !important;
+  box-shadow: none !important;
+  width: 160px !important;
+  height: 40px !important;
 }
 </style>

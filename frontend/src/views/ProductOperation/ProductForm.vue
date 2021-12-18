@@ -1,6 +1,6 @@
 <template>
   <div class="product-form-block">
-    <div class="product-form" v-if="productDetail">
+    <div class="product-form" v-if="true">
       <div class="product-name">
         <div class="product-name-block">
           <div class="label-block">
@@ -55,9 +55,13 @@
               <label class="label">Chi tiết: </label>
             </div>
             <div class="category-select-block">
-              <select class="select-box" v-model="categoryDetail">
+              <select
+                class="select-box"
+                v-model="categoryDetail"
+                @change="changeCategoryDetail"
+              >
                 <option v-for="(item, index) in detail" :key="index">
-                  {{ item.name + ' - ' + categoryDetail }}
+                  {{ item.name }}
                 </option>
               </select>
             </div>
@@ -106,11 +110,8 @@
                     />
                   </td>
                   <td style="width: 108px">
-                    <v-btn icon @click="deleteColor">
-                      <i
-                        class="icon-delete fas fa-trash"
-                        @click="deleteColorSize(item, index)"
-                      ></i>
+                    <v-btn icon @click="deleteColorSize(item, index)">
+                      <i class="icon-delete fas fa-trash"></i>
                     </v-btn>
                   </td>
                 </tr>
@@ -161,11 +162,9 @@
                     <img
                       v-if="productDetail"
                       class="img-product"
-                      v-show="
-                          newImages[index].imageData
-                      "
+                      v-show="newImages[index].imageData"
                       :src="
-                        'http://30da-2402-800-6205-3e19-302d-c6f5-cab2-c66f.ngrok.io/apigateway/Products' +
+                        'http://81b1-2402-800-6205-3e19-302d-c6f5-cab2-c66f.ngrok.io/apigateway/Products' +
                         newImages[index].imageData
                       "
                       alt=""
@@ -225,8 +224,8 @@
       style="width: 100wm; height: 100vh"
     >
       <v-progress-circular
-        :size="50"
-        color="primary"
+        :size="40"
+        color="#fea200"
         indeterminate
       ></v-progress-circular>
     </div>
@@ -242,6 +241,7 @@
 
 <script>
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
+import { mapMutations } from 'vuex';
 export default {
   name: 'AddProductForm',
   components: { ConfirmDialog },
@@ -256,6 +256,7 @@ export default {
   data() {
     return {
       id: null,
+      index: null,
       productInfo: null,
       name: '',
       description: '',
@@ -369,9 +370,13 @@ export default {
         },
       ],
       updateImages: [],
+      deleteImages: [],
     };
   },
   methods: {
+    ...mapMutations({
+      setSnackbar: 'SET_SNACKBAR',
+    }),
     addCategory() {
       this.details.push({
         color: null,
@@ -387,8 +392,14 @@ export default {
         isSizeDetail: false,
       });
     },
+    handleCategoryDetail() {
+      this.categoryId = this.categoryDetail.id;
+    },
     agree() {
-      // this.$emit('create-product', productInfo);
+      this.details.pop(this.index);
+      this.newImages.pop(this.index);
+      // this.deleteImages.push(this.newImages[this.index + 1].id);
+      console.log('index - ', this.deleteImages);
       this.dialog = false;
     },
     cancel() {
@@ -405,7 +416,6 @@ export default {
       productInfo.append('price', this.price);
       productInfo.append('originalPrice', this.originalPrice);
       productInfo.append('categoryId', this.categoryId);
-
       this.details.forEach((item, index) => {
         productInfo.append(`details[${index}].color`, item.color);
         productInfo.append(`details[${index}].size`, item.size);
@@ -437,31 +447,48 @@ export default {
         productInfo.append(`details[${index}].size`, item.size);
         productInfo.append(`details[${index}].stock`, item.stock);
       });
-      this.newImages.forEach((item, index) => {
-        console.log('image - file', item.imageFile);
+      console.log('newImages', this.newImages);
+      this.newImages.forEach((item) => {
+        let index = 0;
         if (item.imageFile) {
-          console.log('Hello - ', item.imageFile)
-          productInfo.append(`updateImages[${index}].isDefault`, item.isDefault);
+          productInfo.append(
+            `updateImages[${index}].isDefault`,
+            item.isDefault
+          );
           productInfo.append(`updateImages[${index}].sortOrder`, 2);
-          productInfo.append(`updateImages[${index}].colorName`, item.colorName);
+          productInfo.append(
+            `updateImages[${index}].colorName`,
+            item.colorName
+          );
           productInfo.append(
             `updateImages[${index}].isSizeDetail`,
             item.isSizeDetail
           );
-          productInfo.append(`updateImages[${index}].imageFile`, item.imageFile);
-          productInfo.append(`updateImages[${index}].id`, 0);
+          console.log('item', item);
+          productInfo.append(
+            `updateImages[${index}].imageFile`,
+            item.imageFile
+          );
+          item.id = item.id === undefined ? 0 : item.id;
+          productInfo.append(`updateImages[${index}].id`, item.id);
+          ++index;
         }
       });
       this.$emit('update-product', productInfo);
     },
     deleteColorSize(item, index) {
+      console.log('item - index: ' + item + ' - ' + index);
       if (index > 0) {
         if (item.color && item.size && item.stock) {
           this.dialog = true;
-        } else {
-          this.colorSize.pop(index);
-          this.newImages.pop(index);
+          this.index = index;
+          return;
         }
+        this.setSnackbar({
+          type: 'error',
+          text: 'Lỗi! Không thể xóa.',
+          visible: true,
+        });
       }
     },
     setColor(item, index) {
@@ -501,10 +528,10 @@ export default {
           this.productDetail.resultObj.categoryName
         );
         this.categoryDetail = this.productDetail.resultObj.categoryName;
-        // this.categoryId = this.productDetail.resultObj.categoryId;
+        this.categoryId = this.productDetail.resultObj.categoryId;
         this.details = this.productDetail.resultObj.details;
         this.newImages = this.productDetail.resultObj.images;
-        console.log('productDetail - ', this.productDetail);
+        console.log('newImages - ', this.newImages);
       }
     },
     gender(value) {
