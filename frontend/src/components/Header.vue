@@ -1,5 +1,5 @@
 <template>
-  <div class="header-block">
+  <div class="header-block" v-if="(loginStatus === false) || (loginStatus === true && userInfo)">
     <div class="header">
       <div class="header__top">
         <div class="header__top-main">
@@ -40,7 +40,7 @@
               <span>Kênh người bán</span>
             </v-tooltip>
           </div>
-          <div class="header__top-user-block" v-if="!loginStatus">
+          <div class="header__top-user-block" v-if="!userInfo && loginStatus === false">
             <v-icon size="28">fas fa-user</v-icon>
             <div>
               <router-link to="/login" class="login-link">
@@ -55,7 +55,7 @@
               </router-link>
             </div>
           </div>
-          <div class="personal-account-block" v-if="loginStatus && userInfo">
+          <div class="personal-account-block" v-if="userInfo">
             <v-menu offset-y open-on-hover :close-on-content-click="false">
               <template v-slot:activator="{ on, attrs }">
                 <div class="personal-account" v-bind="attrs" v-on="on">
@@ -276,10 +276,12 @@ export default {
     },
     selectPersonalOption(option) {
       if (option === 'Thông tin cá nhân') {
-        // this.$router.push(`/`);
+        this.$router.push({name: 'personal-identity'}).catch(() => {});
+        return;
       }
       if (option === 'Đơn mua') {
-        // this.$router.push(`/`);
+        this.$router.push({name: "purchase-order"}).catch(() => {});
+        return;
       }
       if (option === 'Đăng xuất') {
         localStorageUtils.clearToken();
@@ -291,11 +293,15 @@ export default {
       this.$router.replace(`search-page?searchString=${this.searchString}&gender=0`);
     }
   },
-  // watch: {
-  //   searchString() {
-  //     this.$router.push(`search-page?searchString=${this.searchString}`);
-  //   }
-  // },
+  watch: {
+    userInfo() {
+      if (this.userInfo) {
+        this.loginStatus = true;
+      } else {
+        this.loginStatus = false;
+      }
+    }
+  },
   async created() {
     if (localStorageUtils.getToken()) {
       this.loginStatus = true;

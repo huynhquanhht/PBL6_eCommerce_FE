@@ -3,7 +3,7 @@
     <div class="product-list">
       <div class="product" v-for="(product, index) in productList" :key="index">
         <product-card
-          :imgUrl="'http://localhost:55000/apigateway/Products' + product.thumbnailImage"
+          :imgUrl="'http://30da-2402-800-6205-3e19-302d-c6f5-cab2-c66f.ngrok.io/apigateway/Products' + product.thumbnailImage"
           :productId="product.id"
           :productName="product.name"
           :productPrice="product.price"
