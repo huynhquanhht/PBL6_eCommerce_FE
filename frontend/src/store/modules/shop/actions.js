@@ -27,6 +27,28 @@ const actions = {
       }
     }
   },
+  'UPDATE_SHOP': async (context, shopInfo) => {{
+    try {
+      console.log('updateShop');
+      await updateShop(shopInfo);
+      context.commit('SET_SNACKBAR', {
+        type: 'success',
+        visible: true,
+        text: 'Cập nhật cửa hàng thành công'
+      });
+      return true;
+    } catch (error) {
+      if (error.response.status === 400) {
+        context.commit('SET_SNACKBAR', {
+          type: 'error',
+          visible: true,
+          text: error.response.data
+        });
+        return;
+      }
+      return false;
+    }
+  }},
   'FETCH_SHOP_INFO': async (context) => {
     try {
       let res = await getShopInfo();
@@ -39,7 +61,7 @@ const actions = {
       }
       context.commit('SET_SHOP_INFO', res.data.resultObj);
     } catch (error) {
-      if (error.response.status === 400) {
+      if (error.status === 400) {
         context.commit('SET_SNACKBAR', {
           type: 'error',
           visible: true,

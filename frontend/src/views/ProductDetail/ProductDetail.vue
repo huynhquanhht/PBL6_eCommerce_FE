@@ -161,6 +161,14 @@ export default {
           (item) =>
             this.choosedColor === item.color && this.choosedSize === item.size
         );
+        if (!detailItem) {
+          this.setSnackbar({
+            type: 'info',
+            text: 'Sản phẩm này đã hết hàng',
+            visible: true,
+          });
+          return;
+        }
         let product = {
           productDetail_Id: detailItem.id,
           quantity: this.choosedQuantity,

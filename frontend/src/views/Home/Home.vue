@@ -12,11 +12,11 @@
     <div
       v-else
       class="d-flex justify-center align-center"
-      style="width: 100wm; height: 100vh"
+      style="width: 100wm; height: 70vh"
     >
       <v-progress-circular
-        :size="50"
-        color="primary"
+        :size="40"
+        color="#fea200"
         indeterminate
       ></v-progress-circular>
     </div>
