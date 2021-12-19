@@ -6,7 +6,8 @@
       <input 
       type="text" 
       placeholder="Tìm kiếm cửa hàng"
-      v-model="searchString" />
+      v-model="searchString"
+      @keyup.enter="search" />
       <v-btn @click="search(searchString)">Tìm kiếm</v-btn>
     </div>
     <div class="shop-table" v-if="allShops">

@@ -7,6 +7,7 @@
         type="text"
         placeholder="Tìm kiếm tài khoản..."
         v-model="searchString"
+        @keyup.enter="search"
       />
       <v-btn @click="search(searchString)">Tìm kiếm</v-btn>
 

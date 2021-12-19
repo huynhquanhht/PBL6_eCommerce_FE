@@ -43,7 +43,8 @@
 
       <label>Đến ngày: </label>
       <v-menu
-        ref="menu2"
+       @keyup.enter="search"
+        ref="menu2"  
         v-model="menu2"
         :close-on-content-click="false"
         :return-value.sync="datePicker2"

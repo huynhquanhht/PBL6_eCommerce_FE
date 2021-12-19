@@ -15,6 +15,7 @@
         type="text"
         name=""
         id=""
+        @keyup.enter="search"
       />
       <v-btn @click="search" class="search-button">Tìm kiếm</v-btn>
     </div>

@@ -9,7 +9,11 @@
       <select class="search-select" name="" id="">
         <option value="Mã đơn hàng">Mã đơn hàng</option>
       </select>
-      <input v-model="searchId" class="search-input" type="text" name="" id="" />
+      <input v-model="searchId" 
+      class="search-input" 
+      type="text" name="" 
+      id="" 
+      @keyup.enter="search"/>
       <v-btn @click="search" class="search-button">Tìm kiếm</v-btn>
     </div>
     <table class="styled-table">
@@ -47,7 +51,7 @@
               v-show="order.state === 'Chờ xác nhận' || order.state === 'Đã xác nhận'"
               @click="cancelOrder(order.id)"
             >
-              <v-icon size="25px">mdi-cancel</v-icon>
+              <v-icon size="25px">mdi-close-circle</v-icon>
             </v-btn>
           </td>
         </tr>

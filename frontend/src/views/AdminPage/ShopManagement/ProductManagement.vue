@@ -4,6 +4,7 @@
     <hr class="hr" />
     <div class="header__top-search-block">
       <input
+        @keyup.enter="search"
         type="text"
         placeholder="Nhập tên sản phẩm..."
         v-model="searchString"
