@@ -5,7 +5,8 @@ import {
    getTotalProducts,
    getAllProductsShop,
    create,
-   update
+   update,
+   deleteProduct
    } from "@/api/api_product";
 
 const actions = {
@@ -83,14 +84,17 @@ const actions = {
         visible: true,
         text: 'Tạo sản phẩm thành công',
       });
+      return true;
     } catch (error) {
       if (error.response.status === 400) {
+        console.log(error.response.data);
         context.commit('SET_SNACKBAR', {
           type: 'info',
           visible: true,
-          text: error.response.data,
+          text: 'Dữ liệu không hợp lệ',
         });
       }
+      return false;
     }
   },
   'UPDATE_PRODUCT': async(context, productInfo) => {
@@ -101,14 +105,36 @@ const actions = {
         visible: true,
         text: 'Cập nhật sản phẩm thành công',
       });
+      return true;
     } catch (error) {
       if (error.response.status === 400) {
         context.commit('SET_SNACKBAR', {
           type: 'info',
           visible: true,
-          text: error.response.data,
+          text: 'Dữ liệu không hợp lệ',
         });
       }
+      return false;
+    }
+  },
+  'DELETE_PRODUCT': async (context, product) => {
+    try {
+      await deleteProduct(product.id);
+      context.commit('SET_SNACKBAR', {
+        type: 'success',
+        visible: true,
+        text: 'Xóa sản phẩm thành công',
+      });
+      return true;
+    } catch (error) {
+      if (error.response.status === 400) {
+        context.commit('SET_SNACKBAR', {
+          type: 'info',
+          visible: true,
+          text: 'Xóa dữ liệu thất bại',
+        });
+      }
+      return false;
     }
   },
   'ACT_GET_ALL_PRODUCTS_FOR_ADMIN' : async(context, payload) => {

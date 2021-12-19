@@ -61,22 +61,16 @@ export default {
   methods: {
     ...mapMutations({
       setSnackbar: 'SET_SNACKBAR',
+      setUserInfo: 'SET_USER_INFO'
     }),
     ...mapActions({
       fetchUserInfo: 'FETCH_USER_INFO',
     }),
-        selectPersonalOption(option) {
-      if (option === 'Thông tin cá nhân') {
-        this.$router.push({name: 'personal-identity'}).catch(() => {});
-        return;
-      }
-      if (option === 'Đơn mua') {
-        this.$router.push({name: "purchase-order"}).catch(() => {});
-        return;
-      }
+      selectPersonalOption(option) {
       if (option === 'Đăng xuất') {
         localStorageUtils.clearToken();
-        this.$router.go('/');
+        this.setUserInfo('');
+        this.$router.push('/');
       }
     },
   },

@@ -58,7 +58,7 @@
               <select
                 class="select-box"
                 v-model="categoryDetail"
-                @change="changeCategoryDetail"
+                @change="handleCategoryDetail"
               >
                 <option v-for="(item, index) in detail" :key="index">
                   {{ item.name }}
@@ -164,7 +164,7 @@
                       class="img-product"
                       v-show="newImages[index].imageData"
                       :src="
-                        'http://81b1-2402-800-6205-3e19-302d-c6f5-cab2-c66f.ngrok.io/apigateway/Products' +
+                        'http://c64e-2402-800-6205-3e19-cd35-9f68-4158-e6ba.ngrok.io/apigateway/Products' +
                         newImages[index].imageData
                       "
                       alt=""
@@ -213,7 +213,7 @@
               @click="update"
               >Lưu sản phẩm</v-btn
             >
-            <v-btn class="btn btn-cancel">Hủy</v-btn>
+            <v-btn class="btn btn-cancel" @click="cancelAction">Hủy</v-btn>
           </div>
         </div>
       </div>
@@ -393,17 +393,38 @@ export default {
       });
     },
     handleCategoryDetail() {
-      this.categoryId = this.categoryDetail.id;
+      console.log('categoryDeatil - ', this.categoryDetail);
+      this.detail.forEach((item) => {
+        console.log(item);
+        if (item.name === this.categoryDetail) {
+          this.categoryId = item.id;
+        }
+      })
+      // this.categoryId = this.categoryDetail.id;
     },
     agree() {
+      if (this.actionType === 'Update') {
+        this.$router.push('/shop-chanel/product-list');
+        return;
+      }
       this.details.pop(this.index);
       this.newImages.pop(this.index);
-      // this.deleteImages.push(this.newImages[this.index + 1].id);
       console.log('index - ', this.deleteImages);
       this.dialog = false;
     },
     cancel() {
       this.dialog = false;
+    },
+    cancelAction() {
+      if (this.actionType === 'Update') {
+        this.question = "Bạn chắc chắn muốn hủy thay đổi";
+        this.dialog = true;
+        return;
+      }
+      if (this.actionType === 'Create') {
+        this.$router.push('/shop-chanel/product-list');
+      } 
+
     },
     deleteColor() {
       this.dialog = true;
@@ -476,19 +497,19 @@ export default {
       });
       this.$emit('update-product', productInfo);
     },
-    deleteColorSize(item, index) {
-      console.log('item - index: ' + item + ' - ' + index);
+    deleteColorSize(index) {
       if (index > 0) {
-        if (item.color && item.size && item.stock) {
-          this.dialog = true;
-          this.index = index;
-          return;
-        }
-        this.setSnackbar({
-          type: 'error',
-          text: 'Lỗi! Không thể xóa.',
-          visible: true,
-        });
+        this.dialog = true;
+        this.index = index;
+        // if (item.color && item.size && item.stock) {
+
+        //   return;
+        // }
+        // this.setSnackbar({
+        //   type: 'error',
+        //   text: 'Lỗi! Không thể xóa.',
+        //   visible: true,
+        // });
       }
     },
     setColor(item, index) {
@@ -559,7 +580,9 @@ export default {
           }
         });
       }
-      this.categoryDetail = this.productDetail.resultObj.categoryName;
+      if (this.productDetail) {
+        this.categoryDetail = this.productDetail.resultObj.categoryName;
+      }
     },
   },
 };

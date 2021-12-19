@@ -47,7 +47,12 @@
               >
                 <v-icon size="16px">fas fa-edit</v-icon>
               </v-btn>
-              <v-btn icon width="26px" height="26px" @click="deleteProduct">
+              <v-btn
+                icon
+                width="26px"
+                height="26px"
+                @click="deleteProduct(product.id)"
+              >
                 <v-icon size="16px">fas fa-trash</v-icon>
               </v-btn>
             </td>
@@ -87,13 +92,24 @@ export default {
     return {
       dialog: false,
       question: 'Bạn chắc chắn muốn xóa sản phẩm này?',
+      productId: null,
     };
   },
   methods: {
     ...mapActions({
       getAllProducts: 'ACT_GET_ALL_PRODUCTS_SHOP',
+      fetchDeleteProduct: 'DELETE_PRODUCT',
     }),
-    agree() {
+    async agree() {
+      let res = await this.fetchDeleteProduct({ id: this.productId });
+      if (res) {
+        let shopInfo = JSON.parse(localStorageUtils.getShopInfo());
+        await this.getAllProducts({
+          pageIndex: 1,
+          pageSize: 99,
+          shopId: shopInfo.id,
+        });
+      }
       this.dialog = false;
     },
     cancel() {
@@ -102,7 +118,8 @@ export default {
     updateProduct(id) {
       this.$router.push(`/shop-chanel/update-product/${id}`);
     },
-    deleteProduct() {
+    deleteProduct(productId) {
+      this.productId = productId;
       this.dialog = true;
     },
   },
