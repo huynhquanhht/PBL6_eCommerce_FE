@@ -1,4 +1,4 @@
-import { getRequest, postRequest, putRequest } from '@/utils/utils-api';
+import { getRequest, postRequest, putRequest, deleteRequest } from '@/utils/utils-api';
 
 const getAllProducts = (pageIndex, pageSize) => {
   return getRequest(
@@ -24,11 +24,12 @@ const create = (productInfo) => {
 };
 
 const update = (productInfo) => {
-  for (var pair of productInfo.entries()) {
-    console.log(pair);
-  }
   return putRequest(`Products`, productInfo);
 };
+
+const deleteProduct = (productId) => {
+  return deleteRequest(`Products?productId=${productId}`);
+}
 
 const getAllProductsAdmin = (pageIndex, pageSize, keyWord) => {
   return getRequest(`Products/paging?PageIndex=${pageIndex}
@@ -47,5 +48,6 @@ export {
   getAllProductsShop,
   getTotalProducts,
   create,
-  update
+  update,
+  deleteProduct
 };

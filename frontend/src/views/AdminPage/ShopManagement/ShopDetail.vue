@@ -204,7 +204,7 @@ export default {
             phoneNumber: this.phoneNumber,
             description: this.description,
             dateCreated: this.dateCreated,
-            avatar: 'http://81b1-2402-800-6205-3e19-302d-c6f5-cab2-c66f.ngrok.io/apigateway/Shops' + this.avatar,
+            avatar: 'http://c64e-2402-800-6205-3e19-cd35-9f68-4158-e6ba.ngrok.io/apigateway/Shops' + this.avatar,
           },
         });
       }
@@ -221,7 +221,7 @@ export default {
         this.description = this.eachShop.description;
         this.dateCreated = this.eachShop.dateCreated;
         this.avatar =
-          'http://81b1-2402-800-6205-3e19-302d-c6f5-cab2-c66f.ngrok.io/apigateway/Shops' + this.eachShop.avatar;
+          'http://c64e-2402-800-6205-3e19-cd35-9f68-4158-e6ba.ngrok.io/apigateway/Shops' + this.eachShop.avatar;
       }
     },
   },
@@ -235,7 +235,7 @@ export default {
       this.description = this.eachShop.description;
       this.dateCreated = this.eachShop.dateCreated;
       this.avatar =
-        'http://81b1-2402-800-6205-3e19-302d-c6f5-cab2-c66f.ngrok.io/apigateway/Shops' + this.eachShop.avatar;
+        'http://c64e-2402-800-6205-3e19-cd35-9f68-4158-e6ba.ngrok.io/apigateway/Shops' + this.eachShop.avatar;
     }
   },
 };

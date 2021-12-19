@@ -32,8 +32,11 @@ export default {
      fetchProductDetail: 'FETCH_PRODUCT_DETAIL',
      updateProduct: 'UPDATE_PRODUCT'
     }),
-    update(productInfo) {
-      this.updateProduct(productInfo);
+    async update(productInfo) {
+      let res = await this.updateProduct(productInfo);
+      if (res) {
+        this.$router.push('/shop-chanel/product-list');
+      }
     }
   },
   computed: {
