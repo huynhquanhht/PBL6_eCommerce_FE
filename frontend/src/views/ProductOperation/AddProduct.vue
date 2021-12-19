@@ -26,7 +26,10 @@ export default {
       createProduct: 'CREATE_PRODUCT'
     }),
     async create(productInfo) {
-      await this.createProduct(productInfo);
+      let res = await this.createProduct(productInfo);
+      if (res) {
+        this.$router.push('/shop-chanel/product-list');
+      }
     }
   }
 }

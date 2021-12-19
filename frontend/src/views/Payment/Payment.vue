@@ -151,6 +151,7 @@ export default {
       };
       let result = await this.orderCart(order);
       if (result) {
+        await this.fetchCartQuantity();
         router.push('/member-info/purchase-order');
       }
     },
