@@ -77,7 +77,15 @@
         </div>
       </div>
       <div class="register-ava">
-        <img class="shop-avatar" :src="shopAvatarData" alt="shop-avatar" />
+        <img
+          class="shop-avatar"
+          :src="
+            shopAvatarData.includes('storage') ? 
+            'http://c64e-2402-800-6205-3e19-cd35-9f68-4158-e6ba.ngrok.io/apigateway/Shops' +
+            shopAvatarData : shopAvatarData
+          "
+          alt="shop-avatar"
+        />
         <input
           class="file-input"
           id="file"
@@ -131,9 +139,10 @@ export default {
       phone: '',
       description: '',
       dialog: false,
-      question: 'Bạn chắc chắn muốn đăng ký cửa hàng?',
+      question: '',
       shopAvatarData: false,
       shopAvatar: null,
+      action: '',
     };
   },
   computed: {
@@ -144,17 +153,36 @@ export default {
   methods: {
     ...mapActions({
       fetchRegisterShop: 'REGISTER_SHOP',
+      fetchUpdateShop: 'UPDATE_SHOP',
       getShopInfo: 'FETCH_SHOP_INFO',
     }),
     async agree() {
-      let shopInfo = new FormData();
-      shopInfo.append('Name', this.fullname);
-      shopInfo.append('Address', this.address);
-      shopInfo.append('PhoneNumber', this.phone);
-      shopInfo.append('Description', this.shopDescription);
-      shopInfo.append('ImageFile', this.shopAvatar);
-      await this.fetchRegisterShop(shopInfo);
-      this.dialog = false;
+      if (this.action === 'register') {
+        let shopInfo = new FormData();
+        shopInfo.append('Name', this.fullname);
+        shopInfo.append('Address', this.address);
+        shopInfo.append('PhoneNumber', this.phone);
+        shopInfo.append('Description', this.description);
+        shopInfo.append('ImageFile', this.shopAvatar);
+        await this.fetchRegisterShop(shopInfo);
+        this.dialog = false;
+      }
+      if (this.action === 'update') {
+        let shopInfo = new FormData();
+        shopInfo.append('Name', this.fullname);
+        shopInfo.append('Address', this.address);
+        shopInfo.append('PhoneNumber', this.phone);
+        shopInfo.append('Description', this.description);
+        shopInfo.append('ImageFile', this.shopAvatar);
+        for (var item of shopInfo.entries()) {
+          console.log(item);
+        }
+        let res = await this.fetchUpdateShop(shopInfo);
+        this.dialog = false;
+        if (res) {
+          await this.getShopInfo();
+        }
+      }
     },
     cancel() {
       this.dialog = false;
@@ -168,9 +196,13 @@ export default {
       reader.readAsDataURL(this.shopAvatar);
     },
     registerShop() {
+      this.question = 'Bạn chắc chắn muốn đăng ký cửa hàng?';
+      this.action = 'register';
       this.dialog = true;
     },
     updateShop() {
+      this.question = 'Bạn chắc chắn muốn cập nhật cửa hàng?';
+      this.action = 'update';
       this.dialog = true;
     },
   },
@@ -181,9 +213,21 @@ export default {
         this.address = this.shopInfo.address;
         this.phone = this.shopInfo.phoneNumber;
         this.description = this.shopInfo.description;
-        this.shopAvatar = process.env.VUE_APP_BASE_URL + this.shopInfo.avatar;
+        this.shopAvatar = this.shopInfo.avatar;
       }
     },
+  },
+  created() {
+    if (this.shopInfo) {
+      this.fullname = this.shopInfo.nameOfShop;
+      this.address = this.shopInfo.address;
+      this.phone = this.shopInfo.phoneNumber;
+      this.description =
+        this.shopInfo.description === 'undefined'
+          ? ''
+          : this.shopInfo.description;
+      this.shopAvatarData = this.shopInfo.avatar;
+    }
   },
 };
 </script>

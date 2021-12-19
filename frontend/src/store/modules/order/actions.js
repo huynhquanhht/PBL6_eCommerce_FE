@@ -5,6 +5,7 @@ import {
   cancelShopOrder,
   getOrderById,
   getAllOrders,
+  memberCancelOrder,
 } from '@/api/api_order';
 const actions = {
   'ORDER_CART': async (context, order) => {
@@ -105,7 +106,6 @@ const actions = {
       }
       console.log(res.data.resultObj);
       context.commit('SET_ALL_ORDERS', res.data.resultObj);
-      
     } catch (error) {
       if (error.response.status === 400) {
         context.commit('SET_SNACKBAR', {
@@ -115,6 +115,26 @@ const actions = {
         });
       }
       return false;
+    }
+  },
+  'ACT_MEMBER_CANCEL_ORDER' : async (context, orderInfo) => {
+    try {
+      console.log('Member Cancel Order', orderInfo);
+      await memberCancelOrder(orderInfo);
+      context.commit('SET_SNACKBAR', {
+        type: 'success',
+        visible: true,
+        text: 'Hủy đơn hàng thành công',
+      });
+    } catch (error) {
+      if (error.response.status === 400) {
+        context.commit('SET_SNACKBAR', {
+          type: 'error',
+          visible: true,
+          text: error.response.data,
+        });
+        return;
+      }
     }
   }
 };

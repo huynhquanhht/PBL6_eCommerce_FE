@@ -1,12 +1,23 @@
 <template>
   <div class="personal-account-wrapper">
-    <div class="personal-account">
+    <div class="personal-account" v-if="userInfo">
       <img src="@/assets/images/avatar-user.png" alt="avatar-user" />
       <div class="personal-identity">
         <span> {{ userInfo.fullname }}</span>
         <span class="email"> {{ userInfo.email }}</span>
       </div>
     </div>
+   <div
+      v-else
+      class="d-flex justify-center align-center"
+      style="width: 100wm; height: 100vh"
+    >
+      <v-progress-circular
+        :size="30"
+        color="#fea200"
+        indeterminate
+      ></v-progress-circular>
+   </div>
     <hr class="hr" />
     <div class="item-group">
       <div  v-for="(item, index) in menuItems" :key="index">

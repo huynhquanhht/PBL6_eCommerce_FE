@@ -32,7 +32,9 @@ const actions = {
   },
   'ACT_GET_ALL_PRODUCTS_SHOP': async (context, payload) => {
     try {
+      console.log(payload);
       const res = await getAllProductsShop(payload.pageIndex, payload.pageSize);
+      console.log(res);
       context.commit('SET_ALL_PRODUCTS', res.data.resultObj.items);
       if (res.status === 204) {
         context.commit('SET_SNACKBAR', {
@@ -97,7 +99,7 @@ const actions = {
       context.commit('SET_SNACKBAR', {
         type: 'success',
         visible: true,
-        text: 'Cập nhất sản phẩm thành công',
+        text: 'Cập nhật sản phẩm thành công',
       });
     } catch (error) {
       if (error.response.status === 400) {

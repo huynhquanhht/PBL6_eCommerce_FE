@@ -133,7 +133,7 @@
 import TopTitle from '@/components/TopTitle.vue';
 import OrderDetail from './OrderDetail.vue';
 import NoContentForm from '@/components/NoContentForm.vue';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 
 export default {
   // name: 'shop-management',
@@ -166,6 +166,9 @@ export default {
     }),
   },
   methods: {
+    ...mapMutations({
+      setSnackbar: 'SET_SNACKBAR',
+    }),
     ...mapActions({
       getAllOrders: 'ACT_GET_ALL_ORDERS',
     }),
@@ -180,7 +183,14 @@ export default {
       
       // this.searchFromDay = fromMonth + "/" + fromDay + "/" + fromYear;
       // this.searchToDay = toMonth + "/" + toDay + "/" + toYear;
-      
+      if(fromDay > toDay || fromMonth > toMonth || fromYear > toYear){
+        this.setSnackbar({
+          type: 'warning',
+          visible: true,
+          text: "Từ ngày không thể lớn hơn Đến ngày"
+        });
+        return;
+      }
       await this.getAllOrders({
           fromDate: fromMonth + "/" + fromDay + "/" + fromYear, 
           toDate: toMonth + "/" + toDay + "/" + toYear,

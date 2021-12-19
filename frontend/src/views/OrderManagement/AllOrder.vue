@@ -9,8 +9,8 @@
       <select class="search-select" name="" id="">
         <option value="Mã đơn hàng">Mã đơn hàng</option>
       </select>
-      <input class="search-input" type="text" name="" id="" />
-      <v-btn class="search-button">Tìm kiếm</v-btn>
+      <input v-model="searchId" class="search-input" type="text" name="" id="" />
+      <v-btn @click="search()" class="search-button">Tìm kiếm</v-btn>
     </div>
     <table class="styled-table" v-if="orders">
       <thead>
@@ -22,7 +22,8 @@
           <th style="width: 140px">Tổng hóa đơn</th>
           <th style="width: 140px">Trạng thái</th>
           <th style="width: 130px">Ngày cập nhật</th>
-          <th style="width: 130px">Thao tác</th>
+          <th style="width: 130px">Lý do hủy đơn</th>
+          <th style="width: 140px">Thao tác</th>
         </tr>
       </thead>
       <tbody>
@@ -36,6 +37,8 @@
           <td>
             {{ new Date().toLocaleDateString('en-GB', order.dateModified) }}
           </td>
+          <td v-if="order.state === 'Đã hủy'"> {{order.cancelReason}} </td>
+          <td v-else> </td>
           <td class="btn-block">
             <v-btn
               icon
@@ -86,6 +89,7 @@ export default {
     return {
       dialog: false,
       orderId: null,
+      searchId: null,
     };
   },
   methods: {
@@ -95,7 +99,20 @@ export default {
     ...mapActions({
       fetchShopOrders: 'FETCH_SHOP_ORDERS',
       cancelShopOrder: 'CANCEL_SHOP_ORDER',
+      getOrderById: 'FETCH_ORDER_BY_ID',
     }),
+    async search() {
+      console.log(parseInt(this.searchId));
+      // if(this.searchId == null) {
+      //   this.setSnackbar({
+      //     type: 'warning',
+      //     text: 'Vui lòng nhập mã đơn hàng hợp lệ',
+      //     visible: true,
+      //   });
+      //   return;
+      // } 
+      await this.getOrderById({orderId: parseInt(this.searchId)});
+    },
     async getShopOrder(state) {
       await this.fetchShopOrders(state);
     },
@@ -127,6 +144,7 @@ export default {
     viewDetail(orderId) {
       this.$router.push(`/shop-chanel/order-detail/${orderId}`);
     },
+
   },
   computed: {
     ...mapGetters({

@@ -1,7 +1,7 @@
 <template>
   <div class="all-order-wrapper">
     <div class="all-order-title">
-      <p class="main-title">Tất cả hóa đơn</p>
+      <p class="main-title">Đơn hàng đã xác nhận</p>
     </div>
     <hr class="all-order-hr" />
     <div class="search-block" >

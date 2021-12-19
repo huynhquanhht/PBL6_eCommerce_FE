@@ -14,7 +14,7 @@ export default {
 };
 </script>
 
-<style .scoped>
+<style scoped>
 .member-info-wrapper {
   display: flex;
   justify-content: center;
@@ -22,7 +22,7 @@ export default {
 }
 
 .member-info {
-  width: 940px;
+  width: 1200px;
   display: grid;
   grid-template-columns: 250px 1940px;
   column-gap: 10px;

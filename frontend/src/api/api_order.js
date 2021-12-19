@@ -30,6 +30,9 @@ const getAllOrders = (fromDate, toDate) => {
   return getRequest(`Orders/all?fromDate=${fromDate}&toDate=${toDate}`);
 }
 
+const memberCancelOrder = (orderInfo) => {
+  return deleteRequest(`Orders/me`, orderInfo);
+}
 export {
   orderCart, 
   getOrders, 
@@ -37,4 +40,5 @@ export {
   cancelShopOrder, 
   getOrderById,
   getAllOrders,
+  memberCancelOrder,
 }

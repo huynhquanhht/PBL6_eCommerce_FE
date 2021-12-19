@@ -57,12 +57,14 @@ const routes = [
           {
             path: 'personal-identity',
             name: 'personal-identity',
-            component: () => import('@/views/MemberInfo/MemberIdentity/MemberIdentity')
+            component: () => import('@/views/MemberInfo/MemberIdentity/MemberIdentity'),
+            meta: { title: 'Thông tin cá nhân - Versace Việt Nam'}
           },
           {
             path: 'purchase-order',
             name: 'purchase-order',
-            component: () => import('@/views/MemberInfo/PurchaseOrder/PurchaseOrder')
+            component: () => import('@/views/MemberInfo/PurchaseOrder/PurchaseOrder'),
+            meta: { title: 'Đơn mua - Versace Việt Nam'}
           }
         ]
       }

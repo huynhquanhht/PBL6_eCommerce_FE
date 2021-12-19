@@ -1,7 +1,7 @@
 <template>
   <div class="all-order-wrapper">
     <div class="all-order-title">
-      <p class="main-title">Tất cả hóa đơn</p>
+      <p class="main-title">Đơn hàng đã hủy</p>
     </div>
     <hr class="all-order-hr" />
     <div class="search-block">
@@ -22,6 +22,7 @@
           <th style="width: 140px">Tổng hóa đơn</th>
           <th style="width: 140px">Trạng thái</th>
           <th style="width: 130px">Ngày cập nhật</th>
+          <th style="width: 130px">Lý do hủy đơn</th>
           <th style="width: 100px">Thao tác</th>
         </tr>
       </thead>
@@ -36,6 +37,7 @@
           <td>
             {{ new Date().toLocaleDateString('en-GB', order.dateModified) }}
           </td>
+          <td>{{order.cancelReason}}</td>
           <td class="btn-block">
             <v-btn icon width="26px" height="26px" @click="viewDetail(order.id)">
               <v-icon size="25px">mdi-information</v-icon>

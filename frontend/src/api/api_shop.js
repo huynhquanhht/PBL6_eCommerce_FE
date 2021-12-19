@@ -21,8 +21,8 @@ const getShopById = (shopId) => {
   return getRequest(`Shops/${shopId}`);
 }
 
-const updateShop = (shopId, shopInfo) => {
-  return putRequest(`Shops?shopId=${shopId}`, shopInfo);
+const updateShop = (shopInfo) => {
+  return putRequest(`Shops`, shopInfo);
 }
 
 const disableShop = (disableInfo) => {

@@ -1,6 +1,6 @@
 <template>
   <div class="all-bill-wrapper">
-    <div v-if="allProducts">
+    <div>
       <div class="all-bill-title">
         <p class="main-title">Tất cả sản phẩm</p>
       </div>
@@ -54,6 +54,17 @@
           </tr>
         </tbody>
       </table>
+      <!-- <div
+        v-else
+        class="d-flex justify-center align-center"
+        style="width: 100wm; height: 100vh"
+      >
+        <v-progress-circular
+          :size="40"
+          color="#fea200"
+          indeterminate
+        ></v-progress-circular>
+      </div> -->
       <v-dialog v-model="dialog" width="400px">
         <confirm-dialog
           :question="question"
@@ -61,17 +72,6 @@
           @cancel-confirm-dialog="cancel"
         ></confirm-dialog>
       </v-dialog>
-    </div>
-    <div
-      v-else
-      class="d-flex justify-center align-center"
-      style="width: 100wm; height: 100vh"
-    >
-      <v-progress-circular
-        :size="50"
-        color="primary"
-        indeterminate
-      ></v-progress-circular>
     </div>
   </div>
 </template>
