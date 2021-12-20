@@ -1,6 +1,8 @@
-import { getUser, 
-  forgotPassword, 
+import {
+  getUser,
+  forgotPassword,
   confirmResetPass,
+  changePasswordForgot,
   getAllUsers,
   getUserById,
   disableUser,
@@ -9,38 +11,33 @@ import { getUser,
   addNewUser,
   updateMember,
 } from '@/api/api_user';
-import router from '@/router'
+import router from '@/router';
 const actions = {
-  'FETCH_USER_INFO': async (context) => {
+  FETCH_USER_INFO: async (context) => {
     try {
       let res = await getUser();
       context.commit('SET_USER_INFO', res.data.resultObj);
     } catch (error) {
       if (error.response.status === 401) {
-        router.push({name: 'error401'}); 
+        router.push({ name: 'error401' });
         return;
       }
       if (error.response.status === 500) {
-        router.push({name: 'error500'}); 
+        router.push({ name: 'error500' });
         return;
       }
-      router.push({name: 'other-error'}); 
+      router.push({ name: 'other-error' });
     }
   },
-  'REQUIRE_RESET_PASSWORD': async (context, user) => {
+  REQUIRE_RESET_PASSWORD: async (context, user) => {
     try {
       await forgotPassword(user.email);
-    } catch (error) {
-      if (error.response.status === 500) {
-        router.push({name: 'error500'}); 
-        return;
-      }
-      router.push({name: 'other-error'}); 
-    }
-  },
-  'RESET_PASSWORD' : async (context, user) => {
-    try {
-      await confirmResetPass(user);
+      context.commit('SET_SNACKBAR', {
+        type: 'success',
+        visible: true,
+        text: 'Gửi yêu cầu đổi mật khẩu thành công!',
+      });
+      router.push({ name: 'login' });
     } catch (error) {
       if (error.response.status === 400) {
         context.commit('SET_SNACKBAR', {
@@ -49,10 +46,44 @@ const actions = {
           text: error.response.data,
         });
         return;
-      }    
+      }
     }
   },
-  'ACT_GET_ALL_USERS' : async (context, payload) => {
+  CONFIRM_RESET_PASSWORD: async (context, user) => {
+    try {
+      await confirmResetPass(user);
+      return true;
+    } catch (error) {
+      if (error.response.status === 400) {
+        context.commit('SET_SNACKBAR', {
+          type: 'error',
+          visible: true,
+          text: error.response.data,
+        });
+        return false;
+      }
+    }
+  },
+  CHANGE_PASSWORD_FORGOT: async (context, passwordInfo) => {
+    try {
+      await changePasswordForgot(passwordInfo);
+      context.commit('SET_SNACKBAR', {
+        type: 'success',
+        visible: true,
+        text: 'Đổi mật khẩu thành công',
+      });
+      router.push({ name: 'login' });
+    } catch (error) {
+      if (error.response.status === 400) {
+        context.commit('SET_SNACKBAR', {
+          type: 'error',
+          visible: true,
+          text: error.response.data,
+        });
+      }
+    }
+  },
+  ACT_GET_ALL_USERS: async (context, payload) => {
     try {
       const res = await getAllUsers(payload.name);
       if (res.status === 204) {
@@ -71,10 +102,10 @@ const actions = {
           text: error.response.data,
         });
         return;
-      }    
+      }
     }
   },
-  'ACT_GET_EACH_USER' : async (context, userId) => {
+  ACT_GET_EACH_USER: async (context, userId) => {
     try {
       //console.log(userId);
       const res = await getUserById(userId);
@@ -97,7 +128,7 @@ const actions = {
       }
     }
   },
-  'ACT_DISABLE_USER' : async (context, payload) => {
+  ACT_DISABLE_USER: async (context, payload) => {
     try {
       console.log('User Disable', payload.userId);
       await disableUser(payload.userId);
@@ -119,15 +150,15 @@ const actions = {
       }
     }
   },
-  'ACT_ENABLE_USER' : async (context, payload) => {
+  ACT_ENABLE_USER: async (context, payload) => {
     try {
       console.log('User Enable', payload.userId);
       await enableUser(payload.userId);
       const res = await getUserById(payload.userId);
-      context.commit('SET_SNACKBAR' , {
+      context.commit('SET_SNACKBAR', {
         type: 'success',
         visible: true,
-        text: 'Người dùng này đã được Ân xá thành công'
+        text: 'Người dùng này đã được Ân xá thành công',
       });
       context.commit('SET_EACH_USER', res.data.resultObj);
     } catch (error) {
@@ -141,13 +172,13 @@ const actions = {
       }
     }
   },
-  'ACT_UPDATE_USER' : async (context, payload) => {
+  ACT_UPDATE_USER: async (context, payload) => {
     try {
       await updateUser(payload.userId, payload.userInfo);
       context.commit('SET_SNACKBAR', {
         type: 'success',
         visible: true,
-        text: 'Cập nhật thông tin người dùng thành công'
+        text: 'Cập nhật thông tin người dùng thành công',
       });
     } catch (error) {
       if (error.response.status === 400) {
@@ -158,35 +189,34 @@ const actions = {
         });
         return;
       }
-    } 
+    }
   },
-  'ACT_ADD_NEW_USER' : async (context, userInfo) => {
-      try {
-        await addNewUser(userInfo);
+  ACT_ADD_NEW_USER: async (context, userInfo) => {
+    try {
+      await addNewUser(userInfo);
+      context.commit('SET_SNACKBAR', {
+        type: 'success',
+        visible: true,
+        text: 'Thêm tài khoản thành công',
+      });
+    } catch (error) {
+      if (error.response.status === 400) {
         context.commit('SET_SNACKBAR', {
-          type: 'success',
+          type: 'error',
           visible: true,
-          text: 'Thêm tài khoản thành công'
+          text: error.response.data,
         });
-        
-      } catch (error) {
-        if (error.response.status === 400) {
-          context.commit('SET_SNACKBAR', {
-            type: 'error',
-            visible: true,
-            text: error.response.data,
-          });
-          return;
-        }
+        return;
       }
+    }
   },
-  'ACT_UPDATE_MEMBER_INFO' : async (context, payload) => {
+  ACT_UPDATE_MEMBER_INFO: async (context, payload) => {
     try {
       await updateMember(payload.memberInfo);
       context.commit('SET_SNACKBAR', {
         type: 'success',
         visible: true,
-        text: 'Cập nhật thông tin cá nhân thành công'
+        text: 'Cập nhật thông tin cá nhân thành công',
       });
     } catch (error) {
       if (error.response.status === 400) {

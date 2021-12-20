@@ -1,8 +1,8 @@
 <template>
   <div class="wrapper">
-    <div class="set-pass-dialog">
+    <div class="set-pass-dialog" v-if="isTrueToken">
       <h3>Đặt mật khẩu mới</h3>
-      <div class="set-pass-form">
+      <div class="set-pass-form" >
         <ValidationProvider
           name="Mật khẩu"
           rules="required|password"
@@ -37,6 +37,9 @@
         <v-btn class="btn-set-pass" @click="submit">Xác nhận</v-btn>
       </div>
     </div>
+    <div class="token-fail" v-if="!isTrueToken">
+      <span>Token không đúng! Vui lòng kiểm tra lại</span>
+    </div>
   </div>
 </template>
 
@@ -50,7 +53,7 @@ extend('required', {
   message: '{_field_} không thể trống',
 });
 
-extend('password', password => {
+extend('password', (password) => {
   if (!password.match(/^(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/)) {
     return 'Mật khẩu chứa ít nhất 8 ký tự, 1 chữ cái, 1 chữ số';
   }
@@ -69,10 +72,15 @@ export default {
   components: {
     ValidationProvider,
   },
+  props: {
+    email: { type: String },
+    token: { type: String },
+  },
   data() {
     return {
       password: '',
       confirmPassword: '',
+      isTrueToken: null,
     };
   },
   methods: {
@@ -80,19 +88,18 @@ export default {
       setSnackbar: 'SET_SNACKBAR',
     }),
     ...mapActions({
-      resetPassword: 'RESET_PASSWORD',
+      confirmResetPassword: 'CONFIRM_RESET_PASSWORD',
+      changePassword: 'CHANGE_PASSWORD_FORGOT',
     }),
     submit() {
       if (
         this.password.match(/^(?=.*[a-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/) &&
         this.password === this.confirmPassword
       ) {
-        this.resetPassword({
-          fullname: this.fullname,
+        this.changePassword({
           email: this.email,
-          phoneNumber: this.phoneNumber,
-          username: this.username,
-          password: this.password,
+          newPass: this.password,
+          token: this.token,
         });
       } else {
         this.setSnackbar({
@@ -102,6 +109,19 @@ export default {
         });
       }
     },
+  },
+  async created() {
+    console.log('email - ', this.email);
+    console.log('token - ', this.token);
+    let res = await this.confirmResetPassword({
+      email: this.email,
+      token: this.token,
+    });
+    if (res) {
+      this.isTrueToken = true;
+    } else {
+      this.isTrueToken = false;
+    }
   },
 };
 </script>
@@ -175,5 +195,16 @@ export default {
   margin-bottom: 3px;
   text-align: left;
   margin-left: 50px;
+}
+.token-fail {
+  width: 360px;
+  height: 120px;
+  background-color: #ffffff;
+  padding: 20px 40px;
+  border-radius: 4px;
+  font: 400 16px Roboto;
+  color: #616161;
+  line-height: 70px;
+  margin-top: 96px;
 }
 </style>

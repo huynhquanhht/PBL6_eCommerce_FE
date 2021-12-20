@@ -42,6 +42,7 @@ import GallerySlider from './GallerySlider.vue';
 import ProductInfo from './ProductInfo.vue';
 import ProductDescription from './ProductDescription.vue';
 import { mapGetters, mapMutations, mapActions } from 'vuex';
+import localStorageUtils from '@/utils/utils-local-storage.js'
 export default {
   components: {
     GallerySlider,
@@ -69,14 +70,17 @@ export default {
     ...mapGetters({
       productDetail: 'GET_PRODUCT_DETAIL',
       isAddSuccess: 'GET_ADD_RESULT',
+      cartItems: 'GET_CART_ITEMS',
     }),
   },
   methods: {
     ...mapMutations({
       setSnackbar: 'SET_SNACKBAR',
+      setProductsPayment: 'SET_PRODUCTS_PAYMENT'
     }),
     ...mapActions({
       fetchCartQuantity: 'FETCH_CART_QUANTITY',
+      fetchCartItems: 'FETCH_CART_ITEMS',
       fetchProductDetail: 'FETCH_PRODUCT_DETAIL',
       addCartItem: 'ADD_CART_ITEM',
     }),
@@ -194,6 +198,14 @@ export default {
           (item) =>
             this.choosedColor === item.color && this.choosedSize === item.size
         );
+        if (!detailItem) {
+          this.setSnackbar({
+            type: 'info',
+            text: 'Sản phẩm này đã hết hàng',
+            visible: true,
+          });
+          return;
+        }
         let product = {
           productDetail_Id: detailItem.id,
           quantity: this.choosedQuantity,
@@ -201,8 +213,29 @@ export default {
         await this.addCartItem(product);
         if (this.isAddSuccess) {
           await this.fetchCartQuantity();
-          this.$router.push('/cart');
+          await this.fetchCartItems();
+           this.setProductsPayment([this.cartItems[0]]);
+          await localStorageUtils.setProductsPayment(
+            JSON.stringify([this.cartItems[0].id])
+          );
+          this.$router.push('/payment');
         }
+        // await this.fetchCartQuantity();
+        // await this.fetchCartItems();
+        // localStorageUtils.setProductsPayment(
+        //   JSON.stringify(this.cartItems[0].id)
+        // );
+        // this.$router.push('/payment');
+
+        // let product = {
+        //   productDetail_Id: detailItem.id,
+        //   quantity: this.choosedQuantity,
+        // };
+        // await this.addCartItem(product);
+        // if (this.isAddSuccess) {
+        //   await this.fetchCartQuantity();
+        //   this.$router.push('/cart');
+        // }
       } else {
         let index = this.productDetail.resultObj.details.filter(
           (item) => this.choosedColor === item.color
@@ -214,7 +247,12 @@ export default {
         await this.addCartItem(product);
         if (this.isAddSuccess) {
           await this.fetchCartQuantity();
-          this.$router.push('/cart');
+          await this.fetchCartItems();
+          this.setProductsPayment([this.cartItems[0]]);
+          await localStorageUtils.setProductsPayment(
+            JSON.stringify([this.cartItems[0].id])
+          );
+          this.$router.push('/payment');
         }
       }
     },

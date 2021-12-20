@@ -5,6 +5,7 @@ import {
   cancelShopOrder,
   getOrderById,
   getAllOrders,
+  confirmOrder
 } from '@/api/api_order';
 const actions = {
   'ORDER_CART': async (context, order) => {
@@ -93,7 +94,7 @@ const actions = {
       return false;
     }
   },
-  'ACT_GET_ALL_ORDERS' : async (context, payload) => {
+  'ACT_GET_ALL_ORDERS': async (context, payload) => {
     try {
       const res = await getAllOrders(payload.fromDate, payload.toDate);
       if (res.status === 204) {
@@ -114,6 +115,22 @@ const actions = {
         });
       }
       return false;
+    }
+  },
+  'CONFIRM_ORDER': async (context, order) => {
+    try {
+      await confirmOrder(order.id);
+      context.commit('SET_SNACKBAR', {
+        type: 'success',
+        visible: true,
+        text: 'Xác nhận đơn hàng thành công'
+      })
+    } catch(error) {
+      context.commit('SET_SNACKBAR', {
+        type: 'error',
+        visible: true,
+        text: error.response.data
+      })
     }
   }
 };

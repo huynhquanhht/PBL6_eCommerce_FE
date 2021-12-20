@@ -163,8 +163,9 @@ export default {
       this.cartItemList = this.filterCartItems(this.cartItems);
     },
   },
-  beforeMount() {
-    this.fetchCartItems();
+  async beforeMount() {
+    await this.fetchCartItems();
+    console.log(this.cartItemList);
   },
 };
 </script>
