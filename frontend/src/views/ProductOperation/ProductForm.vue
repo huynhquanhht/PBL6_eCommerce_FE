@@ -164,7 +164,7 @@
                       class="img-product"
                       v-show="newImages[index].imageData"
                       :src="
-                        'http://c64e-2402-800-6205-3e19-cd35-9f68-4158-e6ba.ngrok.io/apigateway/Products' +
+                        'http://07af-2402-800-6205-3e19-c61-ce29-d68e-b079.ngrok.io/apigateway/Products' +
                         newImages[index].imageData
                       "
                       alt=""
@@ -281,18 +281,18 @@ export default {
           {
             type: 'Áo',
             detail: [
-              { id: 1, name: 'Áo thun' },
-              { id: 2, name: 'Áo sơ mi' },
+              { id: 1, name: 'Áo Thun' },
+              { id: 2, name: 'Áo Sơ mMi' },
               { id: 3, name: 'Áo Hoodie' },
-              { id: 12, name: 'Áo khoác' },
+              { id: 12, name: 'Áo Khoác' },
             ],
           },
           {
             type: 'Quần',
             detail: [
               { id: 4, name: 'Quần Jean' },
-              { id: 8, name: 'Quần tây' },
-              { id: 9, name: 'Quần đùi' },
+              { id: 8, name: 'Quần Tây' },
+              { id: 9, name: 'Quần Đùi' },
             ],
           },
           {
@@ -311,10 +311,10 @@ export default {
           {
             type: 'Áo',
             detail: [
-              { id: 1, name: 'Áo thun' },
-              { id: 2, name: 'Áo sơ mi' },
+              { id: 1, name: 'Áo Thun' },
+              { id: 2, name: 'Áo Sơ mi' },
               { id: 3, name: 'Áo Hoodie' },
-              { id: 12, name: 'Áo khoác' },
+              { id: 12, name: 'Áo Khoác' },
             ],
           },
           {
@@ -393,14 +393,12 @@ export default {
       });
     },
     handleCategoryDetail() {
-      console.log('categoryDeatil - ', this.categoryDetail);
       this.detail.forEach((item) => {
-        console.log(item);
         if (item.name === this.categoryDetail) {
           this.categoryId = item.id;
         }
-      })
-      // this.categoryId = this.categoryDetail.id;
+      });
+      this.categoryDetail = this.productDetail.resultObj.categoryName;
     },
     agree() {
       if (this.actionType === 'Update') {
@@ -409,7 +407,6 @@ export default {
       }
       this.details.pop(this.index);
       this.newImages.pop(this.index);
-      console.log('index - ', this.deleteImages);
       this.dialog = false;
     },
     cancel() {
@@ -417,14 +414,13 @@ export default {
     },
     cancelAction() {
       if (this.actionType === 'Update') {
-        this.question = "Bạn chắc chắn muốn hủy thay đổi";
+        this.question = 'Bạn chắc chắn muốn hủy thay đổi';
         this.dialog = true;
         return;
       }
       if (this.actionType === 'Create') {
         this.$router.push('/shop-chanel/product-list');
-      } 
-
+      }
     },
     deleteColor() {
       this.dialog = true;
@@ -468,7 +464,6 @@ export default {
         productInfo.append(`details[${index}].size`, item.size);
         productInfo.append(`details[${index}].stock`, item.stock);
       });
-      console.log('newImages', this.newImages);
       this.newImages.forEach((item) => {
         let index = 0;
         if (item.imageFile) {
@@ -485,7 +480,6 @@ export default {
             `updateImages[${index}].isSizeDetail`,
             item.isSizeDetail
           );
-          console.log('item', item);
           productInfo.append(
             `updateImages[${index}].imageFile`,
             item.imageFile
@@ -527,7 +521,6 @@ export default {
   watch: {
     productDetail() {
       if (this.productDetail != null) {
-        console.log(this.productDetail);
         this.productDetail.resultObj.images.forEach((item) => {
           if (item.isDefault === true) {
             item.imageType = 'Ảnh bìa';
@@ -542,17 +535,31 @@ export default {
         this.gender = this.productDetail.resultObj.gender;
         this.price = this.productDetail.resultObj.price;
         this.originalPrice = this.productDetail.resultObj.originalPrice;
-        this.categoryName =
-          this.productDetail.resultObj.categoryName.split(' ')[0];
-        console.log(
-          'categoryNAme - ',
-          this.productDetail.resultObj.categoryName
-        );
+        // this.categoryName =
+        //   this.productDetail.resultObj.categoryName.split(' ')[0];
         this.categoryDetail = this.productDetail.resultObj.categoryName;
+        if (this.gender === 1) {
+          this.maleSelection.category.forEach((item) => {
+            item.detail.forEach((jtem) => {
+              if (jtem.name === this.productDetail.resultObj.categoryName) {
+                this.categoryName = item.type;
+              }
+            });
+          });
+        }
+
+        if (this.gender === 2) {
+          this.femaleSelection.category.forEach((item) => {
+            item.detail.forEach((jtem) => {
+              if (jtem.name === this.productDetail.resultObj.categoryName) {
+                this.categoryName = item.type;
+              }
+            });
+          });
+        }
         this.categoryId = this.productDetail.resultObj.categoryId;
         this.details = this.productDetail.resultObj.details;
         this.newImages = this.productDetail.resultObj.images;
-        console.log('newImages - ', this.newImages);
       }
     },
     gender(value) {
@@ -581,6 +588,11 @@ export default {
         });
       }
       if (this.productDetail) {
+        this.categoryDetail = this.productDetail.resultObj.categoryName;
+      }
+    },
+    categoryDetail(value) {
+      if (!value) {
         this.categoryDetail = this.productDetail.resultObj.categoryName;
       }
     },

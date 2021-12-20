@@ -27,7 +27,7 @@
 <script>
 import { required } from 'vee-validate/dist/rules';
 import { extend, ValidationProvider, setInteractionMode } from 'vee-validate';
-import { mapActions} from 'vuex'
+import { mapMutations, mapActions } from 'vuex';
 setInteractionMode('eager');
 
 extend('required', {
@@ -35,7 +35,7 @@ extend('required', {
   message: '{_field_} không thể trống',
 });
 
-extend('email', email => {
+extend('email', (email) => {
   if (!email.match(/.+@.+\..+/)) {
     return 'Email không đúng định dạng';
   }
@@ -51,15 +51,17 @@ export default {
     };
   },
   methods: {
+    ...mapMutations({
+      setSnackbar: 'SET_SNACKBAR',
+    }),
     ...mapActions({
-      requireResetPassword: 'REQUIRE_RESET_PASSWORD'
+      requireResetPassword: 'REQUIRE_RESET_PASSWORD',
     }),
     async submit() {
       if (this.email.match(/.+@.+\..+/)) {
         await this.requireResetPassword({
           email: this.email,
         });
-        this.showMessage = true;
       }
     },
     ok() {

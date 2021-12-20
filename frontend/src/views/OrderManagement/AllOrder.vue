@@ -50,6 +50,7 @@
               width="26px"
               height="26px"
               v-if="order.state === 'Chờ xác nhận'"
+              @click="confirmOrder(order.id)"
             >
               <v-icon size="25px">mdi-check-circle</v-icon>
             </v-btn>
@@ -74,18 +75,29 @@
         @cancel-reason-dialog="cancelReasonOrder"
       ></reason-dialog>
     </v-dialog>
+    <v-dialog v-model="confirmDialog" width="400px">
+      <confirm-dialog
+        :question="question"
+        @agree-confirm-dialog="agreeConfirmDialog"
+        @cancel-confirm-dialog="cancelConfirmDialog"
+      ></confirm-dialog>
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapMutations, mapActions } from 'vuex';
 import ReasonDialog from '@/components/ReasonDialog.vue';
+import ConfirmDialog from '@/components/ConfirmDialog.vue'
 export default {
-  components: { ReasonDialog },
+  components: { ReasonDialog, ConfirmDialog},
   data() {
     return {
       dialog: false,
+      confirmDialog: false,
       orderId: null,
+      question: '',
+
     };
   },
   methods: {
@@ -95,6 +107,7 @@ export default {
     ...mapActions({
       fetchShopOrders: 'FETCH_SHOP_ORDERS',
       cancelShopOrder: 'CANCEL_SHOP_ORDER',
+      fetchConfirmOrder: 'CONFIRM_ORDER'
     }),
     async getShopOrder(state) {
       await this.fetchShopOrders(state);
@@ -119,6 +132,18 @@ export default {
     },
     cancelReasonOrder() {
       this.dialog = false;
+    },
+    confirmOrder(orderId) {
+      this.orderId = orderId;
+      this.question = 'Bạn chắc chắn muốn xác nhận đơn hàng?'
+      this.confirmDialog = true;
+    },
+    async agreeConfirmDialog() {
+      await this.fetchConfirmOrder({id: this.orderId})
+      this.confirmDialog = false;
+    },
+    cancelConfirmDialog() {
+      this.confirmDialog = false;
     },
     cancelOrder(orderId) {
       this.dialog = true;

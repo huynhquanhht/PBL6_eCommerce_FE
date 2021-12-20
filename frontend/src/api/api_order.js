@@ -1,4 +1,4 @@
-import {getRequest, postRequest, deleteRequest} from '@/utils/utils-api';
+import {getRequest, postRequest, patchRequest, deleteRequest} from '@/utils/utils-api';
 
 const orderCart = (order) => {
   return postRequest(`Orders`, order);
@@ -26,6 +26,10 @@ const cancelShopOrder = (order) => {
   return deleteRequest(`Orders/shop`, order);
 }
 
+const confirmOrder = (orderId) => {
+  return patchRequest(`Orders/shop?orderId=${orderId}`);
+}
+
 const getAllOrders = (fromDate, toDate) => {
   return getRequest(`Orders/all?formDate=${fromDate}&toDate=${toDate}`);
 }
@@ -37,4 +41,5 @@ export {
   cancelShopOrder, 
   getOrderById,
   getAllOrders,
+  confirmOrder
 }
