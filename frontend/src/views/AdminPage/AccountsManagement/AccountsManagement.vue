@@ -9,7 +9,7 @@
         v-model="searchString"
         @keyup.enter="search"
       />
-      <v-btn @click="search(searchString)">Tìm kiếm</v-btn>
+      <v-btn @click="search">Tìm kiếm</v-btn>
 
       <v-dialog v-model="accountForm">
         <template v-slot:activator="{ on, attrs }">
@@ -72,7 +72,9 @@
         ></account-detail>
       </v-dialog>
 
-      <v-dialog disable v-model="amnestyDialog">
+      <v-dialog
+       width=450px 
+      disable v-model="amnestyDialog">
         <confirm-dialog
           :question="amnestyQuestion"
           @agree-confirm-dialog="amnestyAgree(eachUser)"
@@ -82,7 +84,8 @@
       </v-dialog>
 
       <v-dialog disable 
-      v-model="disableDialog">
+      v-model="disableDialog"
+      width=450px>
         <confirm-dialog
           :question="disableQuestion"
           @agree-confirm-dialog="disableAgree(eachUser)"
@@ -223,8 +226,8 @@ export default {
     disableCancel() {
       this.disableDialog = false;
     },
-    search(searchString) {
-      this.getAllUsers({name: searchString});
+    async search() {
+      await this.getAllUsers({name: this.searchString});
     },
   },
   created() {

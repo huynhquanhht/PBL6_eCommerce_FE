@@ -9,7 +9,7 @@
         placeholder="Nhập tên sản phẩm..."
         v-model="searchString"
       />
-      <v-btn @click="search(searchString)">Tìm kiếm</v-btn>
+      <v-btn @click="search">Tìm kiếm</v-btn>
     </div>
     <div class="shop-table" v-if="allProducts">
       <table class="styled-table">
@@ -110,11 +110,11 @@ export default {
       getAllProducts: 'ACT_GET_ALL_PRODUCTS_FOR_ADMIN',
       getProductDetail: 'FETCH_PRODUCT_DETAIL'
     }),
-    search(searchString) {
-      this.getAllProducts({
+    async search() {
+      await this.getAllProducts({
         pageIndex: 1,
         pageSize: 10000,
-        keyWord: searchString,
+        keyWord: this.searchString,
       });
     },
     async productDetailForm(productId) {
@@ -172,45 +172,12 @@ export default {
   padding: auto;
 }
 
-.header__top-search-block select {
-  margin: 0 auto;
-  color: #fea200;
-  width: 200px;
-  padding: 15px;
-  height: 36px;
-  margin-right: 10px;
-  cursor: pointer;
-  border: solid 2px #fea200;
-  border-radius: 4px;
-}
-
-.header__top-search-block select:hover {
-  background-color: #fea200;
-  color: white;
-  padding: 15px 5px 15px 25px;
-}
-
-.header__top-search-block option {
-  background-color: white;
-  color: #fea200;
-  width: 310px;
-  padding: 10px 15px;
-  height: 20px;
-  cursor: pointer;
-}
-
-.header__top-search-block option:hover {
-  padding-left: 25px;
-  width: 270px;
-  background-color: #fea200;
-  color: #fea200;
-}
 
 .header__top-search-block input {
   border: solid 2px #fea200;
   background-color: #ffffff;
   height: 36px;
-  width: 520px;
+  width: 900px;
   margin-left: 0;
   outline: #fea200;
   padding: 8px;

@@ -43,7 +43,6 @@
 
       <label>Đến ngày: </label>
       <v-menu
-       @keyup.enter="search"
         ref="menu2"  
         v-model="menu2"
         :close-on-content-click="false"

@@ -116,26 +116,21 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item, index) in colorImage" :key="index">
+              <tr v-for="(product, index) in productImage" :key="index">
                 <td style="width: 108px">
-                  <span> {{ item.color }}</span>
+                  <span> {{ product.colorName }}</span>
                 </td>
-                <td style="width: 108px">
-                  <input
-                    class="file-input"
-                    id="file"
-                    type="file"
-                    accept="image/gif,image/jpg,image/png,image/svg,image/jpeg"
-                    placeholder="Nhập..."
-                    @change="readURL(index)"
-                  />
-                  <img v-if="item.image" :src="item.image" alt="" />
-                  <label class="choose-image" for="file">
-                    <v-icon>mdi-image-plus</v-icon>
-                  </label>
+                <td class="product-name-img" >
+                  <img 
+                   :src="'http://localhost:55000/apigateway/Products' + product.imagePath" alt=""
+                   width="100px"
+                  height="100px" />
                 </td>
-                <td style="width: 108px">
-                  <span>{{ item.imageType }}</span>
+                <td v-if="product.isDefault" style="width: 108px">
+                  <span>Ảnh bìa</span>
+                </td>
+                <td v-else style="width: 108px">
+                  <span>Ảnh</span>
                 </td>
               </tr>
             </tbody>
@@ -188,6 +183,7 @@ export default {
       sellPrice: null,
       gender: 0,
       productDetails: [],
+      productImage: [],
       colorSize: [
         {
           color: '',
@@ -261,9 +257,9 @@ export default {
         this.productCategory = this.eachProduct.categoryName;
         this.description = this.eachProduct.description;
         this.productDetails = this.eachProduct.details;
+        this.productImage = this.eachProduct.images;
         this.originPrice = this.eachProduct.originalPrice;
         this.sellPrice = this.eachProduct.price;
-        
       }
     },
   },
@@ -283,6 +279,7 @@ export default {
       this.productCategory = this.eachProduct.categoryName;
       this.description = this.eachProduct.description;
       this.productDetails = this.eachProduct.details;
+      this.productImage = this.eachProduct.images;
       this.originPrice = this.eachProduct.originalPrice;
       this.sellPrice = this.eachProduct.price;
       this.gender = this.eachProduct.gender;
@@ -415,6 +412,12 @@ export default {
   padding: 5px 0px;
   border: 1px solid #616161;
   text-align: center;
+}
+
+.product-name-img {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .styled-table td > input {

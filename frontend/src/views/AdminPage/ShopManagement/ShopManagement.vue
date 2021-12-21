@@ -8,7 +8,7 @@
       placeholder="Tìm kiếm cửa hàng"
       v-model="searchString"
       @keyup.enter="search" />
-      <v-btn @click="search(searchString)">Tìm kiếm</v-btn>
+      <v-btn @click="search">Tìm kiếm</v-btn>
     </div>
     <div class="shop-table" v-if="allShops">
       <table class="styled-table">
@@ -55,7 +55,9 @@
         </shop-detail>
       </v-dialog>
 
-      <v-dialog v-model="amnestyDialog">
+      <v-dialog 
+      width=450px 
+      v-model="amnestyDialog">
         <confirm-dialog
           :question="amnestyQuestion"
           @agree-confirm-dialog="amnestyAgree(eachShop)"
@@ -63,7 +65,9 @@
         ></confirm-dialog>
       </v-dialog>
 
-      <v-dialog v-model="disableDialog">
+      <v-dialog
+      width=450px 
+      v-model="disableDialog">
         <confirm-dialog
           :question="disableQuestion"
           @agree-confirm-dialog="disableAgree(eachShop)"
@@ -125,8 +129,8 @@ export default {
     ...mapMutations({
       setSnackbar: 'SET_SNACKBAR',
     }),
-    search(searchString) {
-      this.getAllShops({name: searchString});
+    async search() {
+      await this.getAllShops({name: this.searchString});
     },
     // Edit Shop
     async shopDetail(shopId) {
