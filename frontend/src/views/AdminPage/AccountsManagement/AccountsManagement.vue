@@ -355,4 +355,9 @@ export default {
   font-weight: bold;
   color: #fea200;
 }
+
+.v-dialog {
+  justify-content: center;
+  align-items: center;
+}
 </style>

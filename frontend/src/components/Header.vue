@@ -295,9 +295,6 @@ export default {
       console.log(this.searchString);
       this.$router.replace(`search-page?searchString=${this.searchString}&gender=0`);
     },
-    // onEnter: function() {
-    //   this.search();
-    // }
   },
  
   // watch: {

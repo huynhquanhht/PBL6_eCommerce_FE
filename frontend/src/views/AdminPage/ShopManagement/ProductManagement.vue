@@ -70,6 +70,11 @@
     <div v-else
       class="d-flex justify-center align-center"
       style="width: 100wm; height: 100vh">
+       <v-progress-circular
+        :size="40"
+        color="#fea200"
+        indeterminate
+      ></v-progress-circular>
       <no-content-form
         :showProduct="true"
         Notification="Không có sản phẩm nào cả"

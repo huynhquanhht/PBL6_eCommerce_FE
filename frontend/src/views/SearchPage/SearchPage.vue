@@ -3,10 +3,7 @@
     <div v-if="allProducts">
       <product-card-list :productList="allProducts"></product-card-list>
       <div class="view-more-block">
-        <v-pagination 
-        v-model="page" 
-        :length="pageCount"
-        @input="newPage"> 
+        <v-pagination v-model="page" :length="pageCount" @input="newPage">
         </v-pagination>
       </div>
     </div>
@@ -15,17 +12,18 @@
       class="d-flex justify-center align-center"
       style="width: 100wm; height: 100vh"
     >
-     <no-content-form 
-      :showProduct="true"
-      Notification='Không tìm thấy sản phẩm phù hợp'>
-     </no-content-form>
+      <no-content-form
+        :showProduct="true"
+        Notification="Không tìm thấy sản phẩm phù hợp"
+      >
+      </no-content-form>
     </div>
   </v-app>
 </template>
 
 <script>
 import ProductCardList from '@/components/ProductCardList.vue';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 import NoContentForm from '@/components/NoContentForm.vue';
 export default {
   name: 'Home',
@@ -49,6 +47,9 @@ export default {
     ...mapActions({
       getAllProducts: 'ACT_GET_TOTAL_PRODUCTS',
     }),
+    ...mapMutations({
+      setSnackbar: 'SET_SNACKBAR',
+    }),
     async newPage(value) {
       this.page = value;
       await this.getAllProducts({
@@ -57,7 +58,7 @@ export default {
         keyword: this.newPageSearchString,
         gender: this.newPageGender,
       });
-    }
+    },
   },
   computed: {
     ...mapGetters({
@@ -67,7 +68,7 @@ export default {
   },
   watch: {
     async searchString(value) {
-      await this.getAllProducts({
+        await this.getAllProducts({
         pageIndex: this.page,
         pageSize: 30,
         keyword: value,
@@ -76,15 +77,15 @@ export default {
     },
   },
   async created() {
-    await this.getAllProducts({
-      pageIndex: this.page,
-      pageSize: 30, 
-      keyword: this.searchString,
-      gender: parseInt(this.gender),
-    }); 
-    this.pageCount = this.totalProducts.pageCount; 
-    this.newPageGender = parseInt(this.gender);
-    this.newPageSearchString = this.searchString;
+      await this.getAllProducts({
+        pageIndex: this.page,
+        pageSize: 30,
+        keyword: this.searchString,
+        gender: parseInt(this.gender),
+      });
+      this.pageCount = this.totalProducts.pageCount;
+      this.newPageGender = parseInt(this.gender);
+      this.newPageSearchString = this.searchString;
   },
 };
 </script>
