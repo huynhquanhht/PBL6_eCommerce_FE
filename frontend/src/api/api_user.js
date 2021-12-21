@@ -13,9 +13,12 @@ const forgotPassword = (email) => {
 }
 
 const confirmResetPass = (user) => {
-  return postRequest( `Users/ConfirmResetPass?email=${user.email}&key=${user.key}`)
+  return getRequest(`Users/ConfirmResetPass?email=${user.email}&token=${user.token}`)
 }
 
+const changePasswordForgot = (passwordInfo) => {
+  return patchRequest(`Users/ResetPassword`, passwordInfo)
+}
 const getAllUsers = (name) => {
   return getRequest(`Users?name=${name}`);
 }
@@ -55,4 +58,5 @@ export {
   updateUser,
   addNewUser,
   updateMember,
+  changePasswordForgot
 }

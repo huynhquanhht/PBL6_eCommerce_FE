@@ -190,24 +190,6 @@ export default {
     };
   },
   methods: {
-    // chooseFiles() {
-    //   document.getElementById('fileUpload').click();
-    // },
-    // submit() {
-    //   if (this.eachShop.shopId != null) {
-    //     this.$store.dispatch('ACT_UPDATE_SHOP', {
-    //       shopId: this.id,
-    //       shopInfo: {
-    //         nameOfShop: this.name,
-    //         address: this.address,
-    //         phoneNumber: this.phoneNumber,
-    //         description: this.description,
-    //         dateCreated: this.dateCreated.slice(0,10),
-    //         avatar: 'http://localhost:55000/apigateway/Shops' + this.avatar,
-    //       },
-    //     });
-    //   }
-    // },
   },
   watch: {
     eachShop() {

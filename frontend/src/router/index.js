@@ -109,7 +109,7 @@ const routes = [
         meta: { title: 'Đặt mật khẩu mới | Versace Việt Nam' },
         props: route => ({
           email: route.query.email,
-          decodedKey: route.query.key
+          token: route.query.token
         })
       },
       {
@@ -120,7 +120,7 @@ const routes = [
             path: 'shop-info',
             name: 'shop-info',
             component: () => import('@/views/ShopInfo/ShopInfo.vue'),
-            meta: { title: 'Đăng ký của hàng | Versace Việt Nam' }
+            meta: { title: 'Cửa hàng - Kênh người bán | Versace Việt Nam' }
           },
           {
             path: 'product-list',
