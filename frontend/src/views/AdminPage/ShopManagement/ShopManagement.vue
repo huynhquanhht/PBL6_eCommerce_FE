@@ -60,7 +60,7 @@
       v-model="amnestyDialog">
         <confirm-dialog
           :question="amnestyQuestion"
-          @agree-confirm-dialog="amnestyAgree(eachShop)"
+          @agree-confirm-dialog="amnestyAgree"
           @cancel-confirm-dialog="amnestyCancel"
         ></confirm-dialog>
       </v-dialog>
@@ -79,7 +79,7 @@
       width=450px 
       v-model="disableDialog">
         <reason-dialog
-          @agree-reason-dialog="disableAgree(eachShop)"
+          @agree-reason-dialog="disableAgree"
           @cancel-reason-dialog="disableCancel"
         ></reason-dialog>
       </v-dialog>
@@ -152,9 +152,9 @@ export default {
       await this.getEachShop(shopId);
       this.amnestyDialog = true;
     },
-    async amnestyAgree(eachShop) {
-    console.log(eachShop);
-      if (eachShop.disable == false) {
+    async amnestyAgree() {
+    console.log(this.eachShop);
+      if (this.eachShop.disable == false) {
         this.setSnackbar({
           type: 'info',
           visible: true,
@@ -163,8 +163,8 @@ export default {
         this.amnestyDialog = false;
         return;
       } else {
-        console.log(eachShop.shopId);
-        this.enableShop({shopId: eachShop.shopId});
+        console.log(this.eachShop.shopId);
+        this.enableShop({shopId: this.eachShop.shopId});
         await setTimeout( async () => {
            await this.getAllShops({name: ' '});
         }, 800);
@@ -180,9 +180,9 @@ export default {
       await this.getEachShop(shopId);
       this.disableDialog = true;
     },
-    async disableAgree(eachShop, reason) {
-      console.log(eachShop);
-      if (eachShop.disable == true) {
+    async disableAgree(reason) {
+      console.log(this.eachShop);
+      if (this.eachShop.disable == true) {
         this.setSnackbar({
           type: 'info',
           visible: true,
@@ -199,9 +199,10 @@ export default {
         });
         return;
         }
-        console.log(eachShop.shopId);
+        console.log(this.eachShop.shopId);
+        console.log(reason);
         this.disableShop({
-          shopId: eachShop.shopId,
+          shopId: this.eachShop.shopId,
           disableReason: reason,
         });
         await setTimeout( async () => {
