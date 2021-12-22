@@ -10,20 +10,7 @@
         @keyup.enter="search"
       />
       <v-btn @click="search">Tìm kiếm</v-btn>
-
-      <v-dialog v-model="accountForm">
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn v-bind="attrs" v-on="on" @click="openAccountForm">
-            Tạo tài khoản</v-btn
-          >
-        </template>
-        <account-detail
-          :showWhileAddNew="true"
-          subTitle="Thêm tài khoản"
-          buttonTitle="Tạo tài khoản mới"
-        >
-        </account-detail>
-      </v-dialog>
+      <v-btn @click="openAccountForm"> Tạo tài khoản</v-btn>
     </div>
     <div class="account-table" v-if="allUsers">
       <table class="styled-table">
@@ -62,6 +49,16 @@
           </tr>
         </tbody>
       </table>
+      <div class="dialog-block">
+       <v-dialog v-model="accountForm">
+        <account-detail
+          :showWhileAddNew="true"
+          subTitle="Thêm tài khoản"
+          buttonTitle="Tạo tài khoản mới"
+          @add-update-submit="addNewUser"
+        >
+        </account-detail>
+      </v-dialog>
 
       <v-dialog v-model="editAccountDialog">
         <account-detail
@@ -69,39 +66,40 @@
           :eachUser="oneUser"
           subTitle="Chi tiết tài khoản"
           buttonTitle="Cập nhật"
+          @add-update-submit="updateUser"
         ></account-detail>
       </v-dialog>
 
-      <v-dialog
-       width=450px 
-      disable v-model="amnestyDialog">
+      <v-dialog width="450px" disable v-model="amnestyDialog">
         <confirm-dialog
           :question="amnestyQuestion"
-          @agree-confirm-dialog="amnestyAgree(eachUser)"
+          @agree-confirm-dialog="amnestyAgree"
           @cancel-confirm-dialog="amnestyCancel"
         >
         </confirm-dialog>
       </v-dialog>
 
-      <v-dialog disable 
-      v-model="disableDialog"
-      width=450px>
+      <v-dialog disable v-model="disableDialog" width="450px">
         <confirm-dialog
           :question="disableQuestion"
-          @agree-confirm-dialog="disableAgree(eachUser)"
+          @agree-confirm-dialog="disableAgree"
           @cancel-confirm-dialog="disableCancel"
         >
         </confirm-dialog>
       </v-dialog>
+      </div>
     </div>
-    <div v-else 
+    <div
+      v-else
       class="d-flex justify-center align-center"
-      style="width: 100wm; height: 100vh">
+      style="width: 100wm; height: 100vh"
+    >
       <no-content-form
         :showUser="true"
-        Notification= "Không có dữ liệu người dùng"
+        Notification="Không có dữ liệu người dùng"
       ></no-content-form>
     </div>
+     
   </div>
 </template>
 
@@ -115,12 +113,11 @@ import { mapActions, mapGetters, mapMutations } from 'vuex';
 import NoContentForm from '@/components/NoContentForm.vue';
 
 export default {
-
-  components: { 
-    TopTitle, 
-    ConfirmDialog, 
+  components: {
+    TopTitle,
+    ConfirmDialog,
     AccountDetail,
-    NoContentForm, 
+    NoContentForm,
   },
 
   data() {
@@ -155,29 +152,38 @@ export default {
       setSnackbar: 'SET_SNACKBAR',
     }),
 
-    // Add code
     openAccountForm() {
       this.accountForm = true;
     },
 
-    // Edit Code
+    async addNewUser() {
+      await setTimeout(async () => {  
+          this.accountForm = false;
+          await this.getAllUsers({ name: ' ' });
+      }, 3000);      
+    },
+
     async editForm(user) {
       this.oneUser = user;
-      //await this.getEachUser();
-      //await this.getEachUser(user.id);
       console.log(user);
       this.editAccountDialog = true;
     },
 
-    //Amnesty Code
+    async updateUser() {
+       await setTimeout(async () => {
+          this.editAccountDialog = false;
+          await this.getAllUsers({ name: ' ' });
+      }, 3000);
+      
+    },
+
     async userAmnesty(userId) {
       await this.getEachUser(userId);
       this.amnestyDialog = true;
     },
-    async amnestyAgree(eachUser) {
-      // await this.getEachUser(userId);
-      console.log(eachUser);
-      if (eachUser.disable == false) {
+    async amnestyAgree() {
+      console.log(this.eachUser);
+      if (this.eachUser.disable == false) {
         this.setSnackbar({
           type: 'info',
           visible: true,
@@ -186,28 +192,25 @@ export default {
         this.amnestyDialog = false;
         return;
       } else {
-      console.log(eachUser.id);
-      this.enableUser({ userId: eachUser.id });
-       await setTimeout( async () => {
-           await this.getAllUsers({name: ' '});
+        console.log(this.eachUser.id);
+        this.enableUser({ userId: this.eachUser.id });
+        await setTimeout(async () => {
+          await this.getAllUsers({ name: ' ' });
         }, 800);
-      this.amnestyDialog = false;
+        this.amnestyDialog = false;
       }
     },
     amnestyCancel() {
       this.amnestyDialog = false;
     },
 
-    // Disable Code
     async userDisable(userId) {
       await this.getEachUser(userId);
       this.disableDialog = true;
     },
-    async disableAgree(eachUser) {
-      //this.user = user;
-      // await this.getEachUser(userId);
-      console.log(eachUser);
-      if (eachUser.disable == true) {
+    async disableAgree() {
+      console.log(this.eachUser);
+      if (this.eachUser.disable == true) {
         this.setSnackbar({
           type: 'info',
           visible: true,
@@ -215,10 +218,10 @@ export default {
         });
         this.disableDialog = false;
       } else {
-        console.log(eachUser.id);
-        this.disableUser({ userId: eachUser.id });
-         await setTimeout( async () => {
-           await this.getAllUsers({name: ' '});
+        console.log(this.eachUser.id);
+        this.disableUser({ userId: this.eachUser.id });
+        await setTimeout(async () => {
+          await this.getAllUsers({ name: ' ' });
         }, 800);
         this.disableDialog = false;
       }
@@ -227,11 +230,11 @@ export default {
       this.disableDialog = false;
     },
     async search() {
-      await this.getAllUsers({name: this.searchString});
+      await this.getAllUsers({ name: this.searchString });
     },
   },
   created() {
-    this.getAllUsers({name: ''});
+    this.getAllUsers({ name: '' });
   },
 };
 </script>
@@ -356,8 +359,18 @@ export default {
   color: #fea200;
 }
 
-.v-dialog {
-  justify-content: center;
-  align-items: center;
+.v-dialog, .v-dialog--active {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+
+.v-dialog__content {
+  width: 100% !important;
+  box-shadow: none !important;
+}
+.dialog-block {
+  width: 400px;
 }
 </style>

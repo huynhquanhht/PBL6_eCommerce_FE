@@ -30,7 +30,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .confirm-dialog {
   border-radius: 4px;
   text-align: center;

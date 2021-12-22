@@ -1,6 +1,6 @@
 <template>
   <div class="form-block">
-    <form>
+    <div class="form-x">
       <p class="signup-title">{{ subTitle }}</p>
       <div class="">
         <label>Họ tên: </label>
@@ -126,32 +126,14 @@
       >
         <span class="font-size: 15px">{{ buttonTitle }}</span>
       </v-btn>
-      <!-- <v-dialog v-model="notFunction" :retain-focus="false">
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            v-on="on"
-            v-bind="attrs"
-            @click="notFunctionForm"
-            class="btn-signup white--text mt-4 mb-4"
-            width="100%"
-            height="42px"
-            color="#fea200"
-            depressed
-          >
-            <span class="font-size: 15px">{{ buttonTitle }}</span>
-          </v-btn>
-        </template>
-        <function-undevelop-form></function-undevelop-form>
-      </v-dialog> -->
-    </form>
+    </div>
   </div>
 </template>
 
 <script>
 import { required } from 'vee-validate/dist/rules';
 import { extend, ValidationProvider, setInteractionMode } from 'vee-validate';
-//import FunctionUndevelopForm from '../../../components/FunctionUndevelopForm.vue';
-import { mapGetters } from 'vuex';
+import { mapMutations } from 'vuex';
 
 setInteractionMode('eager');
 
@@ -192,7 +174,6 @@ export default {
   name: 'AccountForm',
   components: {
     ValidationProvider,
-    //FunctionUndevelopForm,
   },
   props: {
     subTitle: String,
@@ -225,15 +206,10 @@ export default {
       notFunction: false,
     };
   },
-  computed: {
-    ...mapGetters({
-      //eachUser: 'GET_EACH_USER',
-    }),
-  },
   methods: {
-    // ...mapActions({
-    //   getEachUser: 'ACT_GET_EACH_USER',
-    // })
+    ...mapMutations({
+      setSnackbar: 'SET_SNACKBAR',
+    }),
     submit() {
       if (this.showWhileAddNew == true) {
         if (
@@ -251,8 +227,14 @@ export default {
             username: this.username,
             password: this.password,
           });
+          this.$emit('add-update-submit');
         } else {
-          console.log('đăng ký thất bại');
+           this.setSnackbar({
+            type : 'info',
+            visible: true,
+            text: 'Thêm tài khoản mới thất bại',
+          });
+          this.$emit('add-update-submit');
         }
       } else {
         if (
@@ -270,9 +252,14 @@ export default {
               address: this.address,
             },
           });
+          this.$emit('add-update-submit');
         } else {
-          console.log(this.eachUser.id);
-          console.log('Cập nhật thông tin người dùng thất bại');
+          this.setSnackbar({
+            type : 'info',
+            visible: true,
+            text: 'Cập nhật tài khoản thất bại',
+          });
+          this.$emit('add-update-submit');
         }
       }
     },
@@ -284,7 +271,6 @@ export default {
         this.fullname = this.eachUser.fullname;
         this.email = this.eachUser.email;
         this.phoneNumber = this.eachUser.phoneNumber;
-        // this.userName = this.eachUser.userName;
         this.address = this.eachUser.address;
       }
     },
@@ -294,8 +280,7 @@ export default {
     if (this.eachUser != null) {
       this.fullname = this.eachUser.fullname;
       this.email = this.eachUser.email;
-      this.phoneNumber = this.eachUser.phoneNumber;
-      // this.userName = this.eachUser.userName;
+      this.phoneNumber = this.eachUser.phoneNumber;   
       this.address = this.eachUser.address;
     }
   },
@@ -303,16 +288,15 @@ export default {
 </script>
 
 <style scoped>
-.v-app-bar {
-  position: relative !important;
-}
-
 .form-block {
   display: flex;
   align-items: center;
+  justify-content: center; 
+  /* background-color: #ffffff; */
+  width: 400px !important;
 }
 
-form {
+.form-x {
   background-color: #ffffff;
   width: 400px;
   padding: 25px 40px 25px 40px;
