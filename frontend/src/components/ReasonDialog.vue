@@ -1,13 +1,14 @@
 <template>
   <div class="reason-dialog">
     <div class="content">
-      <p>Nhập lý do hủy đơn:</p>
+      <p>Nhập lý do:</p>
       <textarea class="textarea input" v-model="reason"></textarea>
     </div>
     <div class="btn-reason-dialog">
       <v-btn class="btn" @click="agree">Xác nhận</v-btn>
       <v-btn class="btn btn-cancel" @click="cancel">Hủy</v-btn>
     </div>
+
   </div>
 </template>
 <script>

@@ -65,7 +65,7 @@
         ></confirm-dialog>
       </v-dialog>
 
-      <v-dialog
+      <!-- <v-dialog
       width=450px 
       v-model="disableDialog">
         <confirm-dialog
@@ -73,6 +73,15 @@
           @agree-confirm-dialog="disableAgree(eachShop)"
           @cancel-confirm-dialog="disableCancel"
         ></confirm-dialog>
+      </v-dialog> -->
+
+       <v-dialog
+      width=450px 
+      v-model="disableDialog">
+        <reason-dialog
+          @agree-reason-dialog="disableAgree(eachShop)"
+          @cancel-reason-dialog="disableCancel"
+        ></reason-dialog>
       </v-dialog>
     </div>
     <div v-else
@@ -89,18 +98,18 @@
 <script>
 import TopTitle from '@/components/TopTitle.vue';
 import ShopDetail from './ShopDetail.vue';
-import ConfirmDialog from '../../../components/ConfirmDialog.vue';
+import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import NoContentForm from '@/components/NoContentForm.vue'
-//import ReasonDialog from '../../../components/ReasonDialog.vue';
+import ReasonDialog from '@/components/ReasonDialog.vue';
+
 export default {
-  // name: 'shop-management',
   components: { 
     TopTitle,
     ShopDetail,
     ConfirmDialog,
     NoContentForm,
-    //ReasonDialog,
+    ReasonDialog,
   },
   data() {
     return {
@@ -171,7 +180,7 @@ export default {
       await this.getEachShop(shopId);
       this.disableDialog = true;
     },
-    async disableAgree(eachShop) {
+    async disableAgree(eachShop, reason) {
       console.log(eachShop);
       if (eachShop.disable == true) {
         this.setSnackbar({
@@ -182,10 +191,18 @@ export default {
         this.disableDialog = false;
         return;
       } else {
+         if (reason === '') {
+        this.setSnackbar({
+          type: 'warning',
+          text: 'Vui lòng nhập lý do hủy đơn',
+          visible: true,
+        });
+        return;
+        }
         console.log(eachShop.shopId);
         this.disableShop({
           shopId: eachShop.shopId,
-          disableReason: '',
+          disableReason: reason,
         });
         await setTimeout( async () => {
            await this.getAllShops({name: ' '});

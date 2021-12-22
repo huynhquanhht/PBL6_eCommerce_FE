@@ -42,6 +42,7 @@
     </div>
     <v-dialog v-model="dialog" width="400px">
       <reason-dialog
+      :question="question"
       @agree-reason-dialog="agreeReasonOrder"
       @cancel-reason-dialog="cancelReasonOrder"
       ></reason-dialog>
@@ -66,6 +67,7 @@ export default {
     return {
       products: [],
       dialog: false,
+      question: "Nhập lý do hủy đơn",
     };
   },
   methods: {
@@ -86,7 +88,7 @@ export default {
       }
       let cancelResult = await this.memberCancelOrder({
         orderId: this.orderId,
-        calcelReason: reason,
+        cancelReason: reason,
       });
       if (cancelResult) {
         await this.fetchShopOrders('Tất cả');

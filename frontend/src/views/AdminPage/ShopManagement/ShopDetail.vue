@@ -1,6 +1,7 @@
 <template>
   <div class="shop-management-wrapper">
-    <p class="top-title">Chi tiết Shop</p>
+    <top-title :title="title"></top-title>
+    <hr class="hr" />
     <div class="form-block">
       <form>
         <div class="grid-container">
@@ -48,19 +49,17 @@
             />
           </ValidationProvider>
         </div>
-        <!-- <div class="grid-container">
+        <div class="grid-container" v-show="shopDisable">
           <label>Lý do bị vô hiệu hóa: </label>
           <ValidationProvider name="Lý do bị vô hiệu hóa">
             <input
               name="disableReson"
               type="text"
               class="input disableReson-input"
-        
-
-              v-model="disableReson"
+              v-model="disableReason"
             />
           </ValidationProvider>
-        </div> -->
+        </div>
 
         <!-- <div class="grid-container">
           <label>Số lượng sản phẩm: </label>
@@ -126,6 +125,7 @@
 </template>
 
 <script>
+import TopTitle from '@/components/TopTitle.vue';
 import { required } from 'vee-validate/dist/rules';
 import { extend, ValidationProvider, setInteractionMode } from 'vee-validate';
 setInteractionMode('eager');
@@ -167,6 +167,7 @@ export default {
   // name: 'shop-management',
   components: {
     ValidationProvider,
+    TopTitle,
     //FunctionUndevelopForm
   },
   props: {
@@ -174,7 +175,7 @@ export default {
   },
   data() {
     return {
-      title: 'Chi tiết shop',
+      title: 'Chi tiết cửa hàng',
       name: '',
       address: '',
       phoneNumber: '',
@@ -187,6 +188,8 @@ export default {
       avatar: '',
       valid: '',
       show: false,
+      shopDisable: false,
+      disableReason: '',
     };
   },
   methods: {
@@ -200,6 +203,8 @@ export default {
         this.address = this.eachShop.address;
         this.phoneNumber = this.eachShop.phoneNumber;
         this.description = this.eachShop.description;
+        this.shopDisable = this.eachShop.disable;
+        this.disableReason = this.eachShop.disableReason;
         this.dateCreated = this.eachShop.dateCreated.slice(0,10);
         this.avatar =
           'http://localhost:55000/apigateway/Shops' + this.eachShop.avatar;
@@ -214,6 +219,8 @@ export default {
       this.address = this.eachShop.address;
       this.phoneNumber = this.eachShop.phoneNumber;
       this.description = this.eachShop.description;
+      this.shopDisable = this.eachShop.disable;
+      this.disableReason = this.eachShop.disableReason;
       this.dateCreated = this.eachShop.dateCreated.slice(0,10);
       this.avatar =
         'http://localhost:55000/apigateway/Shops' + this.eachShop.avatar;
