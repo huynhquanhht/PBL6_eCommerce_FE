@@ -21,7 +21,7 @@ export default {
       menuItems: [
         {
           icon: 'fas fa-store',
-          title: 'Quản Lý Shop',
+          title: 'Quản Lý cửa hàng',
           url: '/admin/shop-management',   
         },
         {
@@ -62,6 +62,7 @@ export default {
   grid-template-columns: 20px 120px;
   column-gap: 5px;
   color: #616161;
+  text-decoration: none;
 }
 
 .item-group {

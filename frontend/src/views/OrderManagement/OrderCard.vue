@@ -3,7 +3,7 @@
     <div class="product-cart">
       <div class="product-img-name">
         <div class="product-img">
-          <img :src="'http://07af-2402-800-6205-3e19-c61-ce29-d68e-b079.ngrok.io/apigateway/Products' + product.img" alt="" />
+          <img :src="'http://localhost:55000/apigateway/Products' + product.img" alt="" />
         </div>
         <div class="product-name">
           <p>{{ product.name }}</p>

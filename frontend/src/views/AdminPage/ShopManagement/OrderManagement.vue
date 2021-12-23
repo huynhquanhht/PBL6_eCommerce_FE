@@ -43,7 +43,7 @@
 
       <label>Đến ngày: </label>
       <v-menu
-        ref="menu2"
+        ref="menu2"  
         v-model="menu2"
         :close-on-content-click="false"
         :return-value.sync="datePicker2"
@@ -100,7 +100,7 @@
             <td>{{ order.shipName }}</td>
             <td>{{ order.shopName }}</td>
             <td>{{ order.state }}</td>
-            <td>{{ order.orderDate }}</td>
+            <td>{{ order.orderDate.slice(0,10) }}</td>
             <td>{{ order.totalPrice }}</td>
             <td>
               <v-btn 
@@ -118,7 +118,9 @@
         ></order-detail>
       </v-dialog>
     </div>
-    <div v-else>
+    <div v-else
+    class="d-flex justify-center align-center"
+      style="width: 100wm; height: 100vh">
       <no-content-form
         :showOrder="true"
         Notification="Không có dữ liệu hóa đơn"
@@ -130,11 +132,10 @@
 <script>
 import TopTitle from '@/components/TopTitle.vue';
 import OrderDetail from './OrderDetail.vue';
-import NoContentForm from '../../../components/NoContentForm.vue';
-import { mapGetters, mapActions } from 'vuex';
+import NoContentForm from '@/components/NoContentForm.vue';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 
 export default {
-  // name: 'shop-management',
   components: {
     TopTitle,
     OrderDetail,
@@ -153,7 +154,8 @@ export default {
       menu1: false,
       menu2: false,
       oneOrder: null,
-      //orderDetails: null,
+      searchFromDay: '',
+      searchToDay: '',
     };
   },
   computed: {
@@ -162,18 +164,44 @@ export default {
     }),
   },
   methods: {
+    ...mapMutations({
+      setSnackbar: 'SET_SNACKBAR',
+    }),
     ...mapActions({
       getAllOrders: 'ACT_GET_ALL_ORDERS',
     }),
+    async search(fromDate, toDate) {
+      var fromDay = fromDate.slice(8,10);
+      var fromMonth = fromDate.slice(5,7);
+      var fromYear = fromDate.slice(0,4);
+
+      var toDay = toDate.slice(8,10);
+      var toMonth = toDate.slice(5,7);
+      var toYear = toDate.slice(0,4);
+      
+      if(fromDay > toDay || fromMonth > toMonth || fromYear > toYear){
+        this.setSnackbar({
+          type: 'warning',
+          visible: true,
+          text: "Từ ngày không thể lớn hơn Đến ngày"
+        });
+        return;
+      }
+      await this.getAllOrders({
+          fromDate: fromMonth + "/" + fromDay + "/" + fromYear, 
+          toDate: toMonth + "/" + toDay + "/" + toYear,
+      });
+      
+    },
     orderDetailForm(order) {
       this.oneOrder = order;
-      //this.OrderDetails = order.OrderDetails;
       console.log(this.oneOrder);
       this.orderDetail = true;
     },
   },
   async created() {
-    await this.getAllOrders({fromDate: '01/01/2000', toDate: '12/31/2099'});
+    await this.getAllOrders({
+    fromDate: '01/01/2021', toDate: '10/10/2030'}); 
   }
 };
 </script>
@@ -256,21 +284,6 @@ export default {
   letter-spacing: 0;
   box-shadow: none !important;
 }
-/* .shop-table {
-  display: flex;
-  flex-direction: column;
-  column-gap: 20px;
-  height: 32px;
-  width: 100%;
-}
-
-.shop-table table th {
-    border-collapse: collapse;
-    margin: 25px 0;
-    font: 500 14px Roboto;
-    min-width: 400px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-} */
 
 .styled-table {
   border-collapse: collapse;

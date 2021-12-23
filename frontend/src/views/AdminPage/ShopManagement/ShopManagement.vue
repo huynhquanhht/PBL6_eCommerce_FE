@@ -6,17 +6,18 @@
       <input 
       type="text" 
       placeholder="Tìm kiếm cửa hàng"
-      v-model="searchString" />
-      <v-btn @click="search(searchString)">Tìm kiếm</v-btn>
+      v-model="searchString"
+      @keyup.enter="search" />
+      <v-btn @click="search">Tìm kiếm</v-btn>
     </div>
     <div class="shop-table" v-if="allShops">
       <table class="styled-table">
         <thead>
           <tr>
             <th>Thứ tự</th>
-            <th>Tên shop</th>
-            <th>Tên chủ shop</th>
-            <th>Trạng thái shop</th>
+            <th>Tên cửa hàng</th>
+            <th>Tên chủ cửa hàng</th>
+            <th>Trạng thái cửa hàng</th>
             <th>Ngày tạo</th>
             <th>Thao tác</th>
           </tr>
@@ -28,7 +29,7 @@
             <td>{{ shop.nameOfUser }}</td>
             <td v-if="shop.disable">Đã bị vô hiệu hóa</td>
             <td v-else>Đang hoạt động</td>
-            <td>{{ shop.dateCreated }}</td>
+            <td>{{ shop.dateCreated.slice(0,10) }}</td>
             <td>
 
               <v-btn icon @click="shopDetail(shop.shopId)">
@@ -54,23 +55,28 @@
         </shop-detail>
       </v-dialog>
 
-      <v-dialog v-model="amnestyDialog">
+      <v-dialog 
+      width=450px 
+      v-model="amnestyDialog">
         <confirm-dialog
           :question="amnestyQuestion"
-          @agree-confirm-dialog="amnestyAgree(eachShop)"
+          @agree-confirm-dialog="amnestyAgree"
           @cancel-confirm-dialog="amnestyCancel"
         ></confirm-dialog>
       </v-dialog>
 
-      <v-dialog v-model="disableDialog">
-        <confirm-dialog
-          :question="disableQuestion"
-          @agree-confirm-dialog="disableAgree(eachShop)"
-          @cancel-confirm-dialog="disableCancel"
-        ></confirm-dialog>
+       <v-dialog
+      width=450px 
+      v-model="disableDialog">
+        <reason-dialog
+          @agree-reason-dialog="disableAgree"
+          @cancel-reason-dialog="disableCancel"
+        ></reason-dialog>
       </v-dialog>
     </div>
-    <div v-else>
+    <div v-else
+    class="d-flex justify-center align-center"
+      style="width: 100wm; height: 100vh">
        <no-content-form
         :showShop="true"
         Notification= "Không có cửa hàng nào cả"
@@ -82,11 +88,19 @@
 <script>
 import TopTitle from '@/components/TopTitle.vue';
 import ShopDetail from './ShopDetail.vue';
-import ConfirmDialog from '../../../components/ConfirmDialog.vue';
+import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
+import NoContentForm from '@/components/NoContentForm.vue'
+import ReasonDialog from '@/components/ReasonDialog.vue';
+
 export default {
-  // name: 'shop-management',
-  components: { TopTitle, ShopDetail, ConfirmDialog },
+  components: { 
+    TopTitle,
+    ShopDetail,
+    ConfirmDialog,
+    NoContentForm,
+    ReasonDialog,
+  },
   data() {
     return {
       title: 'danh sách các cửa hàng',
@@ -114,48 +128,51 @@ export default {
     ...mapMutations({
       setSnackbar: 'SET_SNACKBAR',
     }),
-    search(searchString) {
-      this.getAllShops({name: searchString});
+    async search() {
+      await this.getAllShops({name: this.searchString});
     },
-    // Edit Shop
+    
     async shopDetail(shopId) {
       await this.getEachShop(shopId);  
       console.log(this.eachShop);    
       this.editShop = true;
     },
-     // Amnesty
+    
     async shopAmnesty(shopId) {
       await this.getEachShop(shopId);
       this.amnestyDialog = true;
     },
-    amnestyAgree(eachShop) {
-    console.log(eachShop);
-      // if (eachShop.disable == false) {
-      //   this.setSnackbar({
-      //     type: 'info',
-      //     visible: true,
-      //     text: 'Cửa hàng này hiện đang được hoạt động',
-      //   });
-      //   this.amnestyDialog = false;
-      //   return;
-      // } else {
-        console.log(eachShop.shopId);
-        this.enableShop({shopId: eachShop.shopId});
+    async amnestyAgree() {
+    console.log(this.eachShop);
+      if (this.eachShop.disable == false) {
+        this.setSnackbar({
+          type: 'info',
+          visible: true,
+          text: 'Cửa hàng này hiện đang được hoạt động',
+        });
         this.amnestyDialog = false;
         return;
-      //}
+      } else {
+        console.log(this.eachShop.shopId);
+        this.enableShop({shopId: this.eachShop.shopId});
+        await setTimeout( async () => {
+           await this.getAllShops({name: ' '});
+        }, 800);
+        this.amnestyDialog = false;
+        return;
+      }
     },
     amnestyCancel() {
       this.amnestyDialog = false;
     },
-    // Disable 
+    
     async shopDisable(shopId) {
       await this.getEachShop(shopId);
       this.disableDialog = true;
     },
-    disableAgree(eachShop) {
-      console.log(eachShop);
-      if (eachShop.disable == true) {
+    async disableAgree(reason) {
+      console.log(this.eachShop);
+      if (this.eachShop.disable == true) {
         this.setSnackbar({
           type: 'info',
           visible: true,
@@ -164,11 +181,23 @@ export default {
         this.disableDialog = false;
         return;
       } else {
-        console.log(eachShop.shopId);
+         if (reason === '') {
+        this.setSnackbar({
+          type: 'warning',
+          text: 'Vui lòng nhập lý do hủy đơn',
+          visible: true,
+        });
+        return;
+        }
+        console.log(this.eachShop.shopId);
+        console.log(reason);
         this.disableShop({
-          shopId: eachShop.shopId,
-          disableReason: '',
-          });
+          shopId: this.eachShop.shopId,
+          disableReason: reason,
+        });
+        await setTimeout( async () => {
+           await this.getAllShops({name: ' '});
+        }, 800);
         this.disableDialog = false;
         return;
       }
@@ -247,21 +276,6 @@ export default {
   letter-spacing: 0;
   box-shadow: none !important;
 }
-/* .shop-table {
-  display: flex;
-  flex-direction: column;
-  column-gap: 20px;
-  height: 32px;
-  width: 100%;
-}
-
-.shop-table table th {
-    border-collapse: collapse;
-    margin: 25px 0;
-    font: 500 14px Roboto;
-    min-width: 400px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-} */
 
 .styled-table {
   border-collapse: collapse;

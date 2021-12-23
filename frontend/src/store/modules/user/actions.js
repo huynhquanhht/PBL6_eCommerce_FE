@@ -138,7 +138,7 @@ const actions = {
         visible: true,
         text: 'Người dùng này đã bị vô hiệu hóa thành công',
       });
-      context.commit('SET_EACH_USER', res.data.resultObj);
+      await context.commit('SET_EACH_USER', res.data.resultObj);
     } catch (error) {
       if (error.response.status === 400) {
         context.commit('SET_SNACKBAR', {
@@ -160,7 +160,7 @@ const actions = {
         visible: true,
         text: 'Người dùng này đã được Ân xá thành công',
       });
-      context.commit('SET_EACH_USER', res.data.resultObj);
+      await context.commit('SET_EACH_USER', res.data.resultObj);
     } catch (error) {
       if (error.response.status === 400) {
         context.commit('SET_SNACKBAR', {

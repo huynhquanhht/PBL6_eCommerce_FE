@@ -15,7 +15,7 @@ const actions = {
         visible: true,
         text: 'Đăng ký tài khoản thành công',
       });
-      router.push({ name: 'login' });
+      router.replace({ name: 'login' });
     } catch (error) {
       if (error.response.status === 400) {
         context.commit('SET_SNACKBAR', {
@@ -70,6 +70,7 @@ const actions = {
     try {
       let res = await login(account);
       context.commit('SET_CURRENT_USER', res.data);
+      return res.data;
     } catch (error) {
       if (error.response.status === 400) {
         context.commit('SET_SNACKBAR', {
@@ -79,6 +80,7 @@ const actions = {
         });
       }
     }
+    return false;
   },
 };
 

@@ -1,7 +1,7 @@
 <template>
   <div class="all-order-wrapper">
     <div class="all-order-title">
-      <p class="main-title">Tất cả hóa đơn</p>
+      <p class="main-title">Đơn hàng đã xác nhận</p>
     </div>
     <hr class="all-order-hr" />
     <div class="search-block" >
@@ -9,8 +9,12 @@
       <select class="search-select" name="" id="">
         <option value="Mã đơn hàng">Mã đơn hàng</option>
       </select>
-      <input class="search-input" type="text" name="" id="" />
-      <v-btn class="search-button">Tìm kiếm</v-btn>
+      <input 
+      v-model="searchId" 
+      class="search-input" 
+      type="text" name="" id=""
+      @keyup.enter="search" />
+      <v-btn @click="search()" class="search-button">Tìm kiếm</v-btn>
     </div>
     <table class="styled-table" v-if="orders">
       <thead>
@@ -47,7 +51,7 @@
               v-show="order.state === 'Chờ xác nhận' || order.state === 'Đã xác nhận'"
               @click="cancelOrder(order.id)"
             >
-              <v-icon size="25px">mdi-cancel</v-icon>
+              <v-icon size="25px">mdi-close-circle</v-icon>
             </v-btn>
           </td>
         </tr>
@@ -71,6 +75,7 @@ export default {
     return {
       dialog: false,
       orderId: null,
+      searchId: '',
     };
   },
   methods: {
@@ -80,7 +85,36 @@ export default {
     ...mapActions({
       fetchShopOrders: 'FETCH_SHOP_ORDERS',
       cancelShopOrder: 'CANCEL_SHOP_ORDER',
+      fetchOrderById: 'FETCH_ORDER_BY_ID',
     }),
+
+    async search() {
+      await this.fetchOrderById({ id: parseInt(this.searchId) });
+      if (this.orderInfo) {
+        if (
+          this.orderInfo.shopId == this.orders[0].shopId &&
+          this.orderInfo.state == 'Đã xác nhận'
+        ) {
+          this.$router.push(`/shop-chanel/order-detail/${this.orderInfo.id}`);
+        } else {
+          this.setSnackbar({
+            type: 'info',
+            visible: true,
+            text: 'Không tìm thấy đơn hàng phù hợp',
+          });
+          return;
+        }
+      } else {
+        this.setSnackbar({
+          type: 'info',
+          visible: true,
+          text: 'Không tìm thấy đơn hàng phù hợp',
+        });
+        return;
+      }
+      return;
+    },
+
     async getShopOrder(state) {
       await this.fetchShopOrders(state);
     },
@@ -116,6 +150,7 @@ export default {
   computed: {
     ...mapGetters({
       orders: 'GET_ORDERS',
+      orderInfo: 'GET_ORDER',
     }),
   },
   async created() {

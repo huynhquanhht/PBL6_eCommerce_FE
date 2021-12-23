@@ -39,7 +39,7 @@
             <td class="product-name-img">
               <img
                 :src="
-                  'http://07af-2402-800-6205-3e19-c61-ce29-d68e-b079.ngrok.io/apigateway/Products' + product.image"
+                  'http://localhost:55000/apigateway/Products' + product.image"
                 alt=""
                 width="40px"
                 height="40px"
@@ -61,14 +61,6 @@
           <span> Thanh toán khi nhận hàng</span>
         </div>
         <hr class="hr" />
-        <!-- <div class="product-total">
-          <span>Tổng tiền hàng: </span>
-          <span> {{ this.totalPrice }} đ</span>
-        </div>
-        <div class="ship-fee">
-          <span>Phí vận chuyển: </span>
-          <span>10.000 đ</span>
-        </div> -->
         <div class="total-payment">
           <span>Tổng thanh toán: </span>
           <span> {{this.totalPrice}} đ</span>
@@ -80,14 +72,12 @@
 
 <script>
 import TopTitle from '@/components/TopTitle';
-//import localStorageUtils from '@/utils/utils-local-storage.js';
 
 export default {
   name: 'OrderDetails',
   components: { 
-      //PaymentCard, 
       TopTitle, 
-      //AddressForm 
+    
   },
   props: { 
     eachOrder: { 

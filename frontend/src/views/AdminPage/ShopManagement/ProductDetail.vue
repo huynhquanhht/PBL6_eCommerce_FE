@@ -4,10 +4,30 @@
     <div class="product-name">
       <div class="label-input">
         <div class="label-block">
+          <label class="label">Mã cửa Hàng: </label>
+        </div>
+        <div class="text-block">
+          <input readonly type="text" class="input" v-model="shopId" />
+        </div>
+      </div>
+    </div>
+    <div class="product-name">
+      <div class="label-input">
+        <div class="label-block">
+          <label class="label">Tên cửa hàng: </label>
+        </div>
+        <div class="text-block">
+          <input readonly type="text" class="input" v-model="shopName" />
+        </div>
+      </div>
+    </div>
+    <div class="product-name">
+      <div class="label-input">
+        <div class="label-block">
           <label class="label">Tên sản phẩm: </label>
         </div>
         <div class="text-block">
-          <input type="text" class="input" v-model="productName" />
+          <input readonly type="text" class="input" v-model="productName" />
         </div>
       </div>
     </div>
@@ -16,35 +36,23 @@
       <div class="gender-block">
         <label class="label">Giới tính: </label>
         <div class="gender-male">
-          <input type="radio" value="Nam" id="male" name="gender" />
+          <input readonly type="radio" value="Nam" id="male" name="gender" />
           <label class="label" for="male"> Nam</label>
         </div>
         <div class="gender-female">
-          <input type="radio" value="Nữ" id="female" name="gender" />
+          <input readonly type="radio" value="Nữ" id="female" name="gender" />
           <label class="label" for="female"> Nữ</label>
         </div>
       </div>
       <div class="category">
-        <div class="label-input">
-          <div class="label-block">
-            <label class="label">Phân loại: </label>
-          </div>
-          <div class="category-select-block">
-            <select name="cars" id="cars" class="select-box">
-              <option value="volvo">Volvo</option>
-              <option value="saab">Saab</option>
-            </select>
-          </div>
-        </div>
-        <div class="detail label-input">
-          <div class="label-block">
-            <label class="label">Chi tiết: </label>
-          </div>
-          <div class="category-select-block">
-            <select name="cars" id="cars" class="select-box">
-              <option value="volvo">Volvo</option>
-              <option value="saab">Saab</option>
-            </select>
+        <div class="product-name">
+          <div class="label-input">
+            <div class="label-block">
+              <label class="label">Phân loại: </label>
+            </div>
+            <div class="text-block">
+              <input readonly type="text" class="input" v-model="productCategory" />
+            </div>
           </div>
         </div>
         <div class="description label-input">
@@ -52,7 +60,7 @@
             <label class="label">Mô tả sản phẩm: </label>
           </div>
           <div class="product-description-block">
-            <textarea class="textarea input"></textarea>
+            <textarea readonly v-model="description" class="textarea input"></textarea>
           </div>
         </div>
         <div class="color-size">
@@ -63,58 +71,38 @@
                 <th>Màu</th>
                 <th>Kích thước</th>
                 <th>Tồn kho</th>
-                <th>Thao tác</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item, index) in colorSize" :key="index">
+              <tr v-for="(productDetail, index) in productDetails" :key="index">
                 <td style="width: 108px">
                   <input
                     type="text"
-                    v-model="item.color"
+                    v-model="productDetail.color"
                     placeholder="Nhập..."
-                    @change="setColor(item, index)"
+                    @change="setColor(productDetail, index)"
                   />
                 </td>
                 <td style="width: 108px">
                   <input
+                    readonly
                     type="text"
-                    v-model="item.size"
+                    v-model="productDetail.size"
                     placeholder="Nhập..."
                   />
                 </td>
                 <td style="width: 108px">
                   <input
+                   readonly
                     type="text"
-                    v-model="item.stock"
+                    v-model="productDetail.stock"
                     placeholder="Nhập..."
                   />
-                </td>
-                <td style="width: 108px">
-                  <v-dialog v-model="dialog" width="400px">
-                    <template v-slot:activator="{ on, attrs }">
-                      <i
-                        class="icon-delete fas fa-trash"
-                        @click="deleteColorSize(item, index)"
-                        v-bind="attrs"
-                        v-on="on"
-                      ></i>
-                    </template>
-                    <confirm-dialog
-                      :question="question"
-                      @agree-confirm-dialog="agree"
-                      @cancel-confirm-dialog="cancel"
-                    ></confirm-dialog>
-                  </v-dialog>
                 </td>
               </tr>
             </tbody>
           </table>
           <div>
-            <button class="btn-add-color-size" @click="addCategory">
-              <i class="fas fa-plus-circle"></i>
-              <span>Thêm phân loại mới</span>
-            </button>
           </div>
         </div>
         <div class="color-image">
@@ -128,26 +116,21 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item, index) in colorImage" :key="index">
+              <tr v-for="(product, index) in productImage" :key="index">
                 <td style="width: 108px">
-                  <span> {{ item.color }}</span>
+                  <span> {{ product.colorName }}</span>
                 </td>
-                <td style="width: 108px">
-                  <input
-                    class="file-input"
-                    id="file"
-                    type="file"
-                    accept="image/gif,image/jpg,image/png,image/svg,image/jpeg"
-                    placeholder="Nhập..."
-                    @change="readURL(index)"
-                  />
-                  <img v-if="item.image" :src="item.image" alt="" />
-                  <label class="choose-image" for="file">
-                    <v-icon>mdi-image-plus</v-icon>
-                  </label>
+                <td class="product-name-img" >
+                  <img 
+                   :src="'http://localhost:55000/apigateway/Products' + product.imagePath" alt=""
+                   width="100px"
+                  height="100px" />
                 </td>
-                <td style="width: 108px">
-                  <span>{{ item.imageType }}</span>
+                <td v-if="product.isDefault" style="width: 108px">
+                  <span>Ảnh bìa</span>
+                </td>
+                <td v-else style="width: 108px">
+                  <span>Ảnh</span>
                 </td>
               </tr>
             </tbody>
@@ -179,12 +162,12 @@
 </template>
 
 <script>
-import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import TopTitle from '@/components/TopTitle.vue';
 export default {
   name: 'ProductDetail',
-  components: { ConfirmDialog, TopTitle },
-  props: { 
+  components: { 
+    TopTitle },
+  props: {
     eachProduct: Object,
   },
   data() {
@@ -197,6 +180,8 @@ export default {
       originPrice: null,
       sellPrice: null,
       gender: 0,
+      productDetails: [],
+      productImage: [],
       colorSize: [
         {
           color: '',
@@ -257,21 +242,46 @@ export default {
   watch: {
     eachProduct() {
       console.log(this.eachProduct);
-      if(this.eachProduct != null) {
-      this.productName = this.eachProduct.name;
-      this.originPrice = this.eachProduct.originalPrice;
-      this.sellPrice = this.eachProduct.price;
-      this.gender = this.eachProduct.gender;
-    }
-    }
+      if (this.eachProduct != null) {
+        this.shopId = this.eachProduct.shopId;
+        this.shopName = this.eachProduct.shopName;
+        this.productName = this.eachProduct.name;
+        this.gender = this.eachProduct.gender;
+        if (this.gender == 1) {
+          document.getElementById('male').checked = true;
+        } else {
+          document.getElementById('female').checked = true;
+        }
+        this.productCategory = this.eachProduct.categoryName;
+        this.description = this.eachProduct.description;
+        this.productDetails = this.eachProduct.details;
+        this.productImage = this.eachProduct.images;
+        this.originPrice = this.eachProduct.originalPrice;
+        this.sellPrice = this.eachProduct.price;
+      }
+    },
   },
   created() {
     console.log(this.eachProduct);
-    if(this.eachProduct != null) {
+    if (this.eachProduct != null) {
+      this.shopId = this.eachProduct.shopId;
+      this.shopName = this.eachProduct.shopName;
       this.productName = this.eachProduct.name;
+      setTimeout(() => {
+        if (this.gender == 1) {
+          document.getElementById('male').checked = true;
+        } else {
+          document.getElementById('female').checked = true;
+        }
+      }, 100);
+      this.productCategory = this.eachProduct.categoryName;
+      this.description = this.eachProduct.description;
+      this.productDetails = this.eachProduct.details;
+      this.productImage = this.eachProduct.images;
       this.originPrice = this.eachProduct.originalPrice;
       this.sellPrice = this.eachProduct.price;
       this.gender = this.eachProduct.gender;
+      
     }
   },
 };
@@ -281,6 +291,9 @@ export default {
 .add-product-form {
   background-color: #ffffff;
   justify-items: center;
+}
+.product-name {
+  margin-bottom: 10px;
 }
 .label-input {
   display: grid;
@@ -311,11 +324,11 @@ export default {
   justify-self: end;
 }
 .input {
-  border: solid 1px #616161;
+  border: solid 2px #fea200;
   background-color: #ffffff;
   height: 32px;
   width: 100%;
-  outline: #616161;
+  outline: #fea200;
   padding: 8px;
   box-shadow: 0px 2px 2px 0px rgb(0 0 0 / 14%);
   font: 400 15px Roboto;
@@ -399,6 +412,12 @@ export default {
   text-align: center;
 }
 
+.product-name-img {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .styled-table td > input {
   width: 100%;
   height: 100%;
@@ -479,7 +498,8 @@ input[type='file'] {
   margin-left: 140px;
 }
 
-.btn-reset, .btn-cancel {
+.btn-reset,
+.btn-cancel {
   background-color: #b4b1b1 !important;
 }
 </style>

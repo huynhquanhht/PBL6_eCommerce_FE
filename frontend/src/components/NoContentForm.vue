@@ -1,16 +1,16 @@
 <template>
   <div class="no-content-wrapper">
     <div class="icon" v-show="showProduct">
-        <v-icon width="40px" height="40px">fas fa-tshirt</v-icon>
+        <v-icon x-large color=#fea200>fas fa-tshirt</v-icon>
     </div>
     <div class="icon" v-show="showOrder">
-        <v-icon width="40px" height="40px">fas fa-paste</v-icon>
+        <v-icon x-large color=#fea200>fas fa-paste</v-icon>
     </div>
     <div class="icon" v-show="showUser">
-        <v-icon width="40px" height="40px">fas fa-user-circle</v-icon>
+        <v-icon x-large color=#fea200>fas fa-user-circle</v-icon>
     </div>
     <div class="icon" v-show="showShop">
-        <v-icon width="40px" height="40px">fas fa-store</v-icon>
+        <v-icon x-large color=#fea200>fas fa-store</v-icon>
     </div>
     <div class="content">
       {{ Notification }}

@@ -1,7 +1,7 @@
 <template>
   <div class="all-order-wrapper">
     <div class="all-order-title">
-      <p class="main-title">Tất cả hóa đơn</p>
+      <p class="main-title">Đơn hàng đã hủy</p>
     </div>
     <hr class="all-order-hr" />
     <div class="search-block">
@@ -9,8 +9,15 @@
       <select class="search-select" name="" id="">
         <option value="Mã đơn hàng">Mã đơn hàng</option>
       </select>
-      <input class="search-input" type="text" name="" id="" />
-      <v-btn class="search-button">Tìm kiếm</v-btn>
+      <input
+        v-model="searchId"
+        class="search-input"
+        type="text"
+        name=""
+        id=""
+        @keyup.enter="search"
+      />
+      <v-btn @click="search" class="search-button">Tìm kiếm</v-btn>
     </div>
     <table class="styled-table" v-if="orders">
       <thead>
@@ -22,6 +29,7 @@
           <th style="width: 140px">Tổng hóa đơn</th>
           <th style="width: 140px">Trạng thái</th>
           <th style="width: 130px">Ngày cập nhật</th>
+          <th style="width: 130px">Lý do hủy đơn</th>
           <th style="width: 100px">Thao tác</th>
         </tr>
       </thead>
@@ -36,15 +44,23 @@
           <td>
             {{ new Date().toLocaleDateString('en-GB', order.dateModified) }}
           </td>
+          <td>{{ order.cancelReason }}</td>
           <td class="btn-block">
-            <v-btn icon width="26px" height="26px" @click="viewDetail(order.id)">
+            <v-btn
+              icon
+              width="26px"
+              height="26px"
+              @click="viewDetail(order.id)"
+            >
               <v-icon size="25px">mdi-information</v-icon>
             </v-btn>
             <v-btn
               icon
               width="26px"
               height="26px"
-              v-show="order.state === 'Chờ xác nhận' || order.state === 'Đã xác nhận'"
+              v-show="
+                order.state === 'Chờ xác nhận' || order.state === 'Đã xác nhận'
+              "
               @click="cancelOrder(order.id)"
             >
               <v-icon size="25px">mdi-cancel</v-icon>
@@ -71,6 +87,7 @@ export default {
     return {
       dialog: false,
       orderId: null,
+      searchId: '',
     };
   },
   methods: {
@@ -80,7 +97,36 @@ export default {
     ...mapActions({
       fetchShopOrders: 'FETCH_SHOP_ORDERS',
       cancelShopOrder: 'CANCEL_SHOP_ORDER',
+      fetchOrderById: 'FETCH_ORDER_BY_ID',
     }),
+
+    async search() {
+      await this.fetchOrderById({ id: parseInt(this.searchId) });
+      if (this.orderInfo) {
+        if (
+          this.orderInfo.shopId == this.orders[0].shopId &&
+          this.orderInfo.state == 'Đã hủy'
+        ) {
+          this.$router.push(`/shop-chanel/order-detail/${this.orderInfo.id}`);
+        } else {
+          this.setSnackbar({
+            type: 'info',
+            visible: true,
+            text: 'Không tìm thấy đơn hàng phù hợp',
+          });
+          return;
+        }
+      } else {
+        this.setSnackbar({
+          type: 'info',
+          visible: true,
+          text: 'Không tìm thấy đơn hàng phù hợp',
+        });
+        return;
+      }
+      return;
+    },
+
     async getShopOrder(state) {
       await this.fetchShopOrders(state);
     },
@@ -111,11 +157,12 @@ export default {
     },
     viewDetail(orderId) {
       this.$router.push(`/shop-chanel/order-detail/${orderId}`);
-    }
+    },
   },
   computed: {
     ...mapGetters({
       orders: 'GET_ORDERS',
+      orderInfo: 'GET_ORDER',
     }),
   },
   async created() {

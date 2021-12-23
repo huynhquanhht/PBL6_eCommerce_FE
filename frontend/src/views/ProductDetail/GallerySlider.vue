@@ -2,7 +2,7 @@
   <div class="gallery-wrapper">
     <div class="main-image">
       <img
-        :src="'http://07af-2402-800-6205-3e19-c61-ce29-d68e-b079.ngrok.io/apigateway/Products' + activePic"
+        :src="'http://localhost:55000/apigateway/Products' + activePic"
         alt=""
       />
     </div>
@@ -23,7 +23,7 @@
         >
           <img
             class="thumbnail"
-            :src="'http://07af-2402-800-6205-3e19-c61-ce29-d68e-b079.ngrok.io/apigateway/Products' + imgUrl"
+            :src="'http://localhost:55000/apigateway/Products' + imgUrl"
             @mouseover="changeActivePic(index)"
           />
         </div>

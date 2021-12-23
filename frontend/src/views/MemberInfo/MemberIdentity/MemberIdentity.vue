@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex';
+import {mapGetters, mapMutations, mapActions} from 'vuex';
 import localStorageUtils from '@/utils/utils-local-storage.js'
 import TopTitle from '@/components/TopTitle.vue'
 import { required } from 'vee-validate/dist/rules';
@@ -145,13 +145,16 @@ export default {
     ...mapActions({
       fetchUserInfo: 'FETCH_USER_INFO',
     }),
-    submit() {
+    ...mapMutations({
+      setSnackbar: 'SET_SNACKBAR'
+    }),
+    async submit() {
       if( this.fullname !== '' &&
           this.email.match(/.+@.+\..+/) &&
           this.phoneNumber.match(/^[0-9]{10,10}$/) &&
           this.address !== ''
         ) {
-          this.$store.dispatch('ACT_UPDATE_MEMBER_INFO', {
+          await this.$store.dispatch('ACT_UPDATE_MEMBER_INFO', {
             memberInfo: {
               fullname: this.fullname,
               phoneNumber: this.phoneNumber,
@@ -159,8 +162,14 @@ export default {
               address: this.address,
             }
           })
-          this.fetchUserInfo();
+          await this.fetchUserInfo();
+          return;
         }
+      this.setSnackbar({
+        type: 'error',
+        visible: true,
+        text: 'Dữ liệu không hợp lệ'
+      });
     },
     reset() {
       this.fullname = this.userInfo.fullname;

@@ -4,11 +4,12 @@
     <hr class="hr" />
     <div class="header__top-search-block">
       <input
+        @keyup.enter="search"
         type="text"
         placeholder="Nhập tên sản phẩm..."
         v-model="searchString"
       />
-      <v-btn @click="search(searchString)">Tìm kiếm</v-btn>
+      <v-btn @click="search">Tìm kiếm</v-btn>
     </div>
     <div class="shop-table" v-if="allProducts">
       <table class="styled-table">
@@ -28,7 +29,7 @@
             <td class="product-name-img">
               <img
                 :src="
-                  'http://07af-2402-800-6205-3e19-c61-ce29-d68e-b079.ngrok.io/apigateway/Products' +
+                  'http://localhost:55000/apigateway/Products' +
                   product.thumbnailImage
                 "
                 alt=""
@@ -45,28 +46,23 @@
            @click="productDetailForm(product.id)">
             <v-icon size="20px" color="#616161">fa-eye</v-icon>
           </v-btn>
-              <!-- <v-dialog v-model="dialog" :retain-focus="false">
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn icon v-bind="attrs" v-on="on" @click="deleteAlertForm">
-                    <v-icon size="20px">mdi-delete</v-icon>
-                  </v-btn>
-                </template>
-                <confirm-dialog 
-                :question="question"
-                @agree-confirm-dialog="agree"
-                @cancel-confirm-dialog="cancel"
-                > </confirm-dialog>
-              </v-dialog> -->
             </td>
           </tr>
         </tbody>
       </table>
       <v-dialog v-model="ShowProduct">
         <product-detail :eachProduct="oneProduct"></product-detail>
-        <!-- <function-undevelop-form></function-undevelop-form> -->
+      
       </v-dialog>
     </div>
-    <div v-else>
+    <div v-else
+      class="d-flex justify-center align-center"
+      style="width: 100wm; height: 100vh">
+       <v-progress-circular
+        :size="40"
+        color="#fea200"
+        indeterminate
+      ></v-progress-circular>
       <no-content-form
         :showProduct="true"
         Notification="Không có sản phẩm nào cả"
@@ -79,13 +75,12 @@
 import TopTitle from '@/components/TopTitle.vue';
 import { mapActions, mapGetters } from 'vuex';
 import ProductDetail from '@/views/AdminPage/ShopManagement/ProductDetail.vue';
-
+import NoContentForm from '@/components/NoContentForm.vue'
 export default {
-  // name: 'shop-management',
   components: {
     TopTitle,
     ProductDetail,
-    //ConfirmDialog,
+    NoContentForm,
   },
   data() {
     return {
@@ -106,11 +101,11 @@ export default {
       getAllProducts: 'ACT_GET_ALL_PRODUCTS_FOR_ADMIN',
       getProductDetail: 'FETCH_PRODUCT_DETAIL'
     }),
-    search(searchString) {
-      this.getAllProducts({
+    async search() {
+      await this.getAllProducts({
         pageIndex: 1,
         pageSize: 10000,
-        keyWord: searchString,
+        keyWord: this.searchString,
       });
     },
     async productDetailForm(productId) {
@@ -168,45 +163,12 @@ export default {
   padding: auto;
 }
 
-.header__top-search-block select {
-  margin: 0 auto;
-  color: #fea200;
-  width: 200px;
-  padding: 15px;
-  height: 36px;
-  margin-right: 10px;
-  cursor: pointer;
-  border: solid 2px #fea200;
-  border-radius: 4px;
-}
-
-.header__top-search-block select:hover {
-  background-color: #fea200;
-  color: white;
-  padding: 15px 5px 15px 25px;
-}
-
-.header__top-search-block option {
-  background-color: white;
-  color: #fea200;
-  width: 310px;
-  padding: 10px 15px;
-  height: 20px;
-  cursor: pointer;
-}
-
-.header__top-search-block option:hover {
-  padding-left: 25px;
-  width: 270px;
-  background-color: #fea200;
-  color: #fea200;
-}
 
 .header__top-search-block input {
   border: solid 2px #fea200;
   background-color: #ffffff;
   height: 36px;
-  width: 520px;
+  width: 900px;
   margin-left: 0;
   outline: #fea200;
   padding: 8px;
@@ -229,21 +191,6 @@ export default {
   letter-spacing: 0;
   box-shadow: none !important;
 }
-/* .shop-table {
-  display: flex;
-  flex-direction: column;
-  column-gap: 20px;
-  height: 32px;
-  width: 100%;
-}
-
-.shop-table table th {
-    border-collapse: collapse;
-    margin: 25px 0;
-    font: 500 14px Roboto;
-    min-width: 400px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-} */
 
 .styled-table {
   border-collapse: collapse;

@@ -71,12 +71,13 @@ export default {
       login: 'LOGIN'
     }),
     async submit() {
-      await this.login({
+      let res = await this.login({
         username: this.username,
         password: this.password,
       })
-      if (this.currentUser != null) {
-        localStorageUtils.getInstance().setToken(this.currentUser.resultObj);
+      if (res) {
+        localStorageUtils.getInstance().clearToken();
+        localStorageUtils.getInstance().setToken(res.resultObj);
         router.push("/");
       }
     },

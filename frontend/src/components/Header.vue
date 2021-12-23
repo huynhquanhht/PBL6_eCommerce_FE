@@ -1,5 +1,5 @@
 <template>
-  <div class="header-block" v-if="(loginStatus === false) || (loginStatus === true && userInfo)">
+  <div class="header-block"  v-if="(loginStatus === false) || (loginStatus === true && userInfo)">
     <div class="header">
       <div class="header__top">
         <div class="header__top-main">
@@ -16,8 +16,10 @@
             <input type="text" 
             placeholder="Tìm kiếm sản phẩm mong muốn..."
             v-model="searchString"
+            @keyup.enter="search"
             />
-            <v-btn @click="search()">Tìm kiếm</v-btn>
+            <v-btn id="searchButton"
+             @click="search">Tìm kiếm</v-btn>
           </div>
           <div class="header__top-cart-store">
             <v-tooltip bottom>
@@ -40,7 +42,7 @@
               <span>Kênh người bán</span>
             </v-tooltip>
           </div>
-          <div class="header__top-user-block" v-if="!userInfo && loginStatus === false">
+          <div class="header__top-user-block" v-if="!loginStatus">
             <v-icon size="28">fas fa-user</v-icon>
             <div>
               <router-link to="/login" class="login-link">
@@ -55,7 +57,7 @@
               </router-link>
             </div>
           </div>
-          <div class="personal-account-block" v-if="userInfo">
+          <div class="personal-account-block" v-if="loginStatus && userInfo">
             <v-menu offset-y open-on-hover :close-on-content-click="false">
               <template v-slot:activator="{ on, attrs }">
                 <div class="personal-account" v-bind="attrs" v-on="on">
@@ -285,22 +287,14 @@ export default {
       }
       if (option === 'Đăng xuất') {
         localStorageUtils.clearToken();
-        this.$router.go('/');
+        this.$router.push('/');
+        return;
       }
     },
     search() {
       console.log(this.searchString);
-      this.$router.replace(`search-page?searchString=${this.searchString}&gender=0`);
-    }
-  },
-  watch: {
-    userInfo() {
-      if (this.userInfo) {
-        this.loginStatus = true;
-      } else {
-        this.loginStatus = false;
-      }
-    }
+      this.$router.replace(`/search-page?searchString=${this.searchString}&gender=0`);
+    },
   },
   async created() {
     if (localStorageUtils.getToken()) {

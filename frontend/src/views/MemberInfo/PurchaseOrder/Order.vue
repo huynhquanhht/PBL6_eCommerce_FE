@@ -35,19 +35,27 @@
         <span> {{ (order.totalPrice + 10000).toLocaleString('it-IT') }} đ</span>
       </div>
     </div>
-    <div>
-      <v-btn @click="cancelOrder" class="btn">
+    <div v-show="order.state === 'Chờ xác nhận'" class="cancel-button">
+      <v-btn @click="cancelOrder(order.id)" class="btn">
         Hủy đơn
       </v-btn>
     </div>
+    <v-dialog v-model="dialog" width="400px">
+      <reason-dialog
+      @agree-reason-dialog="agreeReasonOrder"
+      @cancel-reason-dialog="cancelReasonOrder"
+      ></reason-dialog>
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import OrderCard from './OrderCard.vue';
+import {mapActions, mapMutations} from 'vuex'
+import ReasonDialog from '@/components/ReasonDialog.vue';
 export default {
   name: 'Order',
-  components: { OrderCard },
+  components: { OrderCard, ReasonDialog,  },
   props: {
     order: {
       type: Object,
@@ -57,7 +65,42 @@ export default {
   data() {
     return {
       products: [],
+      dialog: false,
     };
+  },
+  methods: {
+    ...mapActions({
+      memberCancelOrder: 'ACT_MEMBER_CANCEL_ORDER',
+    }),
+    ...mapMutations({
+      setSnackbar: 'SET_SNACKBAR',
+    }),
+    async agreeReasonOrder(reason) {
+      console.log(reason);
+      if (reason === '') {
+        this.setSnackbar({
+          type: 'warning',
+          text: 'Vui lòng nhập lý do hủy đơn',
+          visible: true,
+        });
+        return;
+      }
+      let cancelResult = await this.memberCancelOrder({
+        orderId: this.orderId,
+        cancelReason: reason,
+      });
+      if (cancelResult) {
+        await this.fetchShopOrders('Tất cả');
+      }
+      this.dialog = false;
+    },
+    cancelOrder(orderId) {
+      this.dialog = true;
+      this.orderId = orderId;
+    },
+    cancelReasonOrder() {
+      this.dialog = false;
+    },
   },
   created() {
     this.products = this.order.orderDetails.reduce((products, order) => {
@@ -195,6 +238,9 @@ export default {
   margin-bottom: 10px;
 }
 
+.cancel-button {
+  justify-content: end;
+}
 .btn {
   background-color: #fea200 !important;
   color: #ffffff !important;

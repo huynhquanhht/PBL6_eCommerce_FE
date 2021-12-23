@@ -55,7 +55,7 @@ export default {
   async created() {
     await setTimeout( async () => {
           await this.getAllProducts({ pageIndex: 1, pageSize: 24 });
-    }, 3000);
+    }, 1500);
   },
 };
 </script>

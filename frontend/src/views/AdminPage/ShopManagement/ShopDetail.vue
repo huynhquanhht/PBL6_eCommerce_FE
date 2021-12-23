@@ -1,10 +1,11 @@
 <template>
   <div class="shop-management-wrapper">
-    <p class="top-title">Chi tiết Shop</p>
+    <top-title :title="title"></top-title>
+    <hr class="hr" />
     <div class="form-block">
       <form>
         <div class="grid-container">
-          <label>Id cửa hàng: </label>
+          <label>Mã cửa hàng: </label>
           <ValidationProvider name="Tên Shop:">
             <input type="text" 
             class="input name-input" readonly v-model="id" />
@@ -48,84 +49,35 @@
             />
           </ValidationProvider>
         </div>
-        <!-- <div class="grid-container">
+        <div class="grid-container" v-show="shopDisable">
           <label>Lý do bị vô hiệu hóa: </label>
           <ValidationProvider name="Lý do bị vô hiệu hóa">
             <input
               name="disableReson"
               type="text"
               class="input disableReson-input"
-        
-
-              v-model="disableReson"
-            />
-          </ValidationProvider>
-        </div> -->
-
-        <div class="grid-container">
-          <label>Số lượng sản phẩm: </label>
-          <ValidationProvider name="Số lượng sản phẩm: ">
-            <input
-              name="productAmount"
-              type="text"
-              class="input productAmount-input"
-              v-model="productAmount"
+              v-model="disableReason"
             />
           </ValidationProvider>
         </div>
 
-        <div class="grid-container">
-          <label>Tồn kho:</label>
-          <ValidationProvider name="Tồn kho:">
-            <input
-              name="allProductAmount"
-              type="text"
-              class="input allProductAmount-input"
-              v-model="allProductAmount"
-            />
-          </ValidationProvider>
-        </div>
-
-        <div class="grid-container">
-          <label>Số lượng đơn hàng:</label>
-          <ValidationProvider name="Số lượng đơn hàng:">
-            <input
-              name="OrderAmount"
-              type="text"
-              class="input OrderAmount-input"
-              v-model="OrderAmount"
-            />
-          </ValidationProvider>
-        </div>
-
-        <v-btn
-          @click="submit"
-          class="btn-signup white--text mt-4 mb-4"
-          width="100%"
-          height="42px"
-          color="#fea200"
-          depressed
-        >
-          <span class="font-size: 15px">Cập nhật</span>
-        </v-btn>
       </form>
 
       <form class="rigth-content">
-        <label>Ảnh shop</label>
+        <label>Ảnh cửa hàng</label>
         <v-img
           v-model="avatar"
           :src="avatar"
-          max-width="100px"
-          max-height="100px"
+          max-width="200px"
+          max-height="200px"
         ></v-img>
-        <input type="file" id="fileUpload" hidden />
-        <v-btn @click="chooseFiles()"> Chọn ảnh </v-btn>
       </form>
     </div>
   </div>
 </template>
 
 <script>
+import TopTitle from '@/components/TopTitle.vue';
 import { required } from 'vee-validate/dist/rules';
 import { extend, ValidationProvider, setInteractionMode } from 'vee-validate';
 setInteractionMode('eager');
@@ -164,17 +116,16 @@ extend('confirmed', (confirmPassword, [password]) => {
 });
 
 export default {
-  // name: 'shop-management',
   components: {
     ValidationProvider,
-    //FunctionUndevelopForm
+    TopTitle,
   },
   props: {
     eachShop: Object,
   },
   data() {
     return {
-      title: 'Chi tiết shop',
+      title: 'Chi tiết cửa hàng',
       name: '',
       address: '',
       phoneNumber: '',
@@ -187,28 +138,11 @@ export default {
       avatar: '',
       valid: '',
       show: false,
-      undevAlert: false,
+      shopDisable: false,
+      disableReason: '',
     };
   },
   methods: {
-    chooseFiles() {
-      document.getElementById('fileUpload').click();
-    },
-    submit() {
-      if (this.eachShop.shopId != null) {
-        this.$store.dispatch('ACT_UPDATE_SHOP', {
-          shopId: this.id,
-          shopInfo: {
-            nameOfShop: this.name,
-            address: this.address,
-            phoneNumber: this.phoneNumber,
-            description: this.description,
-            dateCreated: this.dateCreated,
-            avatar: 'http://07af-2402-800-6205-3e19-c61-ce29-d68e-b079.ngrok.io/apigateway/Shops' + this.avatar,
-          },
-        });
-      }
-    },
   },
   watch: {
     eachShop() {
@@ -219,9 +153,11 @@ export default {
         this.address = this.eachShop.address;
         this.phoneNumber = this.eachShop.phoneNumber;
         this.description = this.eachShop.description;
-        this.dateCreated = this.eachShop.dateCreated;
+        this.shopDisable = this.eachShop.disable;
+        this.disableReason = this.eachShop.disableReason;
+        this.dateCreated = this.eachShop.dateCreated.slice(0,10);
         this.avatar =
-          'http://07af-2402-800-6205-3e19-c61-ce29-d68e-b079.ngrok.io/apigateway/Shops' + this.eachShop.avatar;
+          'http://localhost:55000/apigateway/Shops' + this.eachShop.avatar;
       }
     },
   },
@@ -233,9 +169,11 @@ export default {
       this.address = this.eachShop.address;
       this.phoneNumber = this.eachShop.phoneNumber;
       this.description = this.eachShop.description;
-      this.dateCreated = this.eachShop.dateCreated;
+      this.shopDisable = this.eachShop.disable;
+      this.disableReason = this.eachShop.disableReason;
+      this.dateCreated = this.eachShop.dateCreated.slice(0,10);
       this.avatar =
-        'http://07af-2402-800-6205-3e19-c61-ce29-d68e-b079.ngrok.io/apigateway/Shops' + this.eachShop.avatar;
+        'http://localhost:55000/apigateway/Shops' + this.eachShop.avatar;
     }
   },
 };

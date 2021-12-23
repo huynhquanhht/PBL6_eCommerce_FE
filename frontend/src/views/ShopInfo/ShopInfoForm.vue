@@ -81,7 +81,7 @@
           class="shop-avatar"
           :src="
             shopAvatarData.includes('storage') ? 
-            'http://07af-2402-800-6205-3e19-c61-ce29-d68e-b079.ngrok.io/apigateway/Shops' +
+            'http://localhost:55000/apigateway/Shops' +
             shopAvatarData : shopAvatarData
           "
           alt="shop-avatar"

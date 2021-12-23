@@ -9,8 +9,15 @@
       <select class="search-select" name="" id="">
         <option value="Mã đơn hàng">Mã đơn hàng</option>
       </select>
-      <input class="search-input" type="text" name="" id="" />
-      <v-btn class="search-button">Tìm kiếm</v-btn>
+      <input
+        v-model="searchId"
+        class="search-input"
+        type="text"
+        name=""
+        id=""
+        @keyup.enter="search"
+      />
+      <v-btn @click="search" class="search-button">Tìm kiếm</v-btn>
     </div>
     <table class="styled-table" v-if="orders">
       <thead>
@@ -22,7 +29,8 @@
           <th style="width: 140px">Tổng hóa đơn</th>
           <th style="width: 140px">Trạng thái</th>
           <th style="width: 130px">Ngày cập nhật</th>
-          <th style="width: 130px">Thao tác</th>
+          <th style="width: 130px">Lý do hủy đơn</th>
+          <th style="width: 140px">Thao tác</th>
         </tr>
       </thead>
       <tbody>
@@ -36,6 +44,8 @@
           <td>
             {{ new Date().toLocaleDateString('en-GB', order.dateModified) }}
           </td>
+          <td v-if="order.state === 'Đã hủy'">{{ order.cancelReason }}</td>
+          <td v-else></td>
           <td class="btn-block">
             <v-btn
               icon
@@ -96,8 +106,9 @@ export default {
       dialog: false,
       confirmDialog: false,
       orderId: null,
+      searchId: '',
+      searchOrders: null,
       question: '',
-
     };
   },
   methods: {
@@ -107,8 +118,32 @@ export default {
     ...mapActions({
       fetchShopOrders: 'FETCH_SHOP_ORDERS',
       cancelShopOrder: 'CANCEL_SHOP_ORDER',
+      fetchOrderById: 'FETCH_ORDER_BY_ID',
       fetchConfirmOrder: 'CONFIRM_ORDER'
     }),
+    async search() {
+      await this.fetchOrderById({ id: parseInt(this.searchId) });
+      if (this.orderInfo) {
+        if (this.orderInfo.shopId == this.orders[0].shopId) {
+          this.$router.push(`/shop-chanel/order-detail/${this.orderInfo.id}`);
+        } else {
+          this.setSnackbar({
+            type: 'info',
+            visible: true,
+            text: 'Không tìm thấy đơn hàng phù hợp',
+          });
+          return;
+        }
+      } else {
+        this.setSnackbar({
+          type: 'info',
+          visible: true,
+          text: 'Không tìm thấy đơn hàng phù hợp',
+        });
+        return;
+      }
+      return;
+    },
     async getShopOrder(state) {
       await this.fetchShopOrders(state);
     },
@@ -123,7 +158,7 @@ export default {
       }
       let cancelResult = await this.cancelShopOrder({
         orderId: this.orderId,
-        calcelReason: reason,
+        cancelReason: reason,
       });
       if (cancelResult) {
         await this.fetchShopOrders('Tất cả');
@@ -156,6 +191,7 @@ export default {
   computed: {
     ...mapGetters({
       orders: 'GET_ORDERS',
+      orderInfo: 'GET_ORDER',
     }),
   },
   async created() {
