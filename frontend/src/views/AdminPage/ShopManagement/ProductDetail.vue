@@ -162,12 +162,10 @@
 </template>
 
 <script>
-//import ConfirmDialog from '@/components/ConfirmDialog.vue';
 import TopTitle from '@/components/TopTitle.vue';
 export default {
   name: 'ProductDetail',
   components: { 
-    //ConfirmDialog, 
     TopTitle },
   props: {
     eachProduct: Object,

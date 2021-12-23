@@ -136,7 +136,6 @@ import NoContentForm from '@/components/NoContentForm.vue';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 
 export default {
-  // name: 'shop-management',
   components: {
     TopTitle,
     OrderDetail,
@@ -157,7 +156,6 @@ export default {
       oneOrder: null,
       searchFromDay: '',
       searchToDay: '',
-      //orderDetails: null,
     };
   },
   computed: {
@@ -181,8 +179,6 @@ export default {
       var toMonth = toDate.slice(5,7);
       var toYear = toDate.slice(0,4);
       
-      // this.searchFromDay = fromMonth + "/" + fromDay + "/" + fromYear;
-      // this.searchToDay = toMonth + "/" + toDay + "/" + toYear;
       if(fromDay > toDay || fromMonth > toMonth || fromYear > toYear){
         this.setSnackbar({
           type: 'warning',
@@ -199,7 +195,6 @@ export default {
     },
     orderDetailForm(order) {
       this.oneOrder = order;
-      //this.OrderDetails = order.OrderDetails;
       console.log(this.oneOrder);
       this.orderDetail = true;
     },
@@ -289,21 +284,6 @@ export default {
   letter-spacing: 0;
   box-shadow: none !important;
 }
-/* .shop-table {
-  display: flex;
-  flex-direction: column;
-  column-gap: 20px;
-  height: 32px;
-  width: 100%;
-}
-
-.shop-table table th {
-    border-collapse: collapse;
-    margin: 25px 0;
-    font: 500 14px Roboto;
-    min-width: 400px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-} */
 
 .styled-table {
   border-collapse: collapse;

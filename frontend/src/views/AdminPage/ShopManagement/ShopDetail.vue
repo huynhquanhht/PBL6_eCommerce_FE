@@ -61,52 +61,6 @@
           </ValidationProvider>
         </div>
 
-        <!-- <div class="grid-container">
-          <label>Số lượng sản phẩm: </label>
-          <ValidationProvider name="Số lượng sản phẩm: ">
-            <input
-              name="productAmount"
-              type="text"
-              class="input productAmount-input"
-              v-model="productAmount"
-            />
-          </ValidationProvider>
-        </div>
-
-        <div class="grid-container">
-          <label>Tồn kho:</label>
-          <ValidationProvider name="Tồn kho:">
-            <input
-              name="allProductAmount"
-              type="text"
-              class="input allProductAmount-input"
-              v-model="allProductAmount"
-            />
-          </ValidationProvider>
-        </div>
-
-        <div class="grid-container">
-          <label>Số lượng đơn hàng:</label>
-          <ValidationProvider name="Số lượng đơn hàng:">
-            <input
-              name="OrderAmount"
-              type="text"
-              class="input OrderAmount-input"
-              v-model="OrderAmount"
-            />
-          </ValidationProvider>
-        </div> -->
-
-        <!-- <v-btn
-          @click="submit"
-          class="btn-signup white--text mt-4 mb-4"
-          width="100%"
-          height="42px"
-          color="#fea200"
-          depressed
-        >
-          <span class="font-size: 15px">Cập nhật</span>
-        </v-btn> -->
       </form>
 
       <form class="rigth-content">
@@ -117,8 +71,6 @@
           max-width="200px"
           max-height="200px"
         ></v-img>
-        <!-- <input type="file" id="fileUpload"  hidden />
-        <v-btn @click="chooseFiles()"> Chọn ảnh </v-btn> -->
       </form>
     </div>
   </div>
@@ -164,11 +116,9 @@ extend('confirmed', (confirmPassword, [password]) => {
 });
 
 export default {
-  // name: 'shop-management',
   components: {
     ValidationProvider,
     TopTitle,
-    //FunctionUndevelopForm
   },
   props: {
     eachShop: Object,

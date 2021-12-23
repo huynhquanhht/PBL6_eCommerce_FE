@@ -113,9 +113,6 @@
                         <a :href="product.url" class="product-title">
                         {{ product.name }}
                         </a>
-                        <!-- <v-btn @click="genderSearch(product.url)">
-                          {{ product.name }}
-                        </v-btn> -->
                       </v-list-item-title>
                     </v-list-item>
                   </v-list>
@@ -298,16 +295,7 @@ export default {
       console.log(this.searchString);
       this.$router.replace(`/search-page?searchString=${this.searchString}&gender=0`);
     },
-    // genderSearch(searchUrl) {
-    //   this.$router.replace(`${searchUrl}`)
-    // }
   },
- 
-  // watch: {
-  //   searchString() {
-  //     this.$router.push(`search-page?searchString=${this.searchString}`);
-  //   }
-  // },
   async created() {
     if (localStorageUtils.getToken()) {
       this.loginStatus = true;

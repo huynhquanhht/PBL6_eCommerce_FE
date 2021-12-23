@@ -46,25 +46,13 @@
            @click="productDetailForm(product.id)">
             <v-icon size="20px" color="#616161">fa-eye</v-icon>
           </v-btn>
-              <!-- <v-dialog v-model="dialog" :retain-focus="false">
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn icon v-bind="attrs" v-on="on" @click="deleteAlertForm">
-                    <v-icon size="20px">mdi-delete</v-icon>
-                  </v-btn>
-                </template>
-                <confirm-dialog 
-                :question="question"
-                @agree-confirm-dialog="agree"
-                @cancel-confirm-dialog="cancel"
-                > </confirm-dialog>
-              </v-dialog> -->
             </td>
           </tr>
         </tbody>
       </table>
       <v-dialog v-model="ShowProduct">
         <product-detail :eachProduct="oneProduct"></product-detail>
-        <!-- <function-undevelop-form></function-undevelop-form> -->
+      
       </v-dialog>
     </div>
     <div v-else
@@ -89,12 +77,10 @@ import { mapActions, mapGetters } from 'vuex';
 import ProductDetail from '@/views/AdminPage/ShopManagement/ProductDetail.vue';
 import NoContentForm from '@/components/NoContentForm.vue'
 export default {
-  // name: 'shop-management',
   components: {
     TopTitle,
     ProductDetail,
     NoContentForm,
-    //ConfirmDialog,
   },
   data() {
     return {
@@ -205,21 +191,6 @@ export default {
   letter-spacing: 0;
   box-shadow: none !important;
 }
-/* .shop-table {
-  display: flex;
-  flex-direction: column;
-  column-gap: 20px;
-  height: 32px;
-  width: 100%;
-}
-
-.shop-table table th {
-    border-collapse: collapse;
-    margin: 25px 0;
-    font: 500 14px Roboto;
-    min-width: 400px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-} */
 
 .styled-table {
   border-collapse: collapse;

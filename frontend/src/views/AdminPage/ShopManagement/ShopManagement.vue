@@ -65,16 +65,6 @@
         ></confirm-dialog>
       </v-dialog>
 
-      <!-- <v-dialog
-      width=450px 
-      v-model="disableDialog">
-        <confirm-dialog
-          :question="disableQuestion"
-          @agree-confirm-dialog="disableAgree(eachShop)"
-          @cancel-confirm-dialog="disableCancel"
-        ></confirm-dialog>
-      </v-dialog> -->
-
        <v-dialog
       width=450px 
       v-model="disableDialog">
@@ -141,13 +131,13 @@ export default {
     async search() {
       await this.getAllShops({name: this.searchString});
     },
-    // Edit Shop
+    
     async shopDetail(shopId) {
       await this.getEachShop(shopId);  
       console.log(this.eachShop);    
       this.editShop = true;
     },
-     // Amnesty
+    
     async shopAmnesty(shopId) {
       await this.getEachShop(shopId);
       this.amnestyDialog = true;
@@ -175,7 +165,7 @@ export default {
     amnestyCancel() {
       this.amnestyDialog = false;
     },
-    // Disable 
+    
     async shopDisable(shopId) {
       await this.getEachShop(shopId);
       this.disableDialog = true;
@@ -286,21 +276,6 @@ export default {
   letter-spacing: 0;
   box-shadow: none !important;
 }
-/* .shop-table {
-  display: flex;
-  flex-direction: column;
-  column-gap: 20px;
-  height: 32px;
-  width: 100%;
-}
-
-.shop-table table th {
-    border-collapse: collapse;
-    margin: 25px 0;
-    font: 500 14px Roboto;
-    min-width: 400px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-} */
 
 .styled-table {
   border-collapse: collapse;

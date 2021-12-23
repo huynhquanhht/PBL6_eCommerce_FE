@@ -242,7 +242,6 @@ export default {
           this.email.match(/.+@.+\..+/) &&
           this.phoneNumber.match(/^[0-9]{10,10}$/)
         ) {
-          // console.log(this.fullname, this.email, this.phoneNumber, this.address);
           this.$store.dispatch('ACT_UPDATE_USER', {
             userId: this.eachUser.id,
             userInfo: {
@@ -292,7 +291,6 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center; 
-  /* background-color: #ffffff; */
   width: 400px !important;
 }
 

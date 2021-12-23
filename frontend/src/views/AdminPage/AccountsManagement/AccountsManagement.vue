@@ -17,7 +17,6 @@
         <thead>
           <tr>
             <th>Thứ tự</th>
-            <!-- <th>Tên tài khoản</th> -->
             <th>Họ tên</th>
             <th>Số điện thoại</th>
             <th>Địa chỉ</th>
@@ -105,10 +104,8 @@
 
 <script>
 import TopTitle from '@/components/TopTitle.vue';
-// import DeleteAlertForm from '@/components/DeleteAlertForm.vue';
 import AccountDetail from './AccountDetail.vue';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
-//import FunctionUndevelopForm from '@/components/FunctionUndevelopForm.vue';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import NoContentForm from '@/components/NoContentForm.vue';
 
@@ -303,22 +300,6 @@ export default {
   letter-spacing: 0;
   box-shadow: none !important;
 }
-
-/* .shop-table {
-  display: flex;
-  flex-direction: column;
-  column-gap: 20px;
-  height: 32px;
-  width: 100%;
-}
-
-.shop-table table th {
-    border-collapse: collapse;
-    margin: 25px 0;
-    font: 500 14px Roboto;
-    min-width: 400px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-} */
 
 .styled-table {
   border-collapse: collapse;
