@@ -162,7 +162,6 @@ const actions = {
   },
   'ACT_GET_TOTAL_PRODUCTS' : async (context, payload) => {
     try {
-      console.log(payload);
       const res = await getTotalProducts(payload.pageIndex, 
         payload.pageSize, payload.keyword, payload.gender);
         console.log(res.data);
@@ -186,6 +185,29 @@ const actions = {
       }
     }
   },
+  // 'SEARCH_SHOP_PRODUCT_BY_ID': async (context, payload) => {
+  //   try {
+  //     const res = await searchShopProduct(payload.productId, payload.shopId);
+  //     if (res.status === 204) {
+  //       context.commit('SET_SNACKBAR', {
+  //         type: 'info',
+  //         visible: true,
+  //         text: 'Không tim thấy dữ liệu'
+  //       });
+  //       context.commit('SET_SHOP_PRODUCT', res.data.resultObj);
+  //       return;
+  //     }
+  //   } catch {
+  //     if (error.response.status === 400) {
+  //       context.commit('SET_SNACKBAR', {
+  //         type: 'error',
+  //         visible: true,
+  //         text: error.response.data,
+  //       });
+  //       return;
+  //     }
+  //   }
+  // }
 };
 
 export default actions;

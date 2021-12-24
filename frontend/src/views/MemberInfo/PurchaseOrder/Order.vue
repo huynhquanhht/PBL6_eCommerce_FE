@@ -36,14 +36,12 @@
       </div>
     </div>
     <div v-show="order.state === 'Chờ xác nhận'" class="cancel-button">
-      <v-btn @click="cancelOrder(order.id)" class="btn">
-        Hủy đơn
-      </v-btn>
+      <v-btn @click="cancelOrder(order.id)" class="btn"> Hủy đơn </v-btn>
     </div>
     <v-dialog v-model="dialog" width="400px">
       <reason-dialog
-      @agree-reason-dialog="agreeReasonOrder"
-      @cancel-reason-dialog="cancelReasonOrder"
+        @agree-reason-dialog="agreeReasonOrder"
+        @cancel-reason-dialog="cancelReasonOrder"
       ></reason-dialog>
     </v-dialog>
   </div>
@@ -51,11 +49,11 @@
 
 <script>
 import OrderCard from './OrderCard.vue';
-import {mapActions, mapMutations} from 'vuex'
+import { mapActions, mapMutations } from 'vuex';
 import ReasonDialog from '@/components/ReasonDialog.vue';
 export default {
   name: 'Order',
-  components: { OrderCard, ReasonDialog,  },
+  components: { OrderCard, ReasonDialog },
   props: {
     order: {
       type: Object,
@@ -71,12 +69,12 @@ export default {
   methods: {
     ...mapActions({
       memberCancelOrder: 'ACT_MEMBER_CANCEL_ORDER',
+      fetchOrders: 'FETCH_ORDERS',
     }),
     ...mapMutations({
       setSnackbar: 'SET_SNACKBAR',
     }),
     async agreeReasonOrder(reason) {
-      console.log(reason);
       if (reason === '') {
         this.setSnackbar({
           type: 'warning',
@@ -90,7 +88,7 @@ export default {
         cancelReason: reason,
       });
       if (cancelResult) {
-        await this.fetchShopOrders('Tất cả');
+        await this.fetchOrders('Tất cả');
       }
       this.dialog = false;
     },
@@ -100,6 +98,19 @@ export default {
     },
     cancelReasonOrder() {
       this.dialog = false;
+    },
+  },
+  watch: {
+    order() {
+      this.products = this.order.orderDetails.reduce((products, order) => {
+        products.push({
+          img: order.image,
+          name: order.productName,
+          quantity: order.quantity,
+          price: order.price,
+        });
+        return products;
+      }, []);
     },
   },
   created() {
@@ -124,6 +135,7 @@ export default {
   background-color: #ffffff;
   margin-top: 5px;
   padding: 0px 20px;
+  padding-bottom: 10px;
 }
 
 .title {
@@ -239,7 +251,8 @@ export default {
 }
 
 .cancel-button {
-  justify-content: end;
+  display: flex;
+  justify-content: right;
 }
 .btn {
   background-color: #fea200 !important;

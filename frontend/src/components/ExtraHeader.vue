@@ -66,11 +66,13 @@ export default {
     ...mapActions({
       fetchUserInfo: 'FETCH_USER_INFO',
     }),
-      selectPersonalOption(option) {
+    selectPersonalOption(option) {
       if (option === 'Đăng xuất') {
         localStorageUtils.clearToken();
         this.setUserInfo('');
-        this.$router.push('/');
+        // this.$router.push('/').catch(err => {throw err});
+        console.log(this.$router);
+        this.$router.replace({name: 'home'});
       }
     },
   },

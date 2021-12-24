@@ -80,9 +80,10 @@
         <img
           class="shop-avatar"
           :src="
-            shopAvatarData.includes('storage') ? 
+          shopAvatarData ? 
+            (shopAvatarData.includes('storage') ? 
             'http://localhost:55000/apigateway/Shops' +
-            shopAvatarData : shopAvatarData
+            shopAvatarData : shopAvatarData):null
           "
           alt="shop-avatar"
         />

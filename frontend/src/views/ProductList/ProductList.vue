@@ -5,15 +5,6 @@
         <p class="main-title">Tất cả sản phẩm</p>
       </div>
       <hr class="all-bill-hr" />
-      <div class="search-block">
-        <label class="search-label" for="">Tìm kiếm theo: </label>
-        <select class="search-select" name="" id="">
-          <option value="1">1</option>
-          <option value="2">2</option>
-        </select>
-        <input class="search-input" type="text" name="" id="" />
-        <v-btn class="search-button">Tìm kiếm</v-btn>
-      </div>
       <table class="styled-table">
         <thead>
           <tr>
@@ -59,17 +50,6 @@
           </tr>
         </tbody>
       </table>
-      <!-- <div
-        v-else
-        class="d-flex justify-center align-center"
-        style="width: 100wm; height: 100vh"
-      >
-        <v-progress-circular
-          :size="40"
-          color="#fea200"
-          indeterminate
-        ></v-progress-circular>
-      </div> -->
       <v-dialog v-model="dialog" width="400px">
         <confirm-dialog
           :question="question"
@@ -93,6 +73,10 @@ export default {
       dialog: false,
       question: 'Bạn chắc chắn muốn xóa sản phẩm này?',
       productId: null,
+      searchString: '',
+      menuItems: [
+        {id: 1, name: 'Mã sản phẩm'},
+      ]
     };
   },
   methods: {
@@ -104,13 +88,15 @@ export default {
       let res = await this.fetchDeleteProduct({ id: this.productId });
       if (res) {
         let shopInfo = JSON.parse(localStorageUtils.getShopInfo());
+        this.dialog = false;
         await this.getAllProducts({
           pageIndex: 1,
           pageSize: 99,
           shopId: shopInfo.id,
         });
+        this.$router.go();
       }
-      this.dialog = false;
+
     },
     cancel() {
       this.dialog = false;

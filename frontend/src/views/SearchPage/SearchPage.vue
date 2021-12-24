@@ -7,29 +7,28 @@
         </v-pagination>
       </div>
     </div>
-    <div
+     <div
       v-else
       class="d-flex justify-center align-center"
-      style="width: 100wm; height: 100vh"
+      style="width: 100wm; height: 70vh"
     >
-      <no-content-form
-        :showProduct="true"
-        Notification="Không tìm thấy sản phẩm phù hợp"
-      >
-      </no-content-form>
-    </div>
+      <v-progress-circular
+        :size="30"
+        color="#fea200"
+        indeterminate
+      ></v-progress-circular>
+   </div>
   </v-app>
 </template>
 
 <script>
 import ProductCardList from '@/components/ProductCardList.vue';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
-import NoContentForm from '@/components/NoContentForm.vue';
+
 export default {
   name: 'Home',
   components: {
     ProductCardList,
-    NoContentForm,
   },
   props: {
     searchString: { type: String },
@@ -54,7 +53,7 @@ export default {
       this.page = value;
       await this.getAllProducts({
         pageIndex: this.page,
-        pageSize: 30,
+        pageSize: 18,
         keyword: this.newPageSearchString,
         gender: this.newPageGender,
       });
@@ -70,22 +69,26 @@ export default {
     async searchString(value) {
         await this.getAllProducts({
         pageIndex: this.page,
-        pageSize: 30,
+        pageSize: 18  ,
         keyword: value,
         gender: 0,
       });
     },
+    allProducts() {
+
+    }
   },
   async created() {
       await this.getAllProducts({
         pageIndex: this.page,
-        pageSize: 30,
+        pageSize: 18,
         keyword: this.searchString,
         gender: parseInt(this.gender),
       });
       this.pageCount = this.totalProducts.pageCount;
       this.newPageGender = parseInt(this.gender);
       this.newPageSearchString = this.searchString;
+      console.log(this.allProducts);
   },
 };
 </script>

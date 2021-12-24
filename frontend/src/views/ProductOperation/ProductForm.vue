@@ -491,19 +491,11 @@ export default {
       });
       this.$emit('update-product', productInfo);
     },
-    deleteColorSize(index) {
+    deleteColorSize(item, index) {
       if (index > 0) {
-        this.dialog = true;
         this.index = index;
-        // if (item.color && item.size && item.stock) {
-
-        //   return;
-        // }
-        // this.setSnackbar({
-        //   type: 'error',
-        //   text: 'Lỗi! Không thể xóa.',
-        //   visible: true,
-        // });
+        this.details.splice(index, 1);
+        this.newImages.splice(index + 1, 1);
       }
     },
     setColor(item, index) {
@@ -535,8 +527,6 @@ export default {
         this.gender = this.productDetail.resultObj.gender;
         this.price = this.productDetail.resultObj.price;
         this.originalPrice = this.productDetail.resultObj.originalPrice;
-        // this.categoryName =
-        //   this.productDetail.resultObj.categoryName.split(' ')[0];
         this.categoryDetail = this.productDetail.resultObj.categoryName;
         if (this.gender === 1) {
           this.maleSelection.category.forEach((item) => {
@@ -593,9 +583,26 @@ export default {
     },
     categoryDetail(value) {
       if (!value) {
+        console.log(value);
         this.categoryDetail = this.productDetail.resultObj.categoryName;
       }
     },
+    categoryName() {
+      if (this.gender === 1) {
+           this.maleSelection.category.forEach((item) => {
+          if (item.type === this.categoryName) {
+            this.detail = item.detail;
+          }
+        });
+      }
+      if (this.gender === 2 ) {
+         this.femaleSelection.category.forEach((item) => {
+          if (item.type === this.categoryName) {
+            this.detail = item.detail;
+          }
+        });
+      }
+    }
   },
 };
 </script>
@@ -603,6 +610,8 @@ export default {
 <style scoped>
 .product-form-block {
   background-color: #ffffff;
+  display: flex;
+  justify-content: center;
 }
 .product-name-block {
   display: grid;
@@ -614,9 +623,7 @@ export default {
 .product-name-block .text-block > input {
   width: 300px;
 }
-/* .product-name-block .label-block {
-  justify-self: left;
-} */
+
 .label-input {
   display: grid;
   grid-template-columns: 120px 280px;

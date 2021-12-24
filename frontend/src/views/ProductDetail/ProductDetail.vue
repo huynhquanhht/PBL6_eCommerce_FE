@@ -141,6 +141,14 @@ export default {
       this.choosedQuantity = payload.quantity;
     },
     checkBuy() {
+      if (!localStorageUtils.getToken()) {
+        this.setSnackbar({
+          type: 'info',
+          text: 'Vui lòng đăng nhập để thực hiện chức năng này',
+          visible: true,
+        });
+        return;
+      }
       if (this.colors.length && this.choosedColor === '') {
         this.setSnackbar({
           type: 'info',
@@ -225,22 +233,6 @@ export default {
           );
           this.$router.push('/payment');
         }
-        // await this.fetchCartQuantity();
-        // await this.fetchCartItems();
-        // localStorageUtils.setProductsPayment(
-        //   JSON.stringify(this.cartItems[0].id)
-        // );
-        // this.$router.push('/payment');
-
-        // let product = {
-        //   productDetail_Id: detailItem.id,
-        //   quantity: this.choosedQuantity,
-        // };
-        // await this.addCartItem(product);
-        // if (this.isAddSuccess) {
-        //   await this.fetchCartQuantity();
-        //   this.$router.push('/cart');
-        // }
       } else {
         let index = this.productDetail.resultObj.details.filter(
           (item) => this.choosedColor === item.color
