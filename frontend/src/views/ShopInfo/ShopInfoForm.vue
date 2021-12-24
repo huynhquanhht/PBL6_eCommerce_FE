@@ -81,7 +81,7 @@
           class="shop-avatar"
           :src="
             shopAvatarData.includes('storage') ? 
-            'http://localhost:55000/apigateway/Shops' +
+             myBaseUrl + 'apigateway/Shops' +
             shopAvatarData : shopAvatarData
           "
           alt="shop-avatar"
@@ -143,6 +143,7 @@ export default {
       shopAvatarData: false,
       shopAvatar: null,
       action: '',
+      myBaseUrl: process.env.VUE_APP_BASE_URL,
     };
   },
   computed: {

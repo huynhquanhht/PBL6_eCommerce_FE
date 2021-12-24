@@ -49,7 +49,9 @@
         </tbody>
       </table>
 
-      <v-dialog v-model="editShop">
+      <v-dialog content-class="elevation-0"
+      width="940px"
+       v-model="editShop">
         <shop-detail 
         :eachShop="eachShop">
         </shop-detail>
@@ -315,4 +317,6 @@ export default {
   font-weight: bold;
   color: #fea200;
 }
+
+
 </style>

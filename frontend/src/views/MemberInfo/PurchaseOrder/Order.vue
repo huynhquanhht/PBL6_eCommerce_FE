@@ -85,14 +85,14 @@ export default {
         });
         return;
       }
-      let cancelResult = await this.memberCancelOrder({
+      await this.memberCancelOrder({
         orderId: this.orderId,
         cancelReason: reason,
       });
-      if (cancelResult) {
-        await this.fetchShopOrders('Tất cả');
-      }
       this.dialog = false;
+      await setTimeout(() => {
+        this.$router.push({name: "purchase-order"}).catch(() => {});
+      }, 1000);
     },
     cancelOrder(orderId) {
       this.dialog = true;
