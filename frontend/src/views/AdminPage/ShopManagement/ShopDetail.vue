@@ -63,7 +63,7 @@
 
       </form>
 
-      <form class="rigth-content">
+      <div class="right-content">
         <label>Ảnh cửa hàng</label>
         <v-img
           v-model="avatar"
@@ -71,7 +71,7 @@
           max-width="200px"
           max-height="200px"
         ></v-img>
-      </form>
+      </div>
     </div>
   </div>
 </template>
@@ -140,6 +140,7 @@ export default {
       show: false,
       shopDisable: false,
       disableReason: '',
+      myBaseUrl: process.env.VUE_APP_SERVER,
     };
   },
   methods: {
@@ -156,7 +157,7 @@ export default {
             phoneNumber: this.phoneNumber,
             description: this.description,
             dateCreated: this.dateCreated,
-            avatar: 'http://localhost:55000/apigateway/Shops' + this.avatar,
+            avatar: process.env.VUE_APP_SERVER + '/Shops' + this.avatar,
           },
         });
       }
@@ -164,7 +165,6 @@ export default {
   },
   watch: {
     eachShop() {
-      console.log(this.eachShop);
       if (this.eachShop != null) {
         this.id = this.eachShop.shopId;
         this.name = this.eachShop.nameOfShop;
@@ -175,12 +175,11 @@ export default {
         this.disableReason = this.eachShop.disableReason;
         this.dateCreated = this.eachShop.dateCreated.slice(0,10);
         this.avatar =
-          'http://localhost:55000/apigateway/Shops' + this.eachShop.avatar;
+          this.myBaseUrl + 'apigateway/Shops' + this.eachShop.avatar;
       }
     },
   },
   created() {
-    console.log(this.eachShop);
     if (this.eachShop != null) {
       this.id = this.eachShop.shopId;
       this.name = this.eachShop.nameOfShop;
@@ -191,7 +190,7 @@ export default {
       this.disableReason = this.eachShop.disableReason;
       this.dateCreated = this.eachShop.dateCreated.slice(0,10);
       this.avatar =
-        'http://localhost:55000/apigateway/Shops' + this.eachShop.avatar;
+        this.myBaseUrl + 'apigateway/Shops' + this.eachShop.avatar;
     }
   },
 };
@@ -203,8 +202,8 @@ export default {
 }
 .shop-management-wrapper {
   background-color: #ffffff;
-  width: 800px;
   padding: 0px 20px;
+  left: 50%;
 }
 
 .top-title {
@@ -215,6 +214,11 @@ export default {
 
 .form-block {
   display: flex;
+  flex-wrap: nowrap;
+  align-content: stretch;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: row;
 }
 
 form {
@@ -302,9 +306,10 @@ form {
   margin-bottom: 20px;
 }
 
-.rigth-content {
+.right-content {
   flex-direction: column;
   width: 200px;
   justify-content: center;
+  align-items: center;
 }
 </style>

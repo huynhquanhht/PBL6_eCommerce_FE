@@ -116,11 +116,9 @@ extend('phone', (phone) => {
 
 
 export default {
-  // name: 'shop-management',
   components: {
     ValidationProvider,
     TopTitle,
-    //FunctionUndevelopForm
   },
   props: {
     currentUser: {

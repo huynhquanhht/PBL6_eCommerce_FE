@@ -39,7 +39,7 @@
             <td class="product-name-img">
               <img
                 :src="
-                  'http://localhost:55000/apigateway/Products' + product.image"
+                  myBaseUrl + 'Products' + product.image"
                 alt=""
                 width="40px"
                 height="40px"
@@ -95,11 +95,11 @@ export default {
       totalPrice: 0,
       orderDetails: [],
       orderIndex: 0,
+      myBaseUrl: process.env.VUE_APP_SERVER,
     };
   },
   watch: {
     eachOrder() {
-      console.log(this.eachOrder.orderDetails);
       if(this.eachOrder != null) { 
         this.id = this.eachOrder.id;
         this.shipName = this.eachOrder.shipName;
@@ -111,8 +111,6 @@ export default {
     },
   },
   async created() {
-    console.log(this.eachOrder);
-    console.log(this.eachOrder.orderDetails);
      if(this.eachOrder != null) {
         this.id = this.eachOrder.id;
         this.shipName = this.eachOrder.shipName;
@@ -133,6 +131,7 @@ export default {
   display: flex;
   justify-content: center;
 }
+
 .order-cart {
   width: 1200px;
 }

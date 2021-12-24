@@ -181,7 +181,6 @@ export default {
   },
   async created() {
     await this.fetchShopOrders('Tất cả');
-    console.log(this.orders);
   },
 };
 </script>

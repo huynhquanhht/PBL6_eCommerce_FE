@@ -29,7 +29,6 @@ const actions = {
   },
   'UPDATE_SHOP': async (context, shopInfo) => {{
     try {
-      console.log('updateShop');
       await updateShop(shopInfo);
       context.commit('SET_SNACKBAR', {
         type: 'success',
@@ -97,12 +96,17 @@ const actions = {
       const res = await getShopById(shopId);
       context.commit('SET_EACH_SHOP', res.data.resultObj);
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 400) {
+        context.commit('SET_SNACKBAR', {
+          type: 'error',
+          visible: true,
+          text: error.response.data
+        });
+      }
     }
   },
   'ACT_DISABLE_SHOP' :async (context, shopInfo) => {
     try {
-      console.log('ShopDisable', shopInfo);
       await disableShop(shopInfo);
       context.commit('SET_SNACKBAR', {
         type: 'success',
@@ -123,7 +127,6 @@ const actions = {
   },
   'ACT_ENABLE_SHOP' : async (context, payload) => {
     try {
-      console.log('Shop Enable', payload.shopId);
       await enableShop(payload.shopId);
       const res = await getShopById(payload.shopId);
       context.commit('SET_SNACKBAR' , {

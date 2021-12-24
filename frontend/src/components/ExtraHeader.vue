@@ -70,8 +70,6 @@ export default {
       if (option === 'Đăng xuất') {
         localStorageUtils.clearToken();
         this.setUserInfo('');
-        // this.$router.push('/').catch(err => {throw err});
-        console.log(this.$router);
         this.$router.replace({name: 'home'});
       }
     },

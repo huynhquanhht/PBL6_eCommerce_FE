@@ -265,7 +265,6 @@ export default {
   },
   watch: {
     eachUser() {
-      console.log(this.eachUser);
       if (this.eachUser != null) {
         this.fullname = this.eachUser.fullname;
         this.email = this.eachUser.email;
@@ -275,7 +274,6 @@ export default {
     },
   },
   created() {
-    console.log(this.eachUser);
     if (this.eachUser != null) {
       this.fullname = this.eachUser.fullname;
       this.email = this.eachUser.email;

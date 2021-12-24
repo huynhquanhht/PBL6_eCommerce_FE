@@ -164,7 +164,7 @@
                       class="img-product"
                       v-show="newImages[index].imageData"
                       :src="
-                        'http://localhost:55000/apigateway/Products' +
+                        myBaseUrl + 'Products' +
                         newImages[index].imageData
                       "
                       alt=""
@@ -255,6 +255,7 @@ export default {
   },
   data() {
     return {
+      myBaseUrl: process.env.VUE_APP_SERVER,
       id: null,
       index: null,
       productInfo: null,
@@ -583,7 +584,6 @@ export default {
     },
     categoryDetail(value) {
       if (!value) {
-        console.log(value);
         this.categoryDetail = this.productDetail.resultObj.categoryName;
       }
     },

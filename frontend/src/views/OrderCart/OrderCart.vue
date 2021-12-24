@@ -165,7 +165,6 @@ export default {
   },
   async beforeMount() {
     await this.fetchCartItems();
-    console.log(this.cartItemList);
   },
 };
 </script>

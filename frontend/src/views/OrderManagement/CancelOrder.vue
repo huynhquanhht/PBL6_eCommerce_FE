@@ -152,7 +152,6 @@ export default {
   },
   async created() {
     await this.fetchShopOrders('Đã hủy');
-    console.log(this.orders);
   },
 };
 </script>

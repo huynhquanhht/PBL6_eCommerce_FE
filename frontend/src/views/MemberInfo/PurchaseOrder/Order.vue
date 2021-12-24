@@ -83,14 +83,17 @@ export default {
         });
         return;
       }
-      let cancelResult = await this.memberCancelOrder({
+      await this.memberCancelOrder({
         orderId: this.orderId,
         cancelReason: reason,
       });
-      if (cancelResult) {
-        await this.fetchOrders('Tất cả');
-      }
+      // if (cancelResult) {
+      //   await this.fetchOrders('Tất cả');
+      // }
       this.dialog = false;
+      await setTimeout(() => {
+        this.$router.push({name: "purchase-order"}).catch(() => {});
+      }, 1000);
     },
     cancelOrder(orderId) {
       this.dialog = true;
@@ -174,7 +177,6 @@ export default {
 .order-info span {
   line-height: 10px;
   font: 500 16px Roboto;
-  /* text-transform: uppercase; */
 }
 
 .order-code {

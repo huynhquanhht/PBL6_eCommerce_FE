@@ -29,7 +29,7 @@
             <td class="product-name-img">
               <img
                 :src="
-                  'http://localhost:55000/apigateway/Products' +
+                  myBaseUrl + 'Products' +
                   product.thumbnailImage
                 "
                 alt=""
@@ -50,9 +50,11 @@
           </tr>
         </tbody>
       </table>
-      <v-dialog v-model="ShowProduct">
-        <product-detail :eachProduct="oneProduct"></product-detail>
-      
+      <v-dialog content-class="elevation-0" 
+      height="100%"
+      v-model="ShowProduct">
+        <product-detail 
+        :eachProduct="oneProduct"></product-detail>
       </v-dialog>
     </div>
     <div v-else
@@ -88,6 +90,7 @@ export default {
       ShowProduct: false,
       searchString: '',
       oneProduct: null,
+      myBaseUrl: process.env.VUE_APP_SERVER,
     };
   },
   computed: {
@@ -233,5 +236,12 @@ export default {
 .styled-table tbody tr.active-row {
   font-weight: bold;
   color: #fea200;
+}
+
+.v-dialog__content {
+  width: 500px;
+  left: 40%;
+  border-radius: 4px;
+  margin: none !important;
 }
 </style>

@@ -111,8 +111,6 @@ export default {
     },
   },
   async created() {
-    console.log('email - ', this.email);
-    console.log('token - ', this.token);
     let res = await this.confirmResetPassword({
       email: this.email,
       token: this.token,

@@ -107,7 +107,6 @@ const actions = {
   },
   ACT_GET_EACH_USER: async (context, userId) => {
     try {
-      //console.log(userId);
       const res = await getUserById(userId);
       if (res.status === 204) {
         context.commit('SET_SNACKBAR', {
@@ -130,8 +129,6 @@ const actions = {
   },
   ACT_DISABLE_USER: async (context, payload) => {
     try {
-      console.log('User Disable', payload.userId);
-      await disableUser(payload.userId);
       const res = await getUserById(payload.userId);
       context.commit('SET_SNACKBAR', {
         type: 'success',
@@ -152,7 +149,6 @@ const actions = {
   },
   ACT_ENABLE_USER: async (context, payload) => {
     try {
-      console.log('User Enable', payload.userId);
       await enableUser(payload.userId);
       const res = await getUserById(payload.userId);
       context.commit('SET_SNACKBAR', {

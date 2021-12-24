@@ -88,7 +88,6 @@ export default {
       this.pageCount = this.totalProducts.pageCount;
       this.newPageGender = parseInt(this.gender);
       this.newPageSearchString = this.searchString;
-      console.log(this.allProducts);
   },
 };
 </script>

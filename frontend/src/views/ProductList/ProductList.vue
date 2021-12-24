@@ -84,6 +84,17 @@ export default {
       getAllProducts: 'ACT_GET_ALL_PRODUCTS_SHOP',
       fetchDeleteProduct: 'DELETE_PRODUCT',
     }),
+
+    async search() {
+      let shopInfo = JSON.parse(localStorageUtils.getShopInfo());
+      await this.getAllProducts({
+        pageIndex: 1, 
+        pageSize: 1000,
+        keyWord: this.searchString,
+        shopId: shopInfo.id,
+      });
+    },
+
     async agree() {
       let res = await this.fetchDeleteProduct({ id: this.productId });
       if (res) {
@@ -92,6 +103,7 @@ export default {
         await this.getAllProducts({
           pageIndex: 1,
           pageSize: 99,
+          keyWord: ' ',
           shopId: shopInfo.id,
         });
         this.$router.go();
@@ -119,6 +131,7 @@ export default {
     await this.getAllProducts({
       pageIndex: 1,
       pageSize: 99,
+      keyWord: this.searchString,
       shopId: shopInfo.id,
     });
   },
@@ -149,13 +162,9 @@ export default {
 }
 
 .search-block {
-  display: grid;
-  grid-template-columns: 120px 180px 280px 100px;
+  display: flex;
   align-items: center;
   column-gap: 10px;
-}
-
-.search-label {
 }
 
 .search-select {
@@ -180,7 +189,7 @@ export default {
   border: solid 1px #616161;
   background-color: #ffffff;
   height: 30px;
-  width: 100%;
+  width: 500px;
   outline: none;
   padding: 8px;
   font: 400 15px Roboto;

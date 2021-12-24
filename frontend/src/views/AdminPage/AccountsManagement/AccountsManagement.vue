@@ -49,7 +49,9 @@
         </tbody>
       </table>
       <div class="dialog-block">
-       <v-dialog v-model="accountForm">
+       <v-dialog content-class="elevation-0"
+        v-model="accountForm"
+        width="27%">
         <account-detail
           :showWhileAddNew="true"
           subTitle="Thêm tài khoản"
@@ -59,7 +61,10 @@
         </account-detail>
       </v-dialog>
 
-      <v-dialog v-model="editAccountDialog">
+      <v-dialog
+       content-class="elevation-0" 
+       v-model="editAccountDialog"
+       width="27%">
         <account-detail
           :showWhileEdit="true"
           :eachUser="oneUser"
@@ -78,7 +83,7 @@
         </confirm-dialog>
       </v-dialog>
 
-      <v-dialog disable v-model="disableDialog" width="450px">
+      <v-dialog v-model="disableDialog" width="450px">
         <confirm-dialog
           :question="disableQuestion"
           @agree-confirm-dialog="disableAgree"
@@ -162,7 +167,6 @@ export default {
 
     async editForm(user) {
       this.oneUser = user;
-      console.log(user);
       this.editAccountDialog = true;
     },
 
@@ -179,7 +183,6 @@ export default {
       this.amnestyDialog = true;
     },
     async amnestyAgree() {
-      console.log(this.eachUser);
       if (this.eachUser.disable == false) {
         this.setSnackbar({
           type: 'info',
@@ -189,7 +192,6 @@ export default {
         this.amnestyDialog = false;
         return;
       } else {
-        console.log(this.eachUser.id);
         this.enableUser({ userId: this.eachUser.id });
         await setTimeout(async () => {
           await this.getAllUsers({ name: ' ' });
@@ -206,7 +208,6 @@ export default {
       this.disableDialog = true;
     },
     async disableAgree() {
-      console.log(this.eachUser);
       if (this.eachUser.disable == true) {
         this.setSnackbar({
           type: 'info',
@@ -215,7 +216,6 @@ export default {
         });
         this.disableDialog = false;
       } else {
-        console.log(this.eachUser.id);
         this.disableUser({ userId: this.eachUser.id });
         await setTimeout(async () => {
           await this.getAllUsers({ name: ' ' });
@@ -346,12 +346,15 @@ export default {
   align-items: center !important;
 }
 
+.v-dialog {
+  width: none !important;
+  box-shadow: 0px 0px 0px !important;
+}
 
 .v-dialog__content {
   width: 100% !important;
   box-shadow: none !important;
+  right: 400px !important;
 }
-.dialog-block {
-  width: 400px;
-}
+
 </style>

@@ -6,9 +6,10 @@ const getAllProducts = (pageIndex, pageSize) => {
   );
 };
 
-const getAllProductsShop = (pageIndex, pageSize) => {
+const getAllProductsShop = (pageIndex, pageSize, keyWord) => {
   return getRequest(
-    `Products/paging/manage?PageIndex=${pageIndex}&PageSize=${pageSize}`
+    `Products/paging/manage?PageIndex=${pageIndex}
+    &PageSize=${pageSize}&Keyword=${keyWord}`
   );
 };
 
@@ -17,9 +18,6 @@ const getProductDetail = (id) => {
 };
 
 const create = (productInfo) => {
-  for (var pair of productInfo.entries()) {
-    console.log(pair);
-  }
   return postRequest(`Products`, productInfo);
 };
 

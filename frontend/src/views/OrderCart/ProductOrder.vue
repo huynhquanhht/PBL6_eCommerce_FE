@@ -11,7 +11,7 @@
       </div>
       <div class="product-img-name">
         <div class="product-img">
-          <img :src="'http://localhost:55000/apigateway/Products' + product.image" alt="" />
+          <img :src=" myBaseUrl + 'Products' + product.image" alt="" />
         </div>
         <div class="product-name">
           <p class="produc-name-detail" :class="{ disable: disable }">
@@ -68,6 +68,7 @@ export default {
       disable: null,
       quantity: 1,
       toMoney: 0,
+      myBaseUrl: process.env.VUE_APP_SERVER,
     };
   },
   methods: {

@@ -105,7 +105,6 @@ const actions = {
           text: 'Không có dữ liệu đơn hàng',
         });
       }
-      console.log(res.data.resultObj);
       context.commit('SET_ALL_ORDERS', res.data.resultObj);
     } catch (error) {
       if (error.response.status === 400) {
