@@ -112,7 +112,9 @@
           </tr>
         </tbody>
       </table>
-      <v-dialog v-model="orderDetail">
+      <v-dialog 
+      content-class="elevation-0" 
+      v-model="orderDetail">
         <order-detail
         :eachOrder="oneOrder"
         ></order-detail>

@@ -7,12 +7,11 @@
       <hr class="all-bill-hr" />
       <div class="search-block">
         <label class="search-label" for="">Tìm kiếm theo: </label>
-        <select class="search-select" name="" id="">
-          <option value="1">1</option>
-          <option value="2">2</option>
-        </select>
-        <input class="search-input" type="text" name="" id="" />
-        <v-btn class="search-button">Tìm kiếm</v-btn>
+        <input v-model="searchString"
+         @keyup.enter="search" class="search-input" 
+         type="text" name="" id="" 
+         placeholder="Nhập tên sản phẩm muốn tìm"/>
+        <v-btn @click="search" class="search-button">Tìm kiếm</v-btn>
       </div>
       <table class="styled-table">
         <thead>
@@ -59,17 +58,6 @@
           </tr>
         </tbody>
       </table>
-      <!-- <div
-        v-else
-        class="d-flex justify-center align-center"
-        style="width: 100wm; height: 100vh"
-      >
-        <v-progress-circular
-          :size="40"
-          color="#fea200"
-          indeterminate
-        ></v-progress-circular>
-      </div> -->
       <v-dialog v-model="dialog" width="400px">
         <confirm-dialog
           :question="question"
@@ -93,6 +81,7 @@ export default {
       dialog: false,
       question: 'Bạn chắc chắn muốn xóa sản phẩm này?',
       productId: null,
+      searchString: '',
     };
   },
   methods: {
@@ -100,6 +89,17 @@ export default {
       getAllProducts: 'ACT_GET_ALL_PRODUCTS_SHOP',
       fetchDeleteProduct: 'DELETE_PRODUCT',
     }),
+
+    async search() {
+      let shopInfo = JSON.parse(localStorageUtils.getShopInfo());
+      await this.getAllProducts({
+        pageIndex: 1, 
+        pageSize: 1000,
+        keyWord: this.searchString,
+        shopId: shopInfo.id,
+      });
+    },
+
     async agree() {
       let res = await this.fetchDeleteProduct({ id: this.productId });
       if (res) {
@@ -107,6 +107,7 @@ export default {
         await this.getAllProducts({
           pageIndex: 1,
           pageSize: 99,
+          keyWord: ' ',
           shopId: shopInfo.id,
         });
       }
@@ -133,6 +134,7 @@ export default {
     await this.getAllProducts({
       pageIndex: 1,
       pageSize: 99,
+      keyWord: this.searchString,
       shopId: shopInfo.id,
     });
   },
@@ -163,8 +165,7 @@ export default {
 }
 
 .search-block {
-  display: grid;
-  grid-template-columns: 120px 180px 280px 100px;
+  display: flex;
   align-items: center;
   column-gap: 10px;
 }
@@ -194,7 +195,7 @@ export default {
   border: solid 1px #616161;
   background-color: #ffffff;
   height: 30px;
-  width: 100%;
+  width: 500px;
   outline: none;
   padding: 8px;
   font: 400 15px Roboto;

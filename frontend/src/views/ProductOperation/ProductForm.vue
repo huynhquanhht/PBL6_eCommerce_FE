@@ -164,7 +164,7 @@
                       class="img-product"
                       v-show="newImages[index].imageData"
                       :src="
-                        'http://localhost:55000/apigateway/Products' +
+                        myBaseUrl + 'apigateway/Products' +
                         newImages[index].imageData
                       "
                       alt=""
@@ -255,6 +255,7 @@ export default {
   },
   data() {
     return {
+      myBaseUrl: process.env.VUE_APP_BASE_URL,
       id: null,
       index: null,
       productInfo: null,

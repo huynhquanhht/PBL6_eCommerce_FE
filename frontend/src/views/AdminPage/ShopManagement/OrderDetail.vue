@@ -39,7 +39,7 @@
             <td class="product-name-img">
               <img
                 :src="
-                  'http://localhost:55000/apigateway/Products' + product.image"
+                  myBaseUrl + 'apigateway/Products' + product.image"
                 alt=""
                 width="40px"
                 height="40px"
@@ -95,6 +95,7 @@ export default {
       totalPrice: 0,
       orderDetails: [],
       orderIndex: 0,
+      myBaseUrl: process.env.VUE_APP_BASE_URL,
     };
   },
   watch: {
@@ -133,6 +134,7 @@ export default {
   display: flex;
   justify-content: center;
 }
+
 .order-cart {
   width: 1200px;
 }

@@ -122,7 +122,7 @@
                 </td>
                 <td class="product-name-img" >
                   <img 
-                   :src="'http://localhost:55000/apigateway/Products' + product.imagePath" alt=""
+                   :src=" myBaseUrl + 'apigateway/Products' + product.imagePath" alt=""
                    width="100px"
                   height="100px" />
                 </td>
@@ -182,6 +182,7 @@ export default {
       gender: 0,
       productDetails: [],
       productImage: [],
+      myBaseUrl: process.env.VUE_APP_BASE_URL,
       colorSize: [
         {
           color: '',
@@ -291,6 +292,7 @@ export default {
 .add-product-form {
   background-color: #ffffff;
   justify-items: center;
+  height: 100%;
 }
 .product-name {
   margin-bottom: 10px;
@@ -489,17 +491,6 @@ input[type='file'] {
 
 .sell-price {
   margin-top: 10px;
-  margin-bottom: 20px;
 }
 
-.button-block {
-  display: flex;
-  column-gap: 20px;
-  margin-left: 140px;
-}
-
-.btn-reset,
-.btn-cancel {
-  background-color: #b4b1b1 !important;
-}
 </style>

@@ -34,7 +34,7 @@ const actions = {
   'ACT_GET_ALL_PRODUCTS_SHOP': async (context, payload) => {
     try {
       console.log(payload);
-      const res = await getAllProductsShop(payload.pageIndex, payload.pageSize);
+      const res = await getAllProductsShop(payload.pageIndex, payload.pageSize, payload.keyWord);
       console.log(res);
       context.commit('SET_ALL_PRODUCTS', res.data.resultObj.items);
       if (res.status === 204) {
