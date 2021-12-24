@@ -91,12 +91,6 @@ export default {
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
 }
 
-.reset-pass-form {
-  /* display: flex;
-  flex-direction: column;
-  align-items: center; */
-}
-
 .reset-pass-dialog h3 {
   color: #616161;
   font: 700 22px Roboto;
@@ -113,7 +107,6 @@ export default {
   font: 400 15px Roboto;
   border-radius: 4px;
   margin-top: 20px;
-  /* margin-bottom: 10px; */
 }
 
 .reset-pass-form input:focus {
@@ -127,7 +120,6 @@ export default {
   letter-spacing: 0 !important;
   width: 240px;
   height: 40px;
-  /* margin-top: 10px; */
 }
 
 .message {

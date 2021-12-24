@@ -33,9 +33,7 @@ const actions = {
   },
   'ACT_GET_ALL_PRODUCTS_SHOP': async (context, payload) => {
     try {
-      console.log(payload);
       const res = await getAllProductsShop(payload.pageIndex, payload.pageSize, payload.keyWord);
-      console.log(res);
       context.commit('SET_ALL_PRODUCTS', res.data.resultObj.items);
       if (res.status === 204) {
         context.commit('SET_SNACKBAR', {
@@ -87,7 +85,6 @@ const actions = {
       return true;
     } catch (error) {
       if (error.response.status === 400) {
-        console.log(error.response.data);
         context.commit('SET_SNACKBAR', {
           type: 'info',
           visible: true,
@@ -162,10 +159,8 @@ const actions = {
   },
   'ACT_GET_TOTAL_PRODUCTS' : async (context, payload) => {
     try {
-      console.log(payload);
       const res = await getTotalProducts(payload.pageIndex, 
         payload.pageSize, payload.keyword, payload.gender);
-        console.log(res.data);
         if(res.status === 204) {
           context.commit('SET_SNACKBAR', {
             type: 'info',

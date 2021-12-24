@@ -2,7 +2,7 @@
   <div class="gallery-wrapper">
     <div class="main-image">
       <img
-        :src=" myBaseUrl + 'apigateway/Products' + activePic"
+        :src=" myBaseUrl + 'Products' + activePic"
         alt=""
       />
     </div>
@@ -23,7 +23,7 @@
         >
           <img
             class="thumbnail"
-            :src=" myBaseUrl + 'apigateway/Products' + imgUrl"
+            :src=" myBaseUrl + 'Products' + imgUrl"
             @mouseover="changeActivePic(index)"
           />
         </div>
@@ -51,7 +51,7 @@ export default {
     return {
       indexOfActive: null,
       activePic: null,
-      myBaseUrl: process.env.VUE_APP_BASE_URL,
+      myBaseUrl: process.env.VUE_APP_SERVER,
     };
   },
   methods: {

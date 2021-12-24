@@ -8,6 +8,9 @@ const mutations = {
   'SET_TOTAL_PRODUCTS':(state, totalProducts) => {
     state.totalProducts = totalProducts;
   },
+  'SET_SHOP_PRODUCT_BY_ID': (state, shopProduct) => {
+    state.shopProduct = shopProduct;
+  }
 };
 
 export default mutations;

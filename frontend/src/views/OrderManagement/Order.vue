@@ -121,15 +121,11 @@ export default {
 
 .order-info {
   padding: 0px 20px 0px 0px;
-  /* display: flex;
-  justify-content: space-between;
-  align-items: center; */
 }
 
 .order-info span {
   line-height: 10px;
   font: 500 16px Roboto;
-  /* text-transform: uppercase; */
 }
 
 .order-code {

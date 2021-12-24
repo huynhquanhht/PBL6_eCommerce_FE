@@ -167,7 +167,6 @@ export default {
 
     async editForm(user) {
       this.oneUser = user;
-      console.log(user);
       this.editAccountDialog = true;
     },
 
@@ -184,7 +183,6 @@ export default {
       this.amnestyDialog = true;
     },
     async amnestyAgree() {
-      console.log(this.eachUser);
       if (this.eachUser.disable == false) {
         this.setSnackbar({
           type: 'info',
@@ -194,7 +192,6 @@ export default {
         this.amnestyDialog = false;
         return;
       } else {
-        console.log(this.eachUser.id);
         this.enableUser({ userId: this.eachUser.id });
         await setTimeout(async () => {
           await this.getAllUsers({ name: ' ' });
@@ -211,7 +208,6 @@ export default {
       this.disableDialog = true;
     },
     async disableAgree() {
-      console.log(this.eachUser);
       if (this.eachUser.disable == true) {
         this.setSnackbar({
           type: 'info',
@@ -220,7 +216,6 @@ export default {
         });
         this.disableDialog = false;
       } else {
-        console.log(this.eachUser.id);
         this.disableUser({ userId: this.eachUser.id });
         await setTimeout(async () => {
           await this.getAllUsers({ name: ' ' });

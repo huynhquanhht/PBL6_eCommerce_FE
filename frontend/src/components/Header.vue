@@ -1,5 +1,5 @@
 <template>
-  <div class="header-block"  v-if="(loginStatus === false) || (loginStatus === true && userInfo)">
+  <div class="header-block">
     <div class="header">
       <div class="header__top">
         <div class="header__top-main">
@@ -13,19 +13,32 @@
             </a>
           </div>
           <div class="header__top-search-block">
-            <input type="text" 
-            placeholder="Tìm kiếm sản phẩm mong muốn..."
-            v-model="searchString"
-            @keyup.enter="search"
+            <input
+              type="text"
+              placeholder="Tìm kiếm sản phẩm mong muốn..."
+              v-model="searchString"
+              @keyup.enter="search"
             />
-            <v-btn id="searchButton"
-             @click="search">Tìm kiếm</v-btn>
+            <v-btn id="searchButton" @click="search">Tìm kiếm</v-btn>
           </div>
           <div class="header__top-cart-store">
             <v-tooltip bottom>
               <template v-slot:activator="{ on, attrs }">
-                <v-btn color="primary" dark v-bind="attrs" v-on="on" icon @click="selectCart">
-                  <v-badge right color="red" size="16" :value="cartQuantity" :content="cartQuantity">
+                <v-btn
+                  color="primary"
+                  dark
+                  v-bind="attrs"
+                  v-on="on"
+                  icon
+                  @click="selectCart"
+                >
+                  <v-badge
+                    right
+                    color="red"
+                    size="16"
+                    :value="cartQuantity"
+                    :content="cartQuantity"
+                  >
                     <v-icon size="28">mdi-cart</v-icon>
                   </v-badge>
                 </v-btn>
@@ -35,7 +48,14 @@
             <div class="header__top-cart-quantity"></div>
             <v-tooltip bottom>
               <template v-slot:activator="{ on, attrs }">
-                <v-btn color="primary" dark v-bind="attrs" v-on="on" icon @click="selectShop">
+                <v-btn
+                  color="primary"
+                  dark
+                  v-bind="attrs"
+                  v-on="on"
+                  icon
+                  @click="selectShop"
+                >
                   <v-icon size="24">fas fa-store</v-icon>
                 </v-btn>
               </template>
@@ -46,43 +66,41 @@
             <v-icon size="28">fas fa-user</v-icon>
             <div>
               <router-link to="/login" class="login-link">
-                <span>
-                  Đăng nhập
-                </span>
+                <span> Đăng nhập </span>
               </router-link>
               <router-link to="/signup" class="signup-link">
-                <span>
-                  Đăng ký
-                </span>
+                <span> Đăng ký </span>
               </router-link>
             </div>
           </div>
-          <div class="personal-account-block" v-if="loginStatus && userInfo">
-            <v-menu offset-y open-on-hover :close-on-content-click="false">
-              <template v-slot:activator="{ on, attrs }">
-                <div class="personal-account" v-bind="attrs" v-on="on">
-                  <img
-                    src="@/assets/images/avatar-user.png"
-                    alt="avatar-user"
-                  />
-                  <div class="personal-identity">
-                    <span> {{ userInfo.fullname }}</span>
+          <div>
+            <div class="personal-account-block" v-if="loginStatus && userInfo">
+              <v-menu offset-y open-on-hover :close-on-content-click="false">
+                <template v-slot:activator="{ on, attrs }">
+                  <div class="personal-account" v-bind="attrs" v-on="on">
+                    <img
+                      src="@/assets/images/avatar-user.png"
+                      alt="avatar-user"
+                    />
+                    <div class="personal-identity">
+                      <span> {{ userInfo.fullname }}</span>
+                    </div>
                   </div>
+                </template>
+                <div class="account-menu">
+                  <v-list>
+                    <v-list-item
+                      v-for="(item, index) in accountMenu"
+                      :key="index"
+                      class="menu"
+                      @click="selectPersonalOption(item)"
+                    >
+                      <v-list-item-title>{{ item }}</v-list-item-title>
+                    </v-list-item>
+                  </v-list>
                 </div>
-              </template>
-              <div class="account-menu">
-                <v-list>
-                  <v-list-item
-                    v-for="(item, index) in accountMenu"
-                    :key="index"
-                    class="menu"
-                    @click="selectPersonalOption(item)"
-                  >
-                    <v-list-item-title>{{ item }}</v-list-item-title>
-                  </v-list-item>
-                </v-list>
-              </div>
-            </v-menu>
+              </v-menu>
+            </div>
           </div>
         </div>
       </div>
@@ -90,9 +108,7 @@
         <div class="header__menu-main">
           <ul>
             <li>
-              <v-btn>
-                Trang chủ
-              </v-btn>
+              <v-btn> Trang chủ </v-btn>
             </li>
             <li class="male">
               <v-menu offset-y open-on-hover :close-on-content-click="false">
@@ -109,9 +125,9 @@
                   >
                     <p class="product-category">{{ item.category }}</p>
                     <v-list-item v-for="(product, j) in item.products" :key="j">
-                      <v-list-item-title >
+                      <v-list-item-title>
                         <a :href="product.url" class="product-title">
-                        {{ product.name }}
+                          {{ product.name }}
                         </a>
                       </v-list-item-title>
                     </v-list-item>
@@ -136,23 +152,19 @@
                     <v-list-item v-for="(product, j) in item.products" :key="j">
                       <v-list-item-title>
                         <a :href="product.url" class="product-title">
-                        {{ product.name }}
+                          {{ product.name }}
                         </a>
-                        </v-list-item-title>
+                      </v-list-item-title>
                     </v-list-item>
                   </v-list>
                 </div>
               </v-menu>
             </li>
             <li>
-              <v-btn>
-                Hỗ trợ
-              </v-btn>
+              <v-btn> Hỗ trợ </v-btn>
             </li>
             <li>
-              <v-btn>
-                Giới thiệu
-              </v-btn>
+              <v-btn> Giới thiệu </v-btn>
             </li>
           </ul>
         </div>
@@ -162,8 +174,8 @@
 </template>
 
 <script>
-import localStorageUtils from '@/utils/utils-local-storage.js'
-import {mapGetters, mapActions, mapMutations} from 'vuex'
+import localStorageUtils from '@/utils/utils-local-storage.js';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 export default {
   name: 'Header',
   props: {
@@ -178,27 +190,50 @@ export default {
         {
           category: 'Áo',
           products: [
-            {name: 'Áo thun', url: 'search-page?searchString=Áo thun&gender=1'}, 
-            {name: 'Áo sơ mi', url:'search-page?searchString=Áo sơ mi&gender=1'}, 
-            {name: 'Áo Hoodie', url:'search-page?searchString=Áo Hoodie&gender=1'}, 
-            {name: 'Áo khoác', url:'search-page?searchString=Áo khoác&gender=1'}
-            
+            {
+              name: 'Áo thun',
+              url: 'search-page?searchString=Áo thun&gender=1',
+            },
+            {
+              name: 'Áo sơ mi',
+              url: 'search-page?searchString=Áo sơ mi&gender=1',
+            },
+            {
+              name: 'Áo Hoodie',
+              url: 'search-page?searchString=Áo Hoodie&gender=1',
+            },
+            {
+              name: 'Áo khoác',
+              url: 'search-page?searchString=Áo khoác&gender=1',
+            },
           ],
         },
         {
           category: 'Quần',
           products: [
-            {name: 'Quần Jean', url: 'search-page?searchString=Quần Jean&gender=1'}, 
-            {name: 'Quần tây',  url: 'search-page?searchString=Quần tây&gender=1'},
-            {name: 'Quần đùi', url: 'search-page?searchString=Quần đùi&gender=1'},
+            {
+              name: 'Quần Jean',
+              url: 'search-page?searchString=Quần Jean&gender=1',
+            },
+            {
+              name: 'Quần tây',
+              url: 'search-page?searchString=Quần tây&gender=1',
+            },
+            {
+              name: 'Quần đùi',
+              url: 'search-page?searchString=Quần đùi&gender=1',
+            },
           ],
         },
         {
           category: 'Phụ kiện',
           products: [
-            {name: 'Đồ lót', url: 'search-page?searchString=lót&gender=1'},
-            {name: 'Thắt lưng',url: 'search-page?searchString=Thắt lưng&gender=1'}, 
-            {name: 'Mũ/Nón', url: 'search-page?searchString=Mũ&gender=1'},
+            { name: 'Đồ lót', url: 'search-page?searchString=lót&gender=1' },
+            {
+              name: 'Thắt lưng',
+              url: 'search-page?searchString=Thắt lưng&gender=1',
+            },
+            { name: 'Mũ/Nón', url: 'search-page?searchString=Mũ&gender=1' },
           ],
         },
       ],
@@ -206,34 +241,58 @@ export default {
         {
           category: 'Áo',
           products: [
-            {name: 'Áo thun', url: 'search-page?searchString=Áo thun&gender=2'}, 
-            {name: 'Áo sơ mi', url: 'search-page?searchString=Áo sơ mi&gender=2'}, 
-            {name: 'Áo Hoodie', url: 'search-page?searchString=Áo Hoodie&gender=2'},  
-            {name: 'Áo khoác', url: 'search-page?searchString=Áo khoác&gender=2'},
+            {
+              name: 'Áo thun',
+              url: 'search-page?searchString=Áo thun&gender=2',
+            },
+            {
+              name: 'Áo sơ mi',
+              url: 'search-page?searchString=Áo sơ mi&gender=2',
+            },
+            {
+              name: 'Áo Hoodie',
+              url: 'search-page?searchString=Áo Hoodie&gender=2',
+            },
+            {
+              name: 'Áo khoác',
+              url: 'search-page?searchString=Áo khoác&gender=2',
+            },
           ],
         },
         {
           category: 'Quần',
           products: [
-            {name: 'Quần Jean', url: 'search-page?searchString=Quần Jean&gender=2'}, 
-            {name: 'Quần tây',  url: 'search-page?searchString=Quần tây&gender=2'},
-            {name: 'Quần đùi', url: 'search-page?searchString=Quần đùi&gender=2'},
-            ],
+            {
+              name: 'Quần Jean',
+              url: 'search-page?searchString=Quần Jean&gender=2',
+            },
+            {
+              name: 'Quần tây',
+              url: 'search-page?searchString=Quần tây&gender=2',
+            },
+            {
+              name: 'Quần đùi',
+              url: 'search-page?searchString=Quần đùi&gender=2',
+            },
+          ],
         },
         {
           category: 'Váy/ Đầm',
           products: [
-            {name: 'Váy', url: 'search-page?searchString=Váy&gender=2'}, 
-            {name: 'Đầm', url: 'search-page?searchString=Đầm&gender=2'},
-            ],
+            { name: 'Váy', url: 'search-page?searchString=Váy&gender=2' },
+            { name: 'Đầm', url: 'search-page?searchString=Đầm&gender=2' },
+          ],
         },
         {
           category: 'Phụ kiện',
           products: [
-            {name: 'Đồ lót', url: 'search-page?searchString=lót&gender=2'},
-            {name: 'Thắt lưng',url: 'search-page?searchString=Thắt lưng&gender=2'}, 
-            {name: 'Mũ/Nón', url: 'search-page?searchString=Mũ&gender=2'},
-            ],
+            { name: 'Đồ lót', url: 'search-page?searchString=lót&gender=2' },
+            {
+              name: 'Thắt lưng',
+              url: 'search-page?searchString=Thắt lưng&gender=2',
+            },
+            { name: 'Mũ/Nón', url: 'search-page?searchString=Mũ&gender=2' },
+          ],
         },
       ],
       accountMenu: ['Thông tin cá nhân', 'Đơn mua', 'Đăng xuất'],
@@ -242,8 +301,8 @@ export default {
   computed: {
     ...mapGetters({
       cartQuantity: 'GET_CART_QUANTITY',
-      userInfo: 'GET_USER_INFO'
-    })
+      userInfo: 'GET_USER_INFO',
+    }),
   },
   methods: {
     ...mapMutations({
@@ -252,48 +311,54 @@ export default {
     }),
     ...mapActions({
       fetchCartQuantity: 'FETCH_CART_QUANTITY',
-      fetchUserInfo: 'FETCH_USER_INFO'
+      fetchUserInfo: 'FETCH_USER_INFO',
     }),
     selectCart() {
       if (this.loginStatus) {
         this.$router.push(`/cart`);
       } else {
-       this.setSnackbar({
-          type: 'warning',
+        this.setSnackbar({
+          type: 'info',
           text: 'Vui lòng đăng nhập để thực hiện chức năng này',
           visible: true,
         });
       }
     },
     selectShop() {
-        if (this.loginStatus) {
-        this.$router.push({name: 'shop-info'});
+      if (this.loginStatus) {
+        this.$router.push({ name: 'shop-info' });
       } else {
-       this.setSnackbar({
-          type: 'warning',
+        this.setSnackbar({
+          type: 'info',
           text: 'Vui lòng đăng nhập để thực hiện chức năng này',
           visible: true,
         });
       }
     },
-    selectPersonalOption(option) {
+    async selectPersonalOption(option) {
       if (option === 'Thông tin cá nhân') {
-        this.$router.push({name: 'personal-identity'}).catch(() => {});
+        this.$router.push({ name: 'personal-identity' }).catch(() => {});
         return;
       }
       if (option === 'Đơn mua') {
-        this.$router.push({name: "purchase-order"}).catch(() => {});
+        this.$router.push({ name: 'purchase-order' }).catch(() => {});
         return;
       }
       if (option === 'Đăng xuất') {
         localStorageUtils.clearToken();
-        this.$router.push('/');
+        if (this.$route.name === 'home') {
+          this.$router.go('/');
+          return;
+        }
+        this.$router.replace({name: 'home'});
+        this.$router.go('/');
         return;
       }
     },
     search() {
-      console.log(this.searchString);
-      this.$router.replace(`/search-page?searchString=${this.searchString}&gender=0`);
+      this.$router.replace(
+        `/search-page?searchString=${this.searchString}&gender=0`
+      );
     },
   },
   async created() {
@@ -302,7 +367,7 @@ export default {
       await this.fetchCartQuantity();
       await this.fetchUserInfo();
     }
-  }
+  },
 };
 </script>
 

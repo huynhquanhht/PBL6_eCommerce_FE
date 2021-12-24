@@ -12,9 +12,9 @@ const routes = [
         path: '/',
         name: 'home',
         component: () => import('@/views/Home/Home.vue'),
-        meta: {
-          title: 'Versace - Mua bán sản phẩm thời trang chính hãng, chất lượng'
-        }
+          meta: {
+            title: 'Versace - Mua bán sản phẩm thời trang chính hãng, chất lượng'
+          }
       },
       {
         path: 'search-page',

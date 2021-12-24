@@ -136,7 +136,6 @@ export default {
     
     async shopDetail(shopId) {
       await this.getEachShop(shopId);  
-      console.log(this.eachShop);    
       this.editShop = true;
     },
     
@@ -145,7 +144,6 @@ export default {
       this.amnestyDialog = true;
     },
     async amnestyAgree() {
-    console.log(this.eachShop);
       if (this.eachShop.disable == false) {
         this.setSnackbar({
           type: 'info',
@@ -155,7 +153,6 @@ export default {
         this.amnestyDialog = false;
         return;
       } else {
-        console.log(this.eachShop.shopId);
         this.enableShop({shopId: this.eachShop.shopId});
         await setTimeout( async () => {
            await this.getAllShops({name: ' '});
@@ -173,7 +170,6 @@ export default {
       this.disableDialog = true;
     },
     async disableAgree(reason) {
-      console.log(this.eachShop);
       if (this.eachShop.disable == true) {
         this.setSnackbar({
           type: 'info',
@@ -191,8 +187,6 @@ export default {
         });
         return;
         }
-        console.log(this.eachShop.shopId);
-        console.log(reason);
         this.disableShop({
           shopId: this.eachShop.shopId,
           disableReason: reason,

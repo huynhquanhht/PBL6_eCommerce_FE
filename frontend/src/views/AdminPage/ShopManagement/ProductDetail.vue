@@ -122,7 +122,7 @@
                 </td>
                 <td class="product-name-img" >
                   <img 
-                   :src=" myBaseUrl + 'apigateway/Products' + product.imagePath" alt=""
+                   :src=" myBaseUrl + 'Products' + product.imagePath" alt=""
                    width="100px"
                   height="100px" />
                 </td>
@@ -182,7 +182,7 @@ export default {
       gender: 0,
       productDetails: [],
       productImage: [],
-      myBaseUrl: process.env.VUE_APP_BASE_URL,
+      myBaseUrl: process.env.VUE_APP_SERVER,
       colorSize: [
         {
           color: '',
@@ -242,7 +242,6 @@ export default {
   },
   watch: {
     eachProduct() {
-      console.log(this.eachProduct);
       if (this.eachProduct != null) {
         this.shopId = this.eachProduct.shopId;
         this.shopName = this.eachProduct.shopName;
@@ -263,7 +262,6 @@ export default {
     },
   },
   created() {
-    console.log(this.eachProduct);
     if (this.eachProduct != null) {
       this.shopId = this.eachProduct.shopId;
       this.shopName = this.eachProduct.shopName;

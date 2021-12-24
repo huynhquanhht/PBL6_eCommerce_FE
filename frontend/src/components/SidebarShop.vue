@@ -181,9 +181,4 @@ export default {
   text-decoration: none;
 }
 
-/* .item:hover
-{
-  color: #fea200;
-  cursor: pointer;
-} */
 </style>

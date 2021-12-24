@@ -3,7 +3,7 @@
     <div class="product-list">
       <div class="product" v-for="(product, index) in productList" :key="index">
         <product-card
-          :imgUrl="myBaseUrl + 'apigateway/Products' + product.thumbnailImage"
+          :imgUrl="myBaseUrl + 'Products' + product.thumbnailImage"
           :productId="product.id"
           :productName="product.name"
           :productPrice="product.price"
@@ -27,7 +27,7 @@ export default {
   },
   data() {
     return {
-      myBaseUrl: process.env.VUE_APP_BASE_URL,
+      myBaseUrl: process.env.VUE_APP_SERVER,
     };
   },
 };

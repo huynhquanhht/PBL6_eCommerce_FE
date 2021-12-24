@@ -4,21 +4,6 @@
       <p class="main-title">Tất cả hóa đơn</p>
     </div>
     <hr class="all-order-hr" />
-    <div class="search-block">
-      <label class="search-label" for="">Tìm kiếm theo: </label>
-      <select class="search-select" name="" id="">
-        <option value="Mã đơn hàng">Mã đơn hàng</option>
-      </select>
-      <input
-        v-model="searchId"
-        class="search-input"
-        type="text"
-        name=""
-        id=""
-        @keyup.enter="search"
-      />
-      <v-btn @click="search" class="search-button">Tìm kiếm</v-btn>
-    </div>
     <table class="styled-table" v-if="orders">
       <thead>
         <tr>
@@ -196,7 +181,6 @@ export default {
   },
   async created() {
     await this.fetchShopOrders('Tất cả');
-    console.log(this.orders);
   },
 };
 </script>

@@ -3,7 +3,7 @@
     <div class="product-cart">
       <div class="product-img-name">
         <div class="product-img">
-          <img :src=" myBaseUrl + 'apigateway/Products' + product.image" alt="" />
+          <img :src=" myBaseUrl + 'Products' + product.image" alt="" />
         </div>
         <div class="product-name">
           <p>{{ product.name }}</p>
@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-      myBaseUrl: process.env.VUE_APP_BASE_URL,
+      myBaseUrl: process.env.VUE_APP_SERVER,
     };
   },
 };

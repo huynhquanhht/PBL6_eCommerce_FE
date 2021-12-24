@@ -197,7 +197,6 @@ export default {
     },
     orderDetailForm(order) {
       this.oneOrder = order;
-      console.log(this.oneOrder);
       this.orderDetail = true;
     },
   },

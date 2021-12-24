@@ -5,14 +5,6 @@
         <p class="main-title">Tất cả sản phẩm</p>
       </div>
       <hr class="all-bill-hr" />
-      <div class="search-block">
-        <label class="search-label" for="">Tìm kiếm theo: </label>
-        <input v-model="searchString"
-         @keyup.enter="search" class="search-input" 
-         type="text" name="" id="" 
-         placeholder="Nhập tên sản phẩm muốn tìm"/>
-        <v-btn @click="search" class="search-button">Tìm kiếm</v-btn>
-      </div>
       <table class="styled-table">
         <thead>
           <tr>
@@ -82,6 +74,9 @@ export default {
       question: 'Bạn chắc chắn muốn xóa sản phẩm này?',
       productId: null,
       searchString: '',
+      menuItems: [
+        {id: 1, name: 'Mã sản phẩm'},
+      ]
     };
   },
   methods: {
@@ -104,14 +99,16 @@ export default {
       let res = await this.fetchDeleteProduct({ id: this.productId });
       if (res) {
         let shopInfo = JSON.parse(localStorageUtils.getShopInfo());
+        this.dialog = false;
         await this.getAllProducts({
           pageIndex: 1,
           pageSize: 99,
           keyWord: ' ',
           shopId: shopInfo.id,
         });
+        this.$router.go();
       }
-      this.dialog = false;
+
     },
     cancel() {
       this.dialog = false;
@@ -168,9 +165,6 @@ export default {
   display: flex;
   align-items: center;
   column-gap: 10px;
-}
-
-.search-label {
 }
 
 .search-select {

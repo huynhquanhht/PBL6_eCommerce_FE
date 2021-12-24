@@ -18,9 +18,6 @@ const getProductDetail = (id) => {
 };
 
 const create = (productInfo) => {
-  for (var pair of productInfo.entries()) {
-    console.log(pair);
-  }
   return postRequest(`Products`, productInfo);
 };
 

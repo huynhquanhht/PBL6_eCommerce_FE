@@ -140,14 +140,31 @@ export default {
       show: false,
       shopDisable: false,
       disableReason: '',
-      myBaseUrl: process.env.VUE_APP_BASE_URL,
+      myBaseUrl: process.env.VUE_APP_SERVER,
     };
   },
   methods: {
+    chooseFiles() {
+      document.getElementById('fileUpload').click();
+    },
+    submit() {
+      if (this.eachShop.shopId != null) {
+        this.$store.dispatch('ACT_UPDATE_SHOP', {
+          shopId: this.id,
+          shopInfo: {
+            nameOfShop: this.name,
+            address: this.address,
+            phoneNumber: this.phoneNumber,
+            description: this.description,
+            dateCreated: this.dateCreated,
+            avatar: process.env.VUE_APP_SERVER + '/Shops' + this.avatar,
+          },
+        });
+      }
+    },
   },
   watch: {
     eachShop() {
-      console.log(this.eachShop);
       if (this.eachShop != null) {
         this.id = this.eachShop.shopId;
         this.name = this.eachShop.nameOfShop;
@@ -163,7 +180,6 @@ export default {
     },
   },
   created() {
-    console.log(this.eachShop);
     if (this.eachShop != null) {
       this.id = this.eachShop.shopId;
       this.name = this.eachShop.nameOfShop;

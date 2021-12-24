@@ -13,7 +13,6 @@ service.interceptors.request.use(
       config.headers['Authorization'] = 'Bearer ' + userToken;
     }
     config.headers['Content-type'] = 'application/json/multipart/form-data';
-    // config.headers['Content-type'] = 'multipart/form-data';
     return config;
   },
   (error) => {

@@ -29,7 +29,7 @@
             <td class="product-name-img">
               <img
                 :src="
-                  myBaseUrl + 'apigateway/Products' +
+                  myBaseUrl + 'Products' +
                   product.thumbnailImage
                 "
                 alt=""
@@ -90,7 +90,7 @@ export default {
       ShowProduct: false,
       searchString: '',
       oneProduct: null,
-      myBaseUrl: process.env.VUE_APP_BASE_URL,
+      myBaseUrl: process.env.VUE_APP_SERVER,
     };
   },
   computed: {

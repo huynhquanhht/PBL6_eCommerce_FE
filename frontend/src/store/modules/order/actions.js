@@ -105,7 +105,6 @@ const actions = {
           text: 'Không có dữ liệu đơn hàng',
         });
       }
-      console.log(res.data.resultObj);
       context.commit('SET_ALL_ORDERS', res.data.resultObj);
     } catch (error) {
       if (error.response.status === 400) {
@@ -120,13 +119,13 @@ const actions = {
   },
   'ACT_MEMBER_CANCEL_ORDER' : async (context, orderInfo) => {
     try {
-      console.log('Member Cancel Order', orderInfo);
       await memberCancelOrder(orderInfo);
       context.commit('SET_SNACKBAR', {
         type: 'success',
         visible: true,
         text: 'Hủy đơn hàng thành công',
       });
+      return true;
     } catch (error) {
       if (error.response.status === 400) {
         context.commit('SET_SNACKBAR', {
@@ -134,7 +133,7 @@ const actions = {
           visible: true,
           text: error.response.data,
         });
-        return;
+        return false;
       }
     }
   },

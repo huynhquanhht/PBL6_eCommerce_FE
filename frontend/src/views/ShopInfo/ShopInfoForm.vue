@@ -81,7 +81,7 @@
           class="shop-avatar"
           :src="
             shopAvatarData.includes('storage') ? 
-             myBaseUrl + 'apigateway/Shops' +
+             myBaseUrl + 'Shops' +
             shopAvatarData : shopAvatarData
           "
           alt="shop-avatar"
@@ -110,7 +110,7 @@
 import { required } from 'vee-validate/dist/rules';
 import { extend, ValidationProvider, setInteractionMode } from 'vee-validate';
 import ConfirmDialog from '@/components/ConfirmDialog.vue';
-import { mapGetters, mapActions } from 'vuex';
+import { mapActions } from 'vuex';
 setInteractionMode('eager');
 extend('required', {
   ...required,
@@ -143,13 +143,8 @@ export default {
       shopAvatarData: false,
       shopAvatar: null,
       action: '',
-      myBaseUrl: process.env.VUE_APP_BASE_URL,
+      myBaseUrl: process.env.VUE_APP_SERVER,
     };
-  },
-  computed: {
-    ...mapGetters({
-      // shopInfo: 'GET_SHOP_INFO'
-    }),
   },
   methods: {
     ...mapActions({
@@ -175,9 +170,6 @@ export default {
         shopInfo.append('PhoneNumber', this.phone);
         shopInfo.append('Description', this.description);
         shopInfo.append('ImageFile', this.shopAvatar);
-        for (var item of shopInfo.entries()) {
-          console.log(item);
-        }
         let res = await this.fetchUpdateShop(shopInfo);
         this.dialog = false;
         if (res) {

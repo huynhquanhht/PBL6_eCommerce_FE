@@ -35,7 +35,6 @@ export default {
   computed: {
     ...mapGetters({
       shopInfo: 'GET_SHOP_INFO',
-      // title: null,
     }),
   },
   data() {
@@ -67,7 +66,6 @@ export default {
         };
       } 
     } else {
-      // Register shop
       this.formType = 'register';
       this.title = {
         type: 'register',

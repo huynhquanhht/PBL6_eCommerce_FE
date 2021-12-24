@@ -3,12 +3,11 @@
     <div class="product-cart">
       <div class="product-img-name">
         <div class="product-img">
-          <img :src=" myBaseUrl + 'apigateway/Products' + product.img" alt="" />
+          <img :src=" myBaseUrl + 'Products' + product.img" alt="" />
         </div>
         <div class="product-name">
           <p>{{ product.name }}</p>
           <p>(Màu: Đỏ - Kích thước: XXL)</p>
-          <!-- <p>Tuấn's Shop</p> -->
         </div>
       </div>
       <div class="product-price">
@@ -35,7 +34,7 @@ export default {
   },
   data() {
     return {
-      myBaseUrl: process.env.VUE_APP_BASE_URL,
+      myBaseUrl: process.env.VUE_APP_SERVER,
     };
   },
 };
